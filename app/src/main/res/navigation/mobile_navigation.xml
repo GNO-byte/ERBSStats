@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_home">
+
+
+    <fragment
+        android:id="@+id/nav_character_detail"
+        android:name="com.gno.erbs.erbs.stats.ui.guide.characterdetail.CharacterDetailFragment"
+        android:label="Character detail"
+        tools:layout="@layout/fragment_character_detail" >
+        <action
+            android:id="@+id/action_nav_character_detail_to_nav_search"
+            app:destination="@id/nav_search" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_top"
+        android:name="com.gno.erbs.erbs.stats.ui.top.TopFragment"
+        android:label="top_fragment"
+        tools:layout="@layout/fragment_top" >
+        <action
+            android:id="@+id/action_nav_top_to_nav_user_stats"
+            app:destination="@id/nav_user_stats" />
+        <action
+            android:id="@+id/action_nav_top_to_nav_search"
+            app:destination="@id/nav_search" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_user_stats"
+        android:name="com.gno.erbs.erbs.stats.ui.userstats.UserStatsFragment"
+        android:label="user_stats_fragment"
+        tools:layout="@layout/fragment_user_stats" >
+        <action
+            android:id="@+id/action_nav_user_stats_to_nav_search"
+            app:destination="@id/nav_search" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_characters"
+        android:name="com.gno.erbs.erbs.stats.ui.guide.characters.CharactersFragment"
+        android:label="characters"
+        tools:layout="@layout/fragment_characters" >
+        <action
+            android:id="@+id/action_nav_characters_to_nav_character_detail"
+            app:destination="@id/nav_character_detail" />
+        <action
+            android:id="@+id/action_nav_characters_to_nav_search"
+            app:destination="@id/nav_search" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.gno.erbs.erbs.stats.ui.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_characters"
+            app:destination="@id/nav_characters" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_top"
+            app:destination="@id/nav_top" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_user_stats"
+            app:destination="@id/nav_user_stats" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_search"
+            app:destination="@id/nav_search" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_search"
+        android:name="com.gno.erbs.erbs.stats.ui.search.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_nav_search_to_nav_character_detail"
+            app:destination="@id/nav_character_detail" />
+        <action
+            android:id="@+id/action_nav_search_to_nav_user_stats"
+            app:destination="@id/nav_user_stats" />
+    </fragment>
+
+</navigation>
