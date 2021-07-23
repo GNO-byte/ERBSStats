@@ -5,64 +5,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     tools:context=".ui.guide.characterdetail.CharacterDetailFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@android:color/transparent"
+        android:layout_height="260dp"
         android:fitsSystemWindows="false"
         app:elevation="0dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="false"
-            app:layout_anchor="@+id/appBarLayout"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
             app:layout_anchorGravity="center"
-            app:layout_scrollFlags="scroll|enterAlways|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:titleEnabled="false"
+            app:toolbarId="@+id/toolbar">
+
+            <ImageView
+                android:id="@+id/character_image"
+                android:layout_width="100dp"
+                android:layout_height="154dp"
+                android:layout_gravity="right"
+                android:contentDescription="character image"
+                tools:src="@tools:sample/avatars"/>
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="100dp"
                 app:elevation="0dp"
-                app:layout_collapseMode="pin">
+                android:fitsSystemWindows="false"
+                android:gravity="top"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/Theme.ERBSStats.PopupOverlay">
 
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    tools:text="Character 1" />
+                    tools:text="Character 1"
+                    android:textAppearance="@style/Theme.ERBSStats.TitleTextAppearance" />
+
 
             </androidx.appcompat.widget.Toolbar>
-
-            <ImageView
-                android:id="@+id/character_image"
-                android:layout_width="160dp"
-                android:layout_height="160dp"
-                android:layout_gravity="center"
-                android:contentDescription="character image" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:orientation="vertical">
+                 android:orientation="vertical">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabs"
                     android:layout_width="match_parent"
+                    style="@style/Theme.ERBSStats.ThemeOverlayTopBorder"
                     android:layout_height="?attr/actionBarSize"
                     app:tabGravity="fill"
-                    app:tabMode="fixed"
-                    app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
-                    app:tabTextColor="@color/black">
+                    app:tabMode="fixed">
 
                 </com.google.android.material.tabs.TabLayout>
 

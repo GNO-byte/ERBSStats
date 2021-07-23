@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,6 +19,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.characters.WeaponType
+import com.google.android.material.color.MaterialColors
 
 class WeaponTypesAdapter :
     ListAdapter<WeaponType, WeaponTypesAdapter.DataHolder>(WeaponTypesDiffUtilCallback()) {
@@ -68,19 +70,20 @@ class WeaponTypesAdapter :
             this.webColorInner = Color.LTGRAY;
             this.webAlpha = 100;
 
-
-
             this.invalidate()
 
             this.legend.isEnabled = false
-
 
             val xAxis = this.xAxis
             xAxis.textSize = 9f
             xAxis.yOffset = 0f
             xAxis.xOffset = 0f
 
-            xAxis.textColor = Color.BLACK
+            xAxis.textColor = MaterialColors.getColor(
+                context,
+                R.attr.colorOnPrimary,
+                ContextCompat.getColor(this.context, R.color.white)
+            )
 
             val yAxis = this.yAxis
             yAxis.setLabelCount(5, false)
@@ -123,8 +126,18 @@ class WeaponTypesAdapter :
 
         val set1 = RadarDataSet(entries1, weaponType.mastery)
 
-        set1.color = Color.rgb(103, 110, 129)
-        set1.fillColor = Color.rgb(103, 110, 129)
+        set1.color = MaterialColors.getColor(
+            context,
+            R.attr.colorSecondary,
+            ContextCompat.getColor(this.context, R.color.goldenrod)
+        )
+
+        set1.fillColor = MaterialColors.getColor(
+            context,
+            R.attr.colorSecondary,
+            ContextCompat.getColor(this.context, R.color.goldenrod)
+        )
+
         set1.setDrawFilled(true)
         set1.fillAlpha = 180
         set1.lineWidth = 2f
@@ -137,7 +150,7 @@ class WeaponTypesAdapter :
         val data = RadarData(sets)
         data.setValueTextSize(8f)
         data.setDrawValues(false)
-        data.setValueTextColor(Color.WHITE)
+        //data.setValueTextColor(ContextCompat.getColor(this.context, R.color.white))
 
         this.data = data
 

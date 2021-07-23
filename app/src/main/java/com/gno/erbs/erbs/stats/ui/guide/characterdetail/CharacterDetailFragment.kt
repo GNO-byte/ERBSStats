@@ -40,6 +40,7 @@ class CharacterDetailFragment : Fragment() {
                 )
             binding.tabs.setupWithViewPager(binding.pager)
             viewModel.characterStatsLiveData.observe(viewLifecycleOwner) { characterStats ->
+                binding.name.text = characterStats.name
                 characterStats.characterImageHalfWebLink?.let { characterImageHalfWebLink ->
                     context?.let { thisContext ->
                         Glide.with(thisContext).load(characterImageHalfWebLink)

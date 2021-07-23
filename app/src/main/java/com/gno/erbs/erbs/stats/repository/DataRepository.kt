@@ -82,9 +82,9 @@ object DataRepository {
             DriveService.getCharacterImageFiles(CharacterImageType.MINI, *names.toTypedArray())
 
         characterList.forEach { character ->
-            character.iconWebLink = files.first { file ->
+            character.iconWebLink = files.find { file ->
                 file.name.contains(character.name, ignoreCase = true)
-            }.webContentLink
+            }?.webContentLink
         }
     }
 

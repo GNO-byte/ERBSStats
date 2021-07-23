@@ -1,25 +1,85 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <attr format="reference" name="searchViewStyle"/>
+    <attr format="reference" name="textColorPrimary"/>
+
     <!-- Base application theme. -->
     <style name="Theme.ERBSStats" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/bunker</item>
+        <item name="colorPrimaryVariant">@color/bunker</item>
         <item name="colorOnPrimary">@color/white</item>
+
+        <item name="android:colorBackground">@color/eerie_black</item>
+        <!--        <item name="android:background">@color/eerie_black</item>-->
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="colorAccent">@color/goldenrod</item>
+
+        <item name="android:textColorSecondary">@color/white</item>
+<!--        <item name="android:textColorHint">@color/goldenrod</item>-->
+
+        <item name="colorSurface">@color/bunker</item>
+        <item name="colorOnSurface">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/goldenrod</item>
+        <item name="colorSecondaryVariant">@color/goldenrod</item>
+        <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+        <item name="tabStyle">@style/TabLayout.ERBSStats</item>
+        <!--        <item name="appBarLayoutStyle">@style/AppBarLayout.ERBSStats</item>-->
+
+        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
+
+        <item name="android:textColorHint">@color/grey_400</item>
     </style>
+
+    <style name="TabLayout.ERBSStats" parent="Widget.MaterialComponents.TabLayout">
+        <item name="android:background">@null</item>
+        <item name="tabIndicatorColor">?attr/colorSecondary</item>
+        <item name="tabTextColor">@color/erbs_tabs_icon_color_selector</item>
+    </style>
+
+    <!--    <style name="AppBarLayout.ERBSStats" parent="Widget.MaterialComponents.AppBarLayout.Primary">-->
+    <!--        <item name="android:background">@drawable/rounded_bottom_border</item>-->
+    <!--    </style>-->
+
 
     <style name="Theme.ERBSStats.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="CardView.ERBSStats" parent="CardView">
+        <item name="cardBackgroundColor">?attr/colorPrimary</item>
+    </style>
+
     <style name="Theme.ERBSStats.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.ERBSStats.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.ERBSStats.ThemeOverlayTopBorder"><item name="android:background">@drawable/rounded_top_border</item>
+        </style>
+
+    <style name="Theme.ERBSStats.ThemeOverlayBottomBorder">
+        <item name="android:background">@drawable/rounded_bottom_border</item>
+    </style>
+
+    <style name="Theme.ERBSStats.ThemeOverlaySearchBorder">
+        <item name="android:background">@drawable/rounded_search_border</item>
+    </style>
+
+    <style name="Theme.ERBSStats.MiddleTextAppearance">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Theme.ERBSStats.TitleTextAppearance">
+        <item name="android:textSize">32sp</item>
+        <item name="colorOnPrimary">@color/goldenrod</item>
+
+    </style>
+
 </resources>

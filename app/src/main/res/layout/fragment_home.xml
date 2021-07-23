@@ -9,7 +9,6 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="260dp"
-        android:background="@android:color/transparent"
         app:elevation="0dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -18,7 +17,7 @@
             android:minHeight="80dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_collapseMode="pin"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:titleEnabled="false">
 
             <LinearLayout
@@ -32,34 +31,33 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:text="What you looking for?"
-                    android:textSize="32sp" />
+                    android:textAppearance="@style/Theme.ERBSStats.TitleTextAppearance" />
 
                 <androidx.appcompat.widget.Toolbar
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="100dp"
+                    style="@style/Theme.ERBSStats.ThemeOverlayBottomBorder"
                     android:paddingTop="16dp"
                     app:contentInsetLeft="0dp"
                     app:contentInsetStart="0dp"
                     app:elevation="0dp">
 
                     <LinearLayout
+                        android:id="@+id/search_group"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16dp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
-                        <androidx.appcompat.widget.SearchView
-                            android:id="@+id/search"
+                        <fragment
+                            android:id="@+id/search_dialog"
+                            android:name="com.gno.erbs.erbs.stats.ui.search.SearchDialogFragment"
+                            tools:layout="@layout/fragment_search_dialog"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
-                            android:queryHint="Search player and character"
-                            android:textSize="16sp" />
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
+
                 </androidx.appcompat.widget.Toolbar>
 
             </LinearLayout>

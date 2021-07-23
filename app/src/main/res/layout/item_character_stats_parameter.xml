@@ -13,8 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        tools:text="HP"
-        android:textSize="16sp" />
+        tools:text="HP" />
 
     <TextView
         android:id="@+id/min_lvl_value"
@@ -22,8 +21,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center_horizontal"
-        android:textColor="@color/black"
-        android:textSize="16sp"
         tools:text="55" />
 
     <TextView
@@ -32,8 +29,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center_horizontal"
-        android:textColor="@color/black"
-        android:textSize="16sp"
         tools:text="55" />
 
 

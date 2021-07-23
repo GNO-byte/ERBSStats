@@ -9,7 +9,6 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="260dp"
-        android:background="@android:color/transparent"
         app:elevation="0dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -18,15 +17,27 @@
             android:minHeight="80dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_collapseMode="pin"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:titleEnabled="false">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="Search"
-                android:textSize="32sp" />
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                app:elevation="0dp"
+                android:layout_gravity="bottom"
+                app:layout_collapseMode="pin"
+                style="@style/Theme.ERBSStats.ThemeOverlayTopBorder"
+                app:popupTheme="@style/Theme.ERBSStats.PopupOverlay">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Search"
+                    android:textAppearance="@style/Theme.ERBSStats.TitleTextAppearance"/>
+
+            </androidx.appcompat.widget.Toolbar>
+
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 

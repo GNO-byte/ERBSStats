@@ -12,8 +12,7 @@ tools:context=".ui.userstats.UserStatsFragment">
 <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBarLayout"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:background="@android:color/transparent"
+    android:layout_height="260dp"
     android:fitsSystemWindows="false"
     app:elevation="0dp">
 
@@ -26,10 +25,12 @@ tools:context=".ui.userstats.UserStatsFragment">
         app:layout_scrollFlags="scroll|enterAlways|exitUntilCollapsed">
 
         <androidx.appcompat.widget.Toolbar
+            style="@style/Theme.ERBSStats.ThemeOverlayTopBorder"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:elevation="0dp"
+            android:layout_gravity="bottom"
             app:layout_collapseMode="pin">
 
             <TextView
@@ -37,11 +38,8 @@ tools:context=".ui.userstats.UserStatsFragment">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Characters"
-                android:textColor="@color/black"
                 tools:text="Characters"
-
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:textAppearance="@style/Theme.ERBSStats.TitleTextAppearance" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -50,21 +48,21 @@ tools:context=".ui.userstats.UserStatsFragment">
 
 </com.google.android.material.appbar.AppBarLayout>
 
-<androidx.core.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_characters"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="5"
-        tools:context=".ui.guide.characters.CharactersFragment"
-        tools:listitem="@layout/item_character" />
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-</androidx.core.widget.NestedScrollView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_characters"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="5"
+            tools:context=".ui.guide.characters.CharactersFragment"
+            tools:listitem="@layout/item_character" />
+
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

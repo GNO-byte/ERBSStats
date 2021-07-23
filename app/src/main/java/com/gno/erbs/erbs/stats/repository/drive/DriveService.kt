@@ -97,8 +97,12 @@ object DriveService {
 
         val resultFiles = mutableListOf<File>()
         for (characterName in characterNames) {
-            resultFiles.add(files.first { compareNames(it.name, characterName) })
+            val foundFile = files.find{ compareNames(it.name, characterName)}
+            foundFile?.let{
+                resultFiles.add(it)
+            }
         }
+
 
         return resultFiles
     }

@@ -7,5 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="grey_400">#FFBDBDBD</color>
+
+
+
+    <color name="bunker">#FF131313</color>
+    <color name="eerie_black">#FF1a1b1c</color>
+    <color name="goldenrod">#FFe0a800</color>
 
 </resources>

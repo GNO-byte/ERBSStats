@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
@@ -13,27 +17,36 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:textAppearance="@style/Theme.ERBSStats.MiddleTextAppearance"
+        tools:text="1"
+        />
 
     <ImageView
         android:id="@+id/rank_image"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_weight="1"
-        android:contentDescription="rank image" />
+        android:contentDescription="rank image"
+        tools:src="@tools:sample/avatars"
+        />
 
     <TextView
         android:id="@+id/nickname"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:textAppearance="@style/Theme.ERBSStats.MiddleTextAppearance"
+        tools:text="nickname"/>
 
     <TextView
         android:id="@+id/mmr"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:textAppearance="@style/Theme.ERBSStats.MiddleTextAppearance"
+        tools:text="1000"/>
 
 </LinearLayout>

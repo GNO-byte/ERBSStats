@@ -35,7 +35,6 @@ interface AesopService {
             return INSTANCE ?: throw IllegalStateException("AesopService must be initialized")
 
         }
-
     }
 }
 
