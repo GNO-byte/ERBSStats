@@ -1,12 +1,14 @@
 package com.gno.erbs.erbs.stats.model.erbs.matches.item.weapon
 
+import com.gno.erbs.erbs.stats.model.erbs.matches.item.SearchItem
+
 data class ItemWeapon(
     val attackPower: Float?,
     val attackPowerByLv: Float?,
     val attackRange: Float?,
     val attackSpeedRatio: Float?,
     val attackSpeedRatioByLv: Float?,
-    val code: Int?,
+    override val code: Int?,
     val consumable: Boolean?,
     val cooldownLimit: Float?,
     val cooldownReduction: Float?,
@@ -44,7 +46,7 @@ data class ItemWeapon(
     val maxSP: Float?,
     val moveSpeed: Float?,
     val moveSpeedOutOfCombat: Float?,
-    val name: String?,
+    override val name: String?,
     val penetrationDefense: Float?,
     val penetrationDefenseRatio: Float?,
     val preventBasicAttackDamagedByLv: Float?,
@@ -58,4 +60,5 @@ data class ItemWeapon(
     val trapDamageReduce: Float?,
     val trapDamageReduceRatio: Float?,
     val weaponType: String?
-)
+) : SearchItem
+

@@ -1,35 +1,116 @@
 package com.gno.erbs.erbs.stats.ui.guide.characters
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.gno.erbs.erbs.stats.R
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.characters.Character
 
-import com.squareup.picasso.Picasso
 
 class CharactersAdapter(
     private val cellClickListener: (Int) -> Unit
-    )
-    : ListAdapter<Character, CharactersAdapter.ViewHolder>(CharactersDiffUtilCallback()) {
+) : ListAdapter<Character, RecyclerView.ViewHolder>(CharactersDiffUtilCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_character, parent, false)
-        return ViewHolder(view)
+    companion object {
+        private const val TYPE_LOADING = 1
+        private const val TYPE_CHARACTER = 2
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+//    private val shimmerDrawable: ShimmerDrawable =
+//        ShimmerDrawable().apply {
+//            val shimmer =
+//                Shimmer.AlphaHighlightBuilder()// The attributes for a ShimmerDrawable is set by this builder
+//                    .setDuration(1800) // how long the shimmering animation takes to do one full sweep
+//                    .setBaseAlpha(0.7f) //the alpha of the underlying children
+//                    .setHighlightAlpha(0.6f) // the shimmer alpha amount
+//                    .setDirection(Shimmer.Direction.LEFT_TO_RIGHT)
+//                    .setAutoStart(true)
+//                    .build()
+//
+//            setShimmer(shimmer)
+//        }
+
+    fun addLoading() {
+        val currentList = currentList.toMutableList()
+
+        repeat(10) {
+            currentList.add(null)
+        }
+
+        submitList(currentList)
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        val item = getItem(position)
+        return when (item == null) {
+            true -> TYPE_LOADING
+            false -> TYPE_CHARACTER
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            TYPE_LOADING -> LoadingHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.loading_item_character, parent, false)
+            )
+            TYPE_CHARACTER -> CharacterHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_character, parent, false)
+            )
+            else -> throw RuntimeException("Type does not fit")
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
 
-        Glide.with(holder.image.context).load(item.iconWebLink).circleCrop().into(holder.image)
+        when (holder.itemViewType) {
 
-        holder.image.setOnClickListener {
-            cellClickListener.invoke(item.code)
+            TYPE_CHARACTER -> {
+
+                val characterHolder = holder as CharacterHolder
+
+//                var shimmerDrawable = ShimmerDrawable().apply {
+//                    val shimmer =
+//                        Shimmer.ColorHighlightBuilder()// The attributes for a ShimmerDrawable is set by this builder
+//                            .setDuration(1800) // how long the shimmering animation takes to do one full sweep
+//                            .setBaseAlpha(0.7f) //the alpha of the underlying children
+//                            .setHighlightAlpha(0.6f) // the shimmer alpha amount
+//                            .setBaseColor(
+//                                ContextCompat.getColor(
+//                                    characterHolder.image.context,
+//                                    R.color.goldenrod
+//                                )
+//                            )
+//                            .setDirection(Shimmer.Direction.LEFT_TO_RIGHT)
+//                            .setAutoStart(true)
+//                            .build()
+//
+//                    setShimmer(shimmer)
+//                }
+//
+//
+//                val requestOptions = RequestOptions()
+//                requestOptions.placeholder(shimmerDrawable)
+
+
+                Glide.with(characterHolder.image.context)
+//                    .setDefaultRequestOptions(requestOptions)
+                    .load(item.iconWebLink)
+                    .placeholder(R.drawable.loading_image)
+                    .error(R.drawable.loading_image)
+                    .circleCrop()
+                    .into(characterHolder.image)
+
+                characterHolder.image.setOnClickListener {
+                    cellClickListener.invoke(item.code)
+                }
+            }
         }
     }
 
@@ -40,7 +121,11 @@ class CharactersAdapter(
         }
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val image: ImageView = view.findViewById(R.id.character_guide_image)
+    class CharacterHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val image: ImageView = itemView.findViewById(R.id.character_guide_image)
     }
+
+    class LoadingHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+
 }

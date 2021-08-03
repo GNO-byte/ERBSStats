@@ -1,5 +1,7 @@
 package com.gno.erbs.erbs.stats.model.erbs.matches.item.armor
 
+import com.gno.erbs.erbs.stats.model.erbs.matches.item.SearchItem
+
 data class ItemArmor(
     val armorType: String?,
     val attackPower: Float?,
@@ -7,7 +9,7 @@ data class ItemArmor(
     val attackRange: Float?,
     val attackSpeedRatio: Float?,
     val attackSpeedRatioByLv: Float?,
-    val code: Int?,
+    override val code: Int?,
     val cooldownLimit: Float?,
     val cooldownReduction: Float?,
     val craftAnimTrigger: String?,
@@ -43,7 +45,7 @@ data class ItemArmor(
     val maxHpByLv: Float?,
     val maxSp: Float?,
     val moveSpeed: Float?,
-    val name: String?,
+    override val name: String?,
     val outOfCombatMoveSpeed: Float?,
     val penetrationDefense: Float?,
     val penetrationDefenseRatio: Float?,
@@ -61,4 +63,4 @@ data class ItemArmor(
     val stackable: Float?,
     val trapDamageReduce: Float?,
     val trapDamageReduceRatio: Float?
-)
+): SearchItem

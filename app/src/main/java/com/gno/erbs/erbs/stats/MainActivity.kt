@@ -3,21 +3,21 @@ package com.gno.erbs.erbs.stats
 import android.content.Context
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
-import com.gno.erbs.erbs.stats.repository.*
+import com.gno.erbs.erbs.stats.repository.DataRepository
 import com.gno.erbs.erbs.stats.ui.search.SearchDialogFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.*
-import okhttp3.internal.wait
-import kotlin.concurrent.thread
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
 
@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity() {
     private val coroutineContext: CoroutineContext
         get() = parentJob + Dispatchers.Default
     val scope = CoroutineScope(coroutineContext)
+
+    var fabContainer: FrameLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,12 +48,14 @@ class MainActivity : AppCompatActivity() {
         /////////////////////////////
 
         //val toolbar: Toolbar = findViewById(R.id.toolbar)
-       // setSupportActionBar(toolbar)
+        // setSupportActionBar(toolbar)
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener {
             showSearch()
         }
+
+        fabContainer = findViewById(R.id.fab_container)
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
@@ -81,6 +85,15 @@ class MainActivity : AppCompatActivity() {
     private fun showSearch() {
         val dialog = SearchDialogFragment.newInstance(true)
         dialog.show(supportFragmentManager, "")
+    }
+
+    fun searchEnable() {
+        fabContainer?.visibility = View.VISIBLE
+    }
+
+    fun searchDisable() {
+        fabContainer?.visibility = View.INVISIBLE
+
     }
 
 }

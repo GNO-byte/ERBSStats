@@ -1,38 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/game_mode"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
     android:layout_marginTop="16dp"
-    android:layout_marginEnd="8dp"
-    android:gravity="center_vertical"
-    tools:context=".ui.userstats.UserStatsFragment">
+    android:layout_marginEnd="8dp">
 
-    <TextView
-        android:id="@+id/weapon_name"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|end"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:contentDescription="@string/tier_image"
-        android:textAlignment="textEnd" />
-
-    <ImageView
-        android:id="@+id/weapon_image"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_gravity="top|start"
-        android:adjustViewBounds="true"
-        android:contentDescription="weapon image" />
-
-    <com.github.mikephil.charting.charts.RadarChart
-        android:id="@+id/chart"
+    <FrameLayout
+        android:id="@+id/game_mode"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        tools:context=".ui.userstats.UserStatsFragment">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/weapon_name"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:contentDescription="@string/tier_image"
+            android:textAlignment="textEnd" />
+
+        <ImageView
+            android:id="@+id/weapon_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="top|start"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="weapon image" />
+
+        <com.github.mikephil.charting.charts.RadarChart
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+    </FrameLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -6,5 +6,6 @@ data class Response<T>(
     val code: Int,
     val message: String,
     @SerializedName(value="topRanks", alternate= ["userRank", "users", "userStats","userGames","data","user"])
-    val result: T
+    val result: T,
+    val next: String?
 )

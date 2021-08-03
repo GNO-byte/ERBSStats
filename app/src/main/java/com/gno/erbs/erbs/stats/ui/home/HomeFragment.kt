@@ -12,12 +12,14 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.gno.erbs.erbs.stats.MainActivity
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentHomeBinding
+import com.gno.erbs.erbs.stats.ui.base.BaseFragment
 import com.readystatesoftware.systembartint.SystemBarTintManager
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -42,18 +44,16 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
 
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        (activity as MainActivity).searchDisable()
         binding.recyclerViewMenu.adapter = menuAdapter
 
         viewModel.menuObjectLiveData.observe(viewLifecycleOwner) { menu ->
             menuAdapter.submitList(menu)
            // binding.searchGroup.
         }
-
     }
 
 //    private fun initStatusBar(color: Int) {

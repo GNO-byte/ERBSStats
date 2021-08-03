@@ -17,6 +17,7 @@ import com.gno.erbs.erbs.stats.databinding.FragmentOverviewBinding
 import com.gno.erbs.erbs.stats.model.Tier
 import com.gno.erbs.erbs.stats.ui.userstats.UserStatsViewModel
 import java.text.DecimalFormat
+import kotlin.math.roundToInt
 
 
 class OverviewFragment : Fragment() {
@@ -43,6 +44,9 @@ class OverviewFragment : Fragment() {
 
         activity?.let { thisActivity ->
 
+            binding.overview.visibility = View.GONE
+            binding.loading.visibility = View.VISIBLE
+
             viewModel =
                 ViewModelProvider(thisActivity.supportFragmentManager.fragments.first().childFragmentManager.fragments[0]).get(
                     UserStatsViewModel::class.java
@@ -66,6 +70,8 @@ class OverviewFragment : Fragment() {
                     tierImage.contentDescription = Tier.findByMmr(it.mmr).title
                     context?.let { thisContext ->
                         Glide.with(thisContext).load(it.rankTierImageWebLink)
+                            .placeholder(R.drawable.loading_image)
+                            .error(R.drawable.loading_image)
                             .into(tierImage)
                     }
 
@@ -100,9 +106,12 @@ class OverviewFragment : Fragment() {
                         it.averageHunts.toInt(),
                         it.averageHunts.toInt()
                     )
-                    parameters.createParameter(layoutInflater, "Top 1", it.top1.toInt() * 100, 100)
-                    parameters.createParameter(layoutInflater, "Top 2", it.top2.toInt() * 100, 100)
-                    parameters.createParameter(layoutInflater, "Top 3", it.top3.toInt() * 100, 100)
+                    parameters.createParameter(layoutInflater, "Top 1",
+                        (it.top1 * 100).roundToInt(), 100)
+                    parameters.createParameter(layoutInflater, "Top 2",
+                        (it.top2 * 100).roundToInt(), 100)
+                    parameters.createParameter(layoutInflater, "Top 3",
+                        (it.top3 * 100).roundToInt(), 100)
                     parameters.createParameter(
                         layoutInflater,
                         "Total games",
@@ -112,6 +121,10 @@ class OverviewFragment : Fragment() {
 
                     binding.overview.addView(itemGameMode)
                 }
+
+                binding.loading.visibility = View.GONE
+                binding.overview.visibility = View.VISIBLE
+
             }
         }
     }
@@ -137,10 +150,10 @@ class OverviewFragment : Fragment() {
         val valueView: TextView = itemParameter.findViewById(R.id.value)
         val progressView: ProgressBar = itemParameter.findViewById(R.id.progress)
 
-        nameView.text = name.toString()
+        nameView.text = name
         valueView.text = value.toString()
-        progressView.max = value
-        progressView.progress = maxValue
+        progressView.progress = value
+        progressView.max = maxValue
 
         this.addView(itemParameter)
 

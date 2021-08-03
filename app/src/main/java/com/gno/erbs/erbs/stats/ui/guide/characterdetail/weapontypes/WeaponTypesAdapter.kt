@@ -1,6 +1,7 @@
 package com.gno.erbs.erbs.stats.ui.guide.characterdetail.weapontypes
 
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.data.RadarData
@@ -19,10 +23,25 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.characters.WeaponType
+import com.gno.erbs.erbs.stats.ui.top.RankAdapter
 import com.google.android.material.color.MaterialColors
 
+
 class WeaponTypesAdapter :
-    ListAdapter<WeaponType, WeaponTypesAdapter.DataHolder>(WeaponTypesDiffUtilCallback()) {
+    ListAdapter<WeaponType, RecyclerView.ViewHolder>(WeaponTypesDiffUtilCallback()) {
+
+    companion object {
+        private const val TYPE_LOADING = 1
+        private const val TYPE_WEAPON_TYPE = 2
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        val item = getItem(position)
+        return when (item == null) {
+            true -> TYPE_LOADING
+            false -> TYPE_WEAPON_TYPE
+        }
+    }
 
     override fun getItemCount(): Int {
         return when (val count = super.getItemCount()) {
@@ -31,24 +50,54 @@ class WeaponTypesAdapter :
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataHolder {
-        return DataHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_weapon_type, parent, false)
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            TYPE_LOADING -> LoadingHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.loading_item_weapon_type, parent, false)
+            )
+            TYPE_WEAPON_TYPE -> WeaponTypeHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_weapon_type, parent, false)
+            )
+            else -> throw RuntimeException("Type does not fit")
+        }
     }
 
-    override fun onBindViewHolder(holder: DataHolder, position: Int) {
+    fun addLoading(){
+        val currentList = currentList.toMutableList()
+        currentList.add(null)
+        currentList.add(null)
+        currentList.add(null)
+        submitList(currentList)
+    }
+
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         val item = getItem(position)
-        holder.weaponName.text = item.name
-        Glide.with(holder.weaponImage.context).load(item.weaponTypeImageWebLink).circleCrop()
-            .into(holder.weaponImage)
-        holder.chart.fill(item)
 
+        when (holder.itemViewType) {
+
+            TYPE_WEAPON_TYPE -> {
+
+                val weaponTypeHolder = holder as WeaponTypeHolder
+
+                weaponTypeHolder.weaponName.text = item.name
+                Glide.with(weaponTypeHolder.weaponImage.context).load(item.weaponTypeImageWebLink)
+                    .placeholder(R.drawable.loading_image)
+                    .error(R.drawable.loading_image)
+                    .circleCrop()
+                    .into(weaponTypeHolder.weaponImage)
+                weaponTypeHolder.chart.fill(item)
+
+            }
+        }
     }
 
-    class DataHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+
+    class WeaponTypeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val weaponImage: ImageView = itemView.findViewById(R.id.weapon_image)
         val weaponName: TextView = itemView.findViewById(R.id.weapon_name)
@@ -160,4 +209,7 @@ class WeaponTypesAdapter :
             }
         }
     }
+
+    class LoadingHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
 }

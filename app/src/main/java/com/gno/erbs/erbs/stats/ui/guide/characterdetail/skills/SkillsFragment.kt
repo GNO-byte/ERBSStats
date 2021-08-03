@@ -36,6 +36,9 @@ class SkillsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         activity?.let { thisActivity ->
+
+            skillsAdapter.addLoading()
+
             viewModel =
                 ViewModelProvider(
                     thisActivity.supportFragmentManager.fragments.first()

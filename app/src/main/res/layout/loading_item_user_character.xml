@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/loading"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:shimmer_auto_start="true"
+    app:shimmer_colored="false">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:orientation="horizontal">
+
+    <View
+        style="@style/Theme.ERBSStats.Loading"
+        android:layout_width="80dp"
+        android:layout_height="24sp"
+        android:layout_weight="1" />
+
+
+    <View
+        style="@style/Theme.ERBSStats.Loading"
+        android:layout_width="30dp"
+        android:layout_height="24sp"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_weight="2" />
+
+    <View
+        style="@style/Theme.ERBSStats.Loading"
+        android:layout_width="30dp"
+        android:layout_gravity="center"
+        android:layout_height="24sp"
+        android:layout_marginStart="8dp"
+        android:layout_weight="2" />
+
+    <View
+        style="@style/Theme.ERBSStats.Loading"
+        android:layout_width="30dp"
+        android:layout_gravity="center"
+        android:layout_height="24sp"
+        android:layout_marginStart="8dp"
+        android:layout_weight="2" />
+
+    <View
+        style="@style/Theme.ERBSStats.Loading"
+        android:layout_width="30dp"
+        android:layout_gravity="center"
+        android:layout_height="24sp"
+        android:layout_marginStart="8dp"
+        android:layout_weight="2" />
+
+    <View
+        style="@style/Theme.ERBSStats.Loading"
+        android:layout_width="30dp"
+        android:layout_gravity="center"
+        android:layout_height="24sp"
+        android:layout_marginStart="8dp"
+        android:layout_weight="2" />
+
+</LinearLayout>
+
+</com.facebook.shimmer.ShimmerFrameLayout>

@@ -76,10 +76,19 @@
         <item name="android:textSize">24sp</item>
     </style>
 
-    <style name="Theme.ERBSStats.TitleTextAppearance">
+    <style name="Theme.ERBSStats.TitleTextAppearance" >
         <item name="android:textSize">32sp</item>
         <item name="colorOnPrimary">@color/goldenrod</item>
+    </style>
 
+    <style name="Theme.ERBSStats.ItemTeamMode" >
+        <item name="android:textSize">24sp</item>
+        <item name="android:background">@color/goldenrod</item>
+    </style>
+
+
+    <style name="Theme.ERBSStats.Loading" >
+        <item name="android:background">@color/goldenrod</item>
     </style>
 
 </resources>

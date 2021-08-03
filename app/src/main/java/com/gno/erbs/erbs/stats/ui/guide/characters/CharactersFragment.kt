@@ -8,10 +8,12 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.gno.erbs.erbs.stats.MainActivity
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentCharactersBinding
+import com.gno.erbs.erbs.stats.ui.base.BaseFragment
 
-class CharactersFragment : Fragment() {
+class CharactersFragment : BaseFragment() {
 
     private lateinit var binding: FragmentCharactersBinding
 
@@ -34,8 +36,9 @@ class CharactersFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        super.onViewCreated(view, savedInstanceState)
         binding.recyclerViewCharacters.adapter = characterGuidesAdapter
+        characterGuidesAdapter.addLoading()
         viewModel.charactersLiveData.observe(viewLifecycleOwner) {
             characterGuidesAdapter.submitList(it)
         }

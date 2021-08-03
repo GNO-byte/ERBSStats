@@ -1,5 +1,6 @@
 package com.gno.erbs.erbs.stats.ui.userstats.matches
 
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,14 +9,23 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.matches.UserGame
+import com.gno.erbs.erbs.stats.ui.top.RankAdapter
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MatchesAdapter(
-) : ListAdapter<UserGame, MatchesAdapter.DataHolder>(MatchesDiffUtilCallback()) {
+) : ListAdapter<UserGame, RecyclerView.ViewHolder>(MatchesDiffUtilCallback()) {
+
+    companion object {
+        private const val TYPE_LOADING = 1
+        private const val TYPE_MATCH = 2
+    }
 
     override fun getItemCount(): Int {
         return when (val count = super.getItemCount()) {
@@ -24,73 +34,105 @@ class MatchesAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataHolder {
-        return DataHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_match, parent, false)
-        )
+    override fun getItemViewType(position: Int): Int {
+        val item = getItem(position)
+        return when (item == null) {
+            true -> TYPE_LOADING
+            false -> TYPE_MATCH
+        }
     }
 
-    override fun onBindViewHolder(holder: DataHolder, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            TYPE_LOADING -> LoadingHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.loading_item_match, parent, false)
+            )
+            TYPE_MATCH -> MatchHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_match, parent, false)
+            )
+            else -> throw RuntimeException("Type does not fit")
+        }
+    }
+
+    fun addLoading(){
+        val currentList = currentList.toMutableList()
+        currentList.add(null)
+        submitList(currentList)
+    }
+
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         val item = getItem(position)
-        holder.gameRank.text = item.gameRank.toString()
-        holder.teamMode.text = item.teamMode.toString()
 
-        holder.date.text = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(item.date)
+        when (holder.itemViewType) {
 
-        holder.server.text = item.serverName
-        holder.kills.text = item.playerKill.toString()
-        holder.assistants.text = item.playerAssistant.toString()
-        holder.hunter.text = item.monsterKill.toString()
-        holder.mmr.text = item.mmr.toString()
+            TYPE_MATCH -> {
 
-        item.characterImageWebLink?.let{
-            Glide.with(holder.character.context).load(it).circleCrop()
-                .into(holder.character)
+                val rankHolder = holder as MatchHolder
+
+                rankHolder.gameRank.text = item.gameRank.toString()
+                rankHolder.teamMode.text = item.teamMode.toString()
+
+                rankHolder.date.text =
+                    SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(item.date)
+
+                rankHolder.server.text = item.serverName
+                rankHolder.kills.text = item.playerKill.toString()
+                rankHolder.assistants.text = item.playerAssistant.toString()
+                rankHolder.hunter.text = item.monsterKill.toString()
+                rankHolder.mmr.text = item.mmr.toString()
+
+                item.characterImageWebLink?.let {
+                    Glide.with(rankHolder.character.context).load(it).circleCrop()
+                        .into(rankHolder.character)
+                }
+
+                item.weaponTypeImageWebLink?.let {
+                    Glide.with(rankHolder.characterWeapon.context).load(it).circleCrop()
+                        .into(rankHolder.characterWeapon)
+                }
+
+                //companyImage
+
+                if (item.equipment.item1WebLink.isNotEmpty()) {
+                    loadImage(rankHolder.item1, item.equipment.item1WebLink)
+                }
+
+                if (item.equipment.item2WebLink.isNotEmpty()) {
+                    loadImage(rankHolder.item2, item.equipment.item2WebLink)
+                }
+
+                if (item.equipment.item3WebLink.isNotEmpty()) {
+                    loadImage(rankHolder.item3, item.equipment.item3WebLink)
+                }
+
+                if (item.equipment.item4WebLink.isNotEmpty()) {
+                    loadImage(rankHolder.item4, item.equipment.item4WebLink)
+                }
+
+                if (item.equipment.item5WebLink.isNotEmpty()) {
+                    loadImage(rankHolder.item5, item.equipment.item5WebLink)
+                }
+
+                if (item.equipment.item6WebLink.isNotEmpty()) {
+                    loadImage(rankHolder.item6, item.equipment.item6WebLink)
+                }
+
+            }
         }
-
-        item.weaponTypeImageWebLink?.let{
-            Glide.with(holder.characterWeapon.context).load(it).circleCrop()
-                .into(holder.characterWeapon)
-        }
-
-        //companyImage
-
-        if (item.equipment.item1WebLink.isNotEmpty()) {
-            Glide.with(holder.item1.context).load(item.equipment.item1WebLink)
-                .into(holder.item1)
-        }
-
-        if (item.equipment.item2WebLink.isNotEmpty()) {
-            Glide.with(holder.item2.context).load(item.equipment.item2WebLink)
-                .into(holder.item2)
-        }
-
-        if (item.equipment.item3WebLink.isNotEmpty()) {
-            Glide.with(holder.item3.context).load(item.equipment.item3WebLink)
-                .into(holder.item3)
-
-        }
-
-        if (item.equipment.item4WebLink.isNotEmpty()) {
-            Glide.with(holder.item4.context).load(item.equipment.item4WebLink)
-                .into(holder.item4)
-        }
-
-        if (item.equipment.item5WebLink.isNotEmpty()) {
-            Glide.with(holder.item5.context).load(item.equipment.item5WebLink)
-                .into(holder.item5)
-        }
-
-        if (item.equipment.item6WebLink.isNotEmpty()) {
-            Glide.with(holder.item6.context).load(item.equipment.item6WebLink)
-                .into(holder.item6)
-        }
-
     }
 
-    class DataHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private fun loadImage(view: ImageView,webLink: String){
+        Glide.with(view.context).load(webLink)
+            .placeholder(R.drawable.loading_image)
+            .error(R.drawable.loading_image)
+            .into(view)
+    }
+
+    class MatchHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val gameRank: TextView = itemView.findViewById(R.id.game_rank)
         val teamMode: TextView = itemView.findViewById(R.id.team_mode)
@@ -109,5 +151,7 @@ class MatchesAdapter(
         val item5: ImageView = itemView.findViewById(R.id.item5)
         val item6: ImageView = itemView.findViewById(R.id.item6)
     }
+
+    class LoadingHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 }

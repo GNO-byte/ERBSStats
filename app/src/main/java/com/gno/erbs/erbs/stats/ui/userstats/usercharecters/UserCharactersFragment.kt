@@ -34,6 +34,7 @@ class UserCharactersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
        activity?.let{thisActivity ->
+           charactersAdapter.addLoading()
            viewModel =
                ViewModelProvider(thisActivity.supportFragmentManager.fragments.first().childFragmentManager.fragments[0]).get(
                    UserStatsViewModel::class.java

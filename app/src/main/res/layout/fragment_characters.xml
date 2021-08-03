@@ -60,6 +60,7 @@ tools:context=".ui.userstats.UserStatsFragment">
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="5"
+            android:layout_margin="8dp"
             tools:context=".ui.guide.characters.CharactersFragment"
             tools:listitem="@layout/item_character" />
 

@@ -21,11 +21,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:textAppearance="@style/Theme.ERBSStats.MiddleTextAppearance"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/type"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:textAppearance="@style/Theme.ERBSStats.MiddleTextAppearance"
             tools:text="@tools:sample/first_names" />
 
         <TextView
@@ -34,10 +34,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:gravity="end"
+            android:textAppearance="@style/Theme.ERBSStats.MiddleTextAppearance"
             app:layout_constraintBottom_toBottomOf="@+id/name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/name"
-            android:textAppearance="@style/Theme.ERBSStats.MiddleTextAppearance"
             tools:text="@tools:sample/lorem" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -36,6 +36,9 @@ class BackgroundFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        binding.background.visibility= View.GONE
+        binding.loading.visibility= View.VISIBLE
+
         activity?.let { thisActivity ->
             viewModel =
                 ViewModelProvider(thisActivity.supportFragmentManager.fragments.first()
@@ -46,6 +49,10 @@ class BackgroundFragment : Fragment() {
 
         viewModel.coreCharacterLiveData.observe(viewLifecycleOwner) {
             binding.background.text = it?.background ?:""
+
+            binding.loading.visibility= View.GONE
+            binding.background.visibility= View.VISIBLE
+
         }
     }
 }

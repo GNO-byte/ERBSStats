@@ -5,46 +5,72 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.FoundObject
-import com.gno.erbs.erbs.stats.model.MenuObject
 
 class SearchAdapter(
     private val cellClickListener: (FoundObject) -> Unit
-) : ListAdapter<FoundObject, SearchAdapter.ViewHolder>(SearchDiffUtilCallback()) {
+) : ListAdapter<FoundObject, RecyclerView.ViewHolder>(SearchDiffUtilCallback()) {
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_found_object, parent, false)
-        return ViewHolder(view)
+    companion object {
+        private const val TYPE_LOADING = 1
+        private const val TYPE_FOUND_OBJECT = 2
     }
 
+    override fun getItemViewType(position: Int): Int {
+        val item = getItem(position)
+        return when (item == null) {
+            true -> TYPE_LOADING
+            false -> TYPE_FOUND_OBJECT
+        }
+    }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            TYPE_LOADING -> LoadingHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.loading_item_found_object, parent, false)
+            )
+            TYPE_FOUND_OBJECT -> FoundObjectHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_found_object, parent, false)
+            )
+            else -> throw RuntimeException("Type does not fit")
+        }
+    }
+
+    fun addLoading(){
+        val currentList = currentList.toMutableList()
+        currentList.add(null)
+        currentList.add(null)
+        currentList.add(null)
+        submitList(currentList)
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
 
-        holder.name.text = item.name
-        holder.type.text = item.type.title
-
-        holder.cardView.setOnClickListener {
-            cellClickListener.invoke(item)
+        when (holder.itemViewType) {
+            TYPE_FOUND_OBJECT -> {
+                val foundObjectHolder = holder as FoundObjectHolder
+                foundObjectHolder.name.text = item.name
+                foundObjectHolder.type.text = item.type.title
+                foundObjectHolder.cardView.setOnClickListener {
+                    cellClickListener.invoke(item)
+                }
+            }
         }
-
-
     }
 
-
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val cardView: CardView = view.findViewById(R.id.cardview)
-        val name: TextView = view.findViewById(R.id.name)
-        val type: TextView = view.findViewById(R.id.type)
-
-
+    class FoundObjectHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val cardView: CardView = itemView.findViewById(R.id.cardview)
+        val name: TextView = itemView.findViewById(R.id.name)
+        val type: TextView = itemView.findViewById(R.id.type)
     }
 
+    class LoadingHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 }

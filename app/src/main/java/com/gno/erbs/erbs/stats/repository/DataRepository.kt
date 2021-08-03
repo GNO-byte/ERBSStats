@@ -6,13 +6,12 @@ import com.gno.erbs.erbs.stats.model.TeamMode
 import com.gno.erbs.erbs.stats.model.aesop.item.Item
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreCharacter
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreSkill
+import com.gno.erbs.erbs.stats.model.erbs.Response
 import com.gno.erbs.erbs.stats.model.erbs.characters.Character
 import com.gno.erbs.erbs.stats.model.erbs.characters.CharacterLevelUpStat
 import com.gno.erbs.erbs.stats.model.erbs.characters.WeaponType
 import com.gno.erbs.erbs.stats.model.erbs.matches.UserGame
-import com.gno.erbs.erbs.stats.model.erbs.matches.item.armor.ItemArmor
-import com.gno.erbs.erbs.stats.model.erbs.matches.item.special.ItemSpecial
-import com.gno.erbs.erbs.stats.model.erbs.matches.item.weapon.ItemWeapon
+import com.gno.erbs.erbs.stats.model.erbs.matches.item.SearchItem
 import com.gno.erbs.erbs.stats.model.erbs.nickname.User
 import com.gno.erbs.erbs.stats.model.erbs.rank.Rank
 import com.gno.erbs.erbs.stats.model.erbs.userstats.CharacterStat
@@ -22,6 +21,8 @@ import com.gno.erbs.erbs.stats.repository.drive.DriveService
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.reflect.KMutableProperty
+import kotlin.reflect.KProperty
 
 object DataRepository {
 
@@ -42,21 +43,33 @@ object DataRepository {
     }
 
     fun setDefaultValues(context: Context) {
-        DefaultValue
+        defaultValue
             .setDefaultValues(context)
     }
 
     fun getDefaultMatchingTeamMode(context: Context): String {
-        return DefaultValue
+        return defaultValue
             .getMatchingTeamMode(context)
+    }
+
+    fun setDefaultMatchingTeamMode(context: Context, value: String) {
+        defaultValue.setMatchingTeamMode(context, value)
     }
 
     fun getDefaultSeasonId(context: Context): String {
         return defaultValue.getSeasonId(context)
     }
 
+    fun setDefaultSeasonId(context: Context, value: String) {
+        defaultValue.setSeasonId(context, value)
+    }
+
     fun getDefaultUserNumber(context: Context): String {
         return defaultValue.getUserNumber(context)
+    }
+
+    fun setDefaultUserNumber(context: Context, value: String) {
+        defaultValue.setUserNumber(context, value)
     }
 
     suspend fun getItem(itemId: Int): Item {
@@ -66,26 +79,9 @@ object DataRepository {
     suspend fun getCharacters(withIconWebLink: Boolean = false): List<Character> {
 
         val characters = erbsService?.getCharacters()?.result ?: listOf()
-        if (withIconWebLink) addIconWebLink(characters)
+        if (withIconWebLink) addIconWebLink(characters, "iconWebLink", "name")
         return characters
 
-    }
-
-    private fun addIconWebLink(characterList: List<Character>) {
-
-        var names = mutableListOf<String>()
-
-        characterList.forEach {
-            names.add(it.name)
-        }
-        val files =
-            DriveService.getCharacterImageFiles(CharacterImageType.MINI, *names.toTypedArray())
-
-        characterList.forEach { character ->
-            character.iconWebLink = files.find { file ->
-                file.name.contains(character.name, ignoreCase = true)
-            }?.webContentLink
-        }
     }
 
     suspend fun getUserStats(
@@ -125,20 +121,22 @@ object DataRepository {
 
     private fun addTopCharacterImage(userStats: List<UserStats>) {
 
-        val characterHalfFiles = driveService?.getCharacterHalfFiles()
-        userStats.forEach { userStat ->
-            val topCharacterName = userStat.characterStats.maxByOrNull { it.usages }?.characterName
+        driveService?.let { thisDriveService ->
+            userStats.forEach { userStat ->
+                val topCharacterName =
+                    userStat.characterStats.maxByOrNull {
+                        it.usages ?: 0 }?.characterName
 
-            topCharacterName?.let { characterName ->
-                userStat.topCharacterHalfImageWebLink = characterHalfFiles?.first { driveFile ->
-                    driveService?.compareNames(
-                        driveFile.name,
+                topCharacterName?.let { characterName ->
+                    userStat.topCharacterHalfImageWebLink = thisDriveService.getCharacterImageFiles(
+                        CharacterImageType.HALF,
                         characterName
-                    ) ?: false
-                }?.webContentLink
-            }
+                    )?.webLink
+                }
 
+            }
         }
+
     }
 
     private fun addRankTierImage(userStats: List<UserStats>) {
@@ -172,7 +170,7 @@ object DataRepository {
         searchTierRankImageMap.forEach { mapEntry ->
             searchTierRankImageMap[mapEntry.key] = files.first { driveFile ->
                 driveService?.compareNames(driveFile.name, mapEntry.key) ?: false
-            }.webContentLink
+            }.webLink
 
         }
 
@@ -199,51 +197,60 @@ object DataRepository {
     fun getUserCharactersStats(userStats: List<UserStats>): List<CharacterStat> {
         val charactersStats: MutableList<CharacterStat> = arrayListOf()
         userStats.forEach {
+            charactersStats.add(
+                CharacterStat(
+                    isHead = true,
+                    headName = TeamMode.findByValue(it.matchingTeamMode).title
+                )
+            )
             charactersStats.addAll(it.characterStats)
         }
-        addImageCharacterStats(charactersStats)
+        //addImageCharacterStats(charactersStats)
+        addIconWebLink(charactersStats, "WebLinkImage", "characterName")
         return charactersStats
     }
 
-    private fun addImageCharacterStats(characterStats: MutableList<CharacterStat>) {
-
-        val characterSearchMap = mutableMapOf<String, String?>()
-
-        characterStats.forEach { characterStats ->
-            characterStats.characterName?.let {
-                characterSearchMap += it to null
-            }
-        }
-
-        val files = DriveService.getCharacterImageFiles(
-            CharacterImageType.MINI,
-            *characterSearchMap.keys.toTypedArray()
-        )
-
-        characterSearchMap.forEach { map ->
-            characterSearchMap[map.key] = files.first { driveFile ->
-                driveService?.compareNames(driveFile.name, map.key) ?: false
-            }.webContentLink
-        }
-
-        characterStats.forEach { characterStats ->
-            characterStats.WebLinkImage = characterSearchMap[characterStats.characterName]
-        }
-    }
+//    private fun addImageCharacterStats(characterStats: MutableList<CharacterStat>) {
+//
+//        val characterSearchMap = mutableMapOf<String, String?>()
+//
+//        characterStats.forEach { characterStats ->
+//            characterStats.characterName?.let {
+//                characterSearchMap += it to null
+//            }
+//        }
+//
+//        val files = DriveService.getCharacterImageFiles(
+//            CharacterImageType.MINI,
+//            *characterSearchMap.keys.toTypedArray()
+//        )
+//
+//        characterSearchMap.forEach { map ->
+//            characterSearchMap[map.key] = files.first { driveFile ->
+//                driveService?.compareNames(driveFile.name, map.key) ?: false
+//            }.webContentLink
+//        }
+//
+//        characterStats.forEach { characterStats ->
+//            characterStats.WebLinkImage = characterSearchMap[characterStats.characterName]
+//        }
+//    }
 
     suspend fun getUserGames(
         userNumber: String,
-        userStats: List<UserStats>,
-    ): List<UserGame> {
+        mmr: Int,
+        nextPage: String
+    ): Response<List<UserGame>>? {
 
-        val userGames = erbsService?.getUserGamesResponse(userNumber)?.result ?: listOf()
-        addAdditionalParamUserGames(userGames, userStats[0].mmr)
+        val response = erbsService?.getUserGamesResponse(userNumber,nextPage)
+        val userGames =response?.result ?: listOf()
+        addAdditionalParamUserGames(userGames, mmr)
 
         addCharacterWebLink(userGames)
         addItemWeaponTypeWebLink(userGames)
         addItemWebLink(userGames)
 
-        return userGames.toList()
+        return response
     }
 
 
@@ -289,7 +296,7 @@ object DataRepository {
                 try {
                     userGame.weaponTypeImageWebLink = itemWeaponImage?.first { driveFile ->
                         driveService?.compareNames(driveFile.name, findType) ?: false
-                    }?.webContentLink
+                    }?.webLink
                 } catch (e: Exception) {
                     Timber.e(e)
                 }
@@ -312,9 +319,13 @@ object DataRepository {
             equipmentLinks += userGame.equipment.item6Id to null
         }
 
-        fillItemsWeapon(equipmentLinks)
-        fillItemsArmor(equipmentLinks)
-        fillItemsSpecial(equipmentLinks)
+        val itemImage = driveService?.getItemImage()
+
+        itemImage?.let {
+            fillItemsImage(equipmentLinks, it, erbsService?.getItemsWeapon()?.result)
+            fillItemsImage(equipmentLinks, it, erbsService?.getItemsArmor()?.result)
+            fillItemsImage(equipmentLinks, it, erbsService?.getItemsSpecial()?.result)
+        }
 
         userGames.forEach { userGame ->
             userGame.equipment.item1WebLink = equipmentLinks[userGame.equipment.item1Id] ?: ""
@@ -328,185 +339,218 @@ object DataRepository {
 
     }
 
-    private suspend fun fillItemsWeapon(equipmentLinks: MutableMap<Int, String?>) {
+    private fun fillItemsImage(
+        equipmentLinks: MutableMap<Int, String?>,
+        itemsImages: List<FoundItem>,
+        items: List<SearchItem>?
+    ) {
 
-        val itemsWeapon = erbsService?.getItemsWeapon()?.result
-        val foundItems = mutableListOf<ItemWeapon>()
+        val foundItems = mutableListOf<SearchItem?>()
 
         equipmentLinks.forEach { equipmentLink ->
-            try {
-                itemsWeapon?.let { thisItemsWeapon ->
-                    foundItems.add(thisItemsWeapon.first { itemWeapon -> itemWeapon.code == equipmentLink.key })
-
-                }
-            } catch (e: Exception) {
-                Timber.e(e)
+            items.let { thisItem ->
+                foundItems.add(thisItem?.find {
+                    it.code == equipmentLink.key
+                })
             }
         }
 
-        val foundItemsType = foundItems.map {
-            it.weaponType
-        }.toSet().filterNotNull()
 
-        foundItemsType.forEach { foundItemType ->
-            var driveIdWeapon: String? = null
-            try {
-                driveIdWeapon = driveService?.imagesLinkStructure?.weapon?.first { weapon ->
-                    weapon.weaponType == foundItemType
-                }?.id
+        foundItems.filterNotNull().forEach { foundItem ->
 
-            } catch (e: java.lang.Exception) {
-                Timber.e(e)
-            }
+            val foundItemName = foundItem.name ?: ""
+            val foundItemCode = foundItem.code ?: 0
 
-            driveIdWeapon?.let { id ->
-                val folderfiles = driveService?.getFolderFiles(id)
-                val foundItemsWithType = foundItems.filter { foundItem ->
-                    foundItem.weaponType == foundItemType
-                }
-
-                foundItemsWithType.forEach { foundItemWithType ->
-                    foundItemWithType.name?.let { nameItem ->
-                        foundItemWithType.code?.let { code ->
-                            try {
-                                val v = foundItemType
-                                val v2 = driveIdWeapon
-                                val findDriveFile = folderfiles?.first { driveFile ->
-                                    driveFile.name.contains(nameItem, ignoreCase = true)
-                                }
-                                equipmentLinks += code to findDriveFile?.webContentLink
-                                val v3 = equipmentLinks
-                            } catch (e: Exception) {
-                                Timber.e(e)
-                            }
-
-                        }
-
+            if (foundItemName != "" && foundItemCode != 0) {
+                driveService?.let { thisDriveService ->
+                    val findDriveFile = itemsImages.find { foundImage ->
+                        thisDriveService.compareNames(foundImage.name, foundItemName)
                     }
+                    equipmentLinks += foundItemCode to findDriveFile?.webLink
                 }
-
             }
         }
+
+/* deprecate
+//        val foundItemsType = foundItems.map {
+//            it?.weaponType
+//        }.toSet().filterNotNull()
+
+//        foundItemsType.forEach { foundItemType ->
+//            var driveIdWeapon: String? = null
+//            try {
+//                driveIdWeapon = driveService?.imagesLinkStructure?.weapon?.found { weapon ->
+//                    weapon.weaponType == foundItemType
+//                }?.id
+//
+//            } catch (e: java.lang.Exception) {
+//                Timber.e(e)
+//            }
+
+//            driveIdWeapon?.let { id ->
+//                val folderfiles = driveService?.getFolderFiles(id)
+//                val foundItemsWithType = foundItems.filter { foundItem ->
+//                    foundItem.weaponType == foundItemType
+//                }
+//
+//                foundItemsWithType.forEach { foundItemWithType ->
+//                    foundItemWithType.name?.let { nameItem ->
+//                        foundItemWithType.code?.let { code ->
+//                            try {
+//                                val findDriveFile = folderfiles?.first { driveFile ->
+//                                    driveFile.name.contains(nameItem, ignoreCase = true)
+//                                }
+//                                equipmentLinks += code to findDriveFile?.webContentLink
+//                                val v3 = equipmentLinks
+//                            } catch (e: Exception) {
+//                                Timber.e(e)
+//                            }
+//
+//                        }
+//
+//                    }
+//                }
+//
+//            }
+//        }*/
 
     }
 
-    private suspend fun fillItemsArmor(equipmentLinks: MutableMap<Int, String?>) {
-
-        val itemsArmor = erbsService?.getItemsArmor()?.result //TODO
-        val foundItems = mutableListOf<ItemArmor>() //TODO
-
-        equipmentLinks.forEach { equipmentLink ->
-            try {
-                itemsArmor?.let { thisItemArmor ->
-                    foundItems.add(thisItemArmor.first { itemsArmor -> itemsArmor.code == equipmentLink.key }) //TODO
-
-                }
-            } catch (e: Exception) {
-                Timber.e(e)
-            }
-        }
-
-        val foundItemsType = foundItems.map {
-            it.armorType   //TODO
-        }.toSet().filterNotNull()
-
-        foundItemsType.forEach { foundItemType ->
-            var driveIdArmor: String? = null
-            try {
-                driveIdArmor = driveService?.imagesLinkStructure?.armor?.first { armor -> //TODO
-                    armor.armorType == foundItemType //TODO
-                }?.id
-
-            } catch (e: java.lang.Exception) {
-                Timber.e(e)
-            }
-
-            driveIdArmor?.let { id ->
-                val folderfiles = driveService?.getFolderFiles(id)
-                val foundItemsWithType = foundItems.filter { foundItem ->
-                    foundItem.armorType == foundItemType //TODO
-                }
-
-                foundItemsWithType.forEach { foundItemWithType ->
-                    foundItemWithType.name?.let { nameItem ->
-                        foundItemWithType.code?.let { code ->
-                            try {
-                                val v = foundItemType
-                                val v2 = driveIdArmor
-                                val findDriveFile = folderfiles?.first { driveFile ->
-                                    driveFile.name.contains(nameItem, true)
-                                            || driveFile.name.replace(" ", "")
-                                        .contains(nameItem.replace(" ", ""), true)
-                                }
-                                equipmentLinks += code to findDriveFile?.webContentLink
-                                val v3 = equipmentLinks
-                            } catch (e: Exception) {
-                                Timber.e(e)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private suspend fun fillItemsSpecial(equipmentLinks: MutableMap<Int, String?>) {
-
-        val itemsSpecial = erbsService?.getItemsSpecial()?.result //TODO
-        val foundItems = mutableListOf<ItemSpecial>() //TODO
-
-        equipmentLinks.forEach { equipmentLink ->
-            try {
-                itemsSpecial?.let { thisItemSpecial ->
-                    foundItems.add(thisItemSpecial.first { itemsSpecial -> itemsSpecial.code == equipmentLink.key }) //TODO
-                }
-            } catch (e: Exception) {
-                Timber.e(e)
-            }
-        }
-
-        val foundItemsGrade = foundItems.map {//TODO
-            it.itemGrade   //TODO//TODO
-        }.toSet().filterNotNull()
-
-        foundItemsGrade.forEach { foundItemGrade ->//TODO
-            var driveIdSpecial: String? = null//TODO
-            try {
-                driveIdSpecial =
-                    driveService?.imagesLinkStructure?.special?.first { special -> //TODO
-                        special.itemGrade == foundItemGrade //TODO
-                    }?.id
-
-            } catch (e: java.lang.Exception) {
-                Timber.e(e)
-            }
-
-            driveIdSpecial?.let { id ->//TODO
-                val folderfiles = driveService?.getFolderFiles(id)
-                val foundItemsWithType = foundItems.filter { foundItem ->
-                    foundItem.itemGrade == foundItemGrade //TODO
-                }
-
-                foundItemsWithType.forEach { foundItemWithType ->
-                    foundItemWithType.name?.let { nameItem ->
-                        foundItemWithType.code?.let { code ->
-                            try {
-                                val v = foundItemGrade
-                                val v2 = driveIdSpecial
-                                val findDriveFile = folderfiles?.first { driveFile ->
-                                    driveFile.name.contains(nameItem, ignoreCase = true)
-                                }
-                                equipmentLinks += code to findDriveFile?.webContentLink
-                                val v3 = equipmentLinks
-                            } catch (e: Exception) {
-                                Timber.e(e)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+/* deprecate
+//    private suspend fun fillItemsArmor(
+//        equipmentLinks: MutableMap<Int, String?>,
+//        itemsImages: List<FoundItem>
+//    ) {
+//
+//        val itemsArmor = erbsService?.getItemsArmor()?.result
+//        val foundItems = mutableListOf<ItemArmor?>()
+//
+//        equipmentLinks.forEach { equipmentLink ->
+//            itemsArmor?.let { thisItemArmor ->
+//                foundItems.add(thisItemArmor.find { itemsArmor -> itemsArmor.code == equipmentLink.key })
+//
+//            }
+//        }
+//
+//        foundItems.filterNotNull()
+//
+//        foundItems.forEach { foundItem ->
+//            if (foundItem?.name != null && foundItem.code != null) {
+//                driveService?.let { thisDriveService ->
+//                    val findDriveFile = itemsImages.find {
+//                        thisDriveService.compareNames(it.name, foundItem.name)
+//                    }
+//                    equipmentLinks += foundItem.code to findDriveFile?.webLink
+//                }
+//
+//            }
+//        }
+//
+//        val foundItemsType = foundItems.map {
+//            it.armorType
+//        }.toSet().filterNotNull()
+//
+//        foundItemsType.forEach { foundItemType ->
+//            var driveIdArmor: String? = null
+//            try {
+//                driveIdArmor = driveService?.imagesLinkStructure?.armor?.first { armor ->
+//                    armor.armorType == foundItemType
+//                }?.id
+//
+//            } catch (e: java.lang.Exception) {
+//                Timber.e(e)
+//            }
+//
+//            driveIdArmor?.let { id ->
+//                val folderfiles = driveService?.getFolderFiles(id)
+//                val foundItemsWithType = foundItems.filter { foundItem ->
+//                    foundItem.armorType == foundItemType
+//                }
+//
+//                foundItemsWithType.forEach { foundItemWithType ->
+//                    foundItemWithType.name?.let { nameItem ->
+//                        foundItemWithType.code?.let { code ->
+//                            try {
+//                                val v = foundItemType
+//                                val v2 = driveIdArmor
+//                                val findDriveFile = folderfiles?.first { driveFile ->
+//                                    driveFile.name.contains(nameItem, true)
+//                                            || driveFile.name.replace(" ", "")
+//                                        .contains(nameItem.replace(" ", ""), true)
+//                                }
+//                                equipmentLinks += code to findDriveFile?.webContentLink
+//                                val v3 = equipmentLinks
+//                            } catch (e: Exception) {
+//                                Timber.e(e)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//
+//    }
+//
+//    private suspend fun fillItemsSpecial(
+//        equipmentLinks: MutableMap<Int, String?>,
+//        itemImage: List<FoundItem>?
+//    ) {
+//
+//        val itemsSpecial = erbsService?.getItemsSpecial()?.result
+//        val foundItems = mutableListOf<ItemSpecial>()
+//
+//        equipmentLinks.forEach { equipmentLink ->
+//            try {
+//                itemsSpecial?.let { thisItemSpecial ->
+//                    foundItems.add(thisItemSpecial.first { itemsSpecial -> itemsSpecial.code == equipmentLink.key })
+//                }
+//            } catch (e: Exception) {
+//                Timber.e(e)
+//            }
+//        }
+//
+//        val foundItemsGrade = foundItems.map {
+//            it.itemGrade
+//        }.toSet().filterNotNull()
+//
+//        foundItemsGrade.forEach { foundItemGrade ->
+//            var driveIdSpecial: String? = null
+//            try {
+//                driveIdSpecial =
+//                    driveService?.imagesLinkStructure?.special?.first { special ->
+//                        special.itemGrade == foundItemGrade
+//                    }?.id
+//
+//            } catch (e: java.lang.Exception) {
+//                Timber.e(e)
+//            }
+//
+//            driveIdSpecial?.let { id ->
+//                val folderfiles = driveService?.getFolderFiles(id)
+//                val foundItemsWithType = foundItems.filter { foundItem ->
+//                    foundItem.itemGrade == foundItemGrade
+//                }
+//
+//                foundItemsWithType.forEach { foundItemWithType ->
+//                    foundItemWithType.name?.let { nameItem ->
+//                        foundItemWithType.code?.let { code ->
+//                            try {
+//                                val v = foundItemGrade
+//                                val v2 = driveIdSpecial
+//                                val findDriveFile = folderfiles?.first { driveFile ->
+//                                    driveFile.name.contains(nameItem, ignoreCase = true)
+//                                }
+//                                equipmentLinks += code to findDriveFile?.webContentLink
+//                                val v3 = equipmentLinks
+//                            } catch (e: Exception) {
+//                                Timber.e(e)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+*/
 
     private fun addAdditionalParamUserGames(userGames: List<UserGame>, lastMmr: Int) {
 
@@ -550,7 +594,7 @@ object DataRepository {
                 try {
                     weaponType.weaponTypeImageWebLink = weaponTypeFiles?.first { driveFile ->
                         driveService?.compareNames(driveFile.name, mastery) ?: false
-                    }?.webContentLink
+                    }?.webLink
                 } catch (e: java.lang.Exception) {
                     Timber.e(e)
                 }
@@ -603,7 +647,7 @@ object DataRepository {
         searchTierRankImageMap.forEach { mapEntry ->
             searchTierRankImageMap[mapEntry.key] = files.first { driveFile ->
                 driveService?.compareNames(driveFile.name, mapEntry.key) ?: false
-            }.webContentLink
+            }.webLink
 
         }
 
@@ -627,14 +671,14 @@ object DataRepository {
     }
 
     fun addCharacterHalfWebLink(characterStats: CharacterStats) {
-
-        val characterHalfFiles = driveService?.getCharacterHalfFiles()
-        characterStats.characterImageHalfWebLink = characterHalfFiles?.first { driveFile ->
-            driveService?.compareNames(
-                driveFile.name,
+        characterStats.name
+        driveService?.let { thisDriveService ->
+            characterStats.characterImageHalfWebLink = thisDriveService.getCharacterImageFiles(
+                CharacterImageType.HALF,
                 characterStats.name
-            ) ?: false
-        }?.webContentLink
+            )?.webLink
+        }
+
 
     }
 
@@ -660,12 +704,12 @@ object DataRepository {
 
             coreSkills.forEach { coreSkill ->
                 coreSkill.key?.let { key ->
-                    coreSkill.image = imageWebLinks?.find { driveFile ->
+                    coreSkill.image = imageWebLinks.find { driveFile ->
                         thisDriveService.compareNames(
                             driveFile.name,
                             key
                         )
-                    }?.webContentLink
+                    }?.webLink
                 }
             }
         }
@@ -686,14 +730,56 @@ object DataRepository {
 
         var foundUsers = mutableListOf<User>()
 
-        try{
+        try {
             erbsService?.getUserResponse(searchString)?.result?.let { foundUsers.add(it) }
-        } catch (e: Exception){
+        } catch (e: Exception) {
 
         }
 
         return foundUsers
 
+    }
+
+
+    /////
+
+
+    private fun <T : Any> addIconWebLink(
+        items: List<T>,
+        namePropertyImageLink: String,
+        namePropertyName: String
+    ) {
+        driveService?.let { thisDriveService ->
+            val miniImageItems = thisDriveService.getCharacterImageMiniLink()
+            items.forEach { item ->
+
+                val foundName = getInstanceProperty<String?>(item, namePropertyName)
+
+                foundName?.let{ thisFoundName ->
+                    val link = miniImageItems.find {
+                        thisDriveService.compareNames(
+                            it.name,
+                            thisFoundName
+                        )
+                    }?.webLink
+                    setInstanceProperty(item, namePropertyImageLink, link)
+
+                }
+
+            }
+        }
+    }
+
+    fun <R> getInstanceProperty(instance: Any, propertyName: String): R {
+        val property = instance::class.members.first { it.name == propertyName } as KProperty<*>
+        return property.getter.call(instance) as R
+    }
+
+    fun <R> setInstanceProperty(instance: Any, propertyName: String, value: R) {
+        val property = instance::class.members.first { it.name == propertyName }
+        if (property is KMutableProperty<*>) {
+            property.setter.call(instance, value)
+        }
     }
 
 }

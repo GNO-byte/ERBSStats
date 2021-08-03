@@ -34,6 +34,24 @@
                 android:contentDescription="character image"
                 tools:src="@tools:sample/avatars"/>
 
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/loading_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                app:shimmer_auto_start="true"
+                app:shimmer_colored="false"
+                android:visibility="gone">
+
+                <View
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_margin="8dp"
+                    android:layout_width="100dp"
+                    android:layout_height="154dp" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -53,7 +71,21 @@
                     tools:text="Character 1"
                     android:textAppearance="@style/Theme.ERBSStats.TitleTextAppearance" />
 
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/loading_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:shimmer_auto_start="true"
+                    app:shimmer_colored="false"
+                    android:visibility="gone">
 
+                    <View
+                        style="@style/Theme.ERBSStats.Loading"
+                        android:layout_width="150dp"
+                        android:layout_margin="8dp"
+                        android:layout_height="32sp"/>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
             </androidx.appcompat.widget.Toolbar>
 
             <LinearLayout

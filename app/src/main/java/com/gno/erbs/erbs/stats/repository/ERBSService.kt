@@ -55,7 +55,8 @@ interface ERBSService {
 
     @GET("v1/user/games/{userNum}")
     suspend fun getUserGamesResponse(
-        @Path("userNum") userNumber: String
+        @Path("userNum") userNumber: String,
+        @Query("next") nextPage: String
     ): Response<List<UserGame>>
 
     @GET("/v1/games/{gameId}")

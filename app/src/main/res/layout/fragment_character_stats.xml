@@ -1,9 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/overview"
     android:orientation="vertical"
     tools:context=".ui.guide.characterdetail.characterstats.CharacterStatsFragment">
+
+    <LinearLayout
+        android:id="@+id/overview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:shimmer_auto_start="true"
+        app:shimmer_colored="false">
+
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableRow>
+
+                <View
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="30dp"
+                    android:layout_height="24sp"
+                    android:layout_margin="8dp"
+                    android:layout_weight="2" />
+
+                <View
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="15dp"
+                    android:layout_height="24sp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1" />
+
+                <View
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="15dp"
+                    android:layout_height="24sp"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1" />
+
+
+            </TableRow>
+
+            <TableRow>
+
+                <View
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="30dp"
+                    android:layout_height="24sp"
+                    android:layout_margin="8dp"
+                    android:layout_weight="2" />
+
+                <View
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="15dp"
+                    android:layout_height="24sp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1" />
+
+                <View
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="15dp"
+                    android:layout_height="24sp"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1" />
+
+            </TableRow>
+
+            <TableRow>
+
+                <View
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="30dp"
+                    android:layout_height="24sp"
+                    android:layout_margin="8dp"
+                    android:layout_weight="2" />
+
+                <View
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="15dp"
+                    android:layout_height="24sp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1" />
+
+                <View
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="15dp"
+                    android:layout_height="24sp"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1" />
+
+            </TableRow>
+
+            <TableRow>
+
+                <View
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="30dp"
+                    android:layout_height="24sp"
+                    android:layout_margin="8dp"
+                    android:layout_weight="2" />
+
+                <View
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="15dp"
+                    android:layout_height="24sp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1" />
+
+                <View
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="15dp"
+                    android:layout_height="24sp"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1" />
+
+            </TableRow>
+
+
+            <TableRow>
+
+                <View
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="30dp"
+                    android:layout_height="24sp"
+                    android:layout_margin="8dp"
+                    android:layout_weight="2" />
+
+                <View
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="15dp"
+                    android:layout_height="24sp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1" />
+
+                <View
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="15dp"
+                    android:layout_height="24sp"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1" />
+
+            </TableRow>
+
+        </TableLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
 </LinearLayout>

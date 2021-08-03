@@ -35,6 +35,9 @@ class CharacterStatsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        binding.overview.visibility = View.GONE
+        binding.loading.visibility = View.VISIBLE
+
         activity?.let { thisActivity ->
             viewModel =
                 ViewModelProvider(thisActivity.supportFragmentManager.fragments.first()
@@ -144,6 +147,9 @@ class CharacterStatsFragment : Fragment() {
                 characterStats.radius,
                 null
             )
+
+            binding.loading.visibility = View.GONE
+            binding.overview.visibility = View.VISIBLE
 
         }
     }

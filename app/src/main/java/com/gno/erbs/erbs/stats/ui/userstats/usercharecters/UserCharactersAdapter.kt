@@ -11,7 +11,15 @@ import com.bumptech.glide.Glide
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.userstats.CharacterStat
 
-class UserCharactersAdapter : ListAdapter<CharacterStat, UserCharactersAdapter.DataHolder>(UserCharactersDiffUtilCallback()) {
+
+class UserCharactersAdapter :
+    ListAdapter<CharacterStat, RecyclerView.ViewHolder>(UserCharactersDiffUtilCallback()) {
+
+    companion object {
+        private const val TYPE_LOADING = 1
+        private const val TYPE_HEAD = 2
+        private const val TYPE_CHARACTER = 3
+    }
 
     override fun getItemCount(): Int {
         return when (val count = super.getItemCount()) {
@@ -20,30 +28,74 @@ class UserCharactersAdapter : ListAdapter<CharacterStat, UserCharactersAdapter.D
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataHolder {
-        return DataHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_user_character, parent, false)
-        )
+
+    override fun getItemViewType(position: Int): Int {
+        val item = getItem(position)
+        return when (item == null) {
+            true -> TYPE_LOADING
+            false -> when (item.isHead) {
+                true -> TYPE_HEAD
+                false -> TYPE_CHARACTER
+            }
+        }
     }
 
-    override fun onBindViewHolder(holder: DataHolder, position: Int) {
+    fun addLoading() {
+        val currentList = currentList.toMutableList()
+        currentList.add(null)
+        currentList.add(null)
+        currentList.add(null)
+        submitList(currentList)
+    }
+
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            TYPE_LOADING -> LoadingHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.loading_item_user_character, parent, false)
+            )
+            TYPE_HEAD -> HeadHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_user_character_teammode, parent, false)
+            )
+
+            TYPE_CHARACTER -> CharacterHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_user_character, parent, false)
+            )
+            else -> throw RuntimeException("The type has to be HEAD or CHARACTER")
+        }
+
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         val item = getItem(position)
 
-        Glide.with(holder.image.context).load(item.WebLinkImage).circleCrop()
-            .into(  holder.image)
-
-        holder.name.text = item.characterName
-        holder.totalGames.text = item.totalGames.toString()
-        holder.maxKillings.text = item.maxKillings.toString()
-        holder.wins.text = item.wins.toString()
-        holder.top3.text = item.top3.toString()
-        holder.averageRank.text = item.averageRank.toString()
-
+        when (holder.itemViewType) {
+            TYPE_HEAD -> {
+                val headHolder = holder as HeadHolder
+                headHolder.name.text = item.headName
+            }
+            TYPE_CHARACTER -> {
+                val characterHolder = holder as CharacterHolder
+                Glide.with(characterHolder.image.context).load(item.WebLinkImage)
+                    .placeholder(R.drawable.loading_image)
+                    .error(R.drawable.loading_image)
+                    .circleCrop()
+                    .into(characterHolder.image)
+                characterHolder.name.text = item.characterName
+                characterHolder.totalGames.text = item.totalGames.toString()
+                characterHolder.maxKillings.text = item.maxKillings.toString()
+                characterHolder.wins.text = item.wins.toString()
+                characterHolder.top3.text = item.top3.toString()
+                characterHolder.averageRank.text = item.averageRank.toString()
+            }
+        }
     }
 
-    class DataHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class CharacterHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val image: ImageView = itemView.findViewById(R.id.image_character)
         val name: TextView = itemView.findViewById(R.id.name)
         val totalGames: TextView = itemView.findViewById(R.id.total_games)
@@ -52,5 +104,11 @@ class UserCharactersAdapter : ListAdapter<CharacterStat, UserCharactersAdapter.D
         val top3: TextView = itemView.findViewById(R.id.top3)
         val averageRank: TextView = itemView.findViewById(R.id.averageRank)
     }
+
+    class HeadHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val name: TextView = itemView.findViewById(R.id.name)
+    }
+
+    class LoadingHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 }

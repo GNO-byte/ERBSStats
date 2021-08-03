@@ -1,14 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.userstats.overview.OverviewFragment">
 
     <LinearLayout
-        android:id="@+id/overview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" />
+        android:orientation="vertical">
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:shimmer_auto_start="true"
+            app:shimmer_colored="false">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/game_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/Tier_image"
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="8dp"
+                    android:adjustViewBounds="true"
+                    app:layout_constraintBottom_toBottomOf="@+id/top_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/mmr_title" />
+
+                <View
+                    android:id="@+id/mmr_title"
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="100dp"
+                    android:layout_height="24sp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toEndOf="@+id/Tier_image"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/rank_title"
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="100dp"
+                    android:layout_height="24sp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toEndOf="@+id/Tier_image"
+                    app:layout_constraintTop_toBottomOf="@+id/mmr_title" />
+
+                <TextView
+                    android:id="@+id/top_title"
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="100dp"
+                    android:layout_height="24sp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toEndOf="@+id/Tier_image"
+                    app:layout_constraintTop_toBottomOf="@+id/rank_title" />
+
+                <LinearLayout
+                    android:id="@+id/line1"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/top_title">
+
+                    <View
+                        style="@style/Theme.ERBSStats.Loading"
+                        android:layout_width="50dp"
+                        android:layout_height="24sp"
+                        tools:text="HP" />
+
+                    <View
+                        style="@style/Theme.ERBSStats.Loading"
+                        android:layout_width="30dp"
+                        android:layout_height="24sp"
+                        android:layout_marginStart="16dp"
+                        android:gravity="center_horizontal"
+                        tools:text="55" />
+
+                    <View
+                        style="@style/Theme.ERBSStats.Loading"
+                        android:layout_width="match_parent"
+                        android:layout_height="24sp"
+                        android:layout_marginStart="16dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/line2"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/line1">
+
+                    <View
+                        style="@style/Theme.ERBSStats.Loading"
+                        android:layout_width="50dp"
+                        android:layout_height="24sp"
+                        tools:text="HP" />
+
+                    <View
+                        style="@style/Theme.ERBSStats.Loading"
+                        android:layout_width="30dp"
+                        android:layout_height="24sp"
+                        android:layout_marginStart="16dp"
+                        android:gravity="center_horizontal"
+                        tools:text="55" />
+
+                    <View
+                        style="@style/Theme.ERBSStats.Loading"
+                        android:layout_width="match_parent"
+                        android:layout_height="24sp"
+                        android:layout_marginStart="16dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/line3"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/line2">
+
+                    <View
+                        style="@style/Theme.ERBSStats.Loading"
+                        android:layout_width="50dp"
+                        android:layout_height="24sp"
+                        tools:text="HP" />
+
+                    <View
+                        style="@style/Theme.ERBSStats.Loading"
+                        android:layout_width="30dp"
+                        android:layout_height="24sp"
+                        android:layout_marginStart="16dp"
+                        android:gravity="center_horizontal"
+                        tools:text="55" />
+
+                    <View
+                        style="@style/Theme.ERBSStats.Loading"
+                        android:layout_width="match_parent"
+                        android:layout_height="24sp"
+                        android:layout_marginStart="16dp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/line4"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/line3">
+
+                    <View
+                        style="@style/Theme.ERBSStats.Loading"
+                        android:layout_width="50dp"
+                        android:layout_height="24sp"
+                        tools:text="HP" />
+
+                    <View
+                        style="@style/Theme.ERBSStats.Loading"
+                        android:layout_width="30dp"
+                        android:layout_height="24sp"
+                        android:layout_marginStart="16dp"
+                        android:gravity="center_horizontal"
+                        tools:text="55" />
+
+                    <View
+                        style="@style/Theme.ERBSStats.Loading"
+                        android:layout_width="match_parent"
+                        android:layout_height="24sp"
+                        android:layout_marginStart="16dp" />
+
+                </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <LinearLayout
+            android:id="@+id/overview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

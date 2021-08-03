@@ -1,11 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/overview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/overview"
     android:orientation="vertical"
     tools:context=".ui.guide.characterdetail.characterstats.CharacterStatsFragment">
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:shimmer_auto_start="true"
+        app:shimmer_colored="false"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
+
+            <View
+                style="@style/Theme.ERBSStats.Loading"
+                android:layout_width="match_parent"
+                android:layout_height="24sp"
+                android:layout_marginBottom="8dp" />
+
+            <View
+                style="@style/Theme.ERBSStats.Loading"
+                android:layout_width="150dp"
+                android:layout_height="24sp"
+                android:layout_marginBottom="8dp" />
+
+            <View
+                style="@style/Theme.ERBSStats.Loading"
+                android:layout_width="200dp"
+                android:layout_height="24sp"
+                android:layout_marginBottom="8dp" />
+
+            <View
+                style="@style/Theme.ERBSStats.Loading"
+                android:layout_width="match_parent"
+                android:layout_height="24sp"
+                android:layout_marginBottom="8dp" />
+
+            <View
+                style="@style/Theme.ERBSStats.Loading"
+                android:layout_width="300dp"
+                android:layout_height="24sp" />
+
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <TextView
         android:id="@+id/background"
@@ -14,3 +61,4 @@
         android:text="TextView" />
 
 </LinearLayout>
+

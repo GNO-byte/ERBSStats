@@ -48,6 +48,7 @@ class WeaponTypesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         activity?.let { thisActivity ->
+            weaponTypesAdapter.addLoading()
             viewModel =
                 ViewModelProvider(
                     thisActivity.supportFragmentManager.fragments.first()
