@@ -1,38 +1,31 @@
 package com.gno.erbs.erbs.stats.ui.guide.characters
 
+import android.content.Context
+import android.graphics.drawable.InsetDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.facebook.shimmer.Shimmer
+import com.facebook.shimmer.ShimmerDrawable
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.characters.Character
+import com.gno.erbs.erbs.stats.ui.base.BaseAdapter
+import com.google.android.material.color.MaterialColors
 
 
 class CharactersAdapter(
     private val cellClickListener: (Int) -> Unit
-) : ListAdapter<Character, RecyclerView.ViewHolder>(CharactersDiffUtilCallback()) {
+) : BaseAdapter<Character, RecyclerView.ViewHolder>(CharactersDiffUtilCallback()) {
 
     companion object {
         private const val TYPE_LOADING = 1
         private const val TYPE_CHARACTER = 2
     }
-
-//    private val shimmerDrawable: ShimmerDrawable =
-//        ShimmerDrawable().apply {
-//            val shimmer =
-//                Shimmer.AlphaHighlightBuilder()// The attributes for a ShimmerDrawable is set by this builder
-//                    .setDuration(1800) // how long the shimmering animation takes to do one full sweep
-//                    .setBaseAlpha(0.7f) //the alpha of the underlying children
-//                    .setHighlightAlpha(0.6f) // the shimmer alpha amount
-//                    .setDirection(Shimmer.Direction.LEFT_TO_RIGHT)
-//                    .setAutoStart(true)
-//                    .build()
-//
-//            setShimmer(shimmer)
-//        }
 
     fun addLoading() {
         val currentList = currentList.toMutableList()
@@ -75,34 +68,10 @@ class CharactersAdapter(
 
                 val characterHolder = holder as CharacterHolder
 
-//                var shimmerDrawable = ShimmerDrawable().apply {
-//                    val shimmer =
-//                        Shimmer.ColorHighlightBuilder()// The attributes for a ShimmerDrawable is set by this builder
-//                            .setDuration(1800) // how long the shimmering animation takes to do one full sweep
-//                            .setBaseAlpha(0.7f) //the alpha of the underlying children
-//                            .setHighlightAlpha(0.6f) // the shimmer alpha amount
-//                            .setBaseColor(
-//                                ContextCompat.getColor(
-//                                    characterHolder.image.context,
-//                                    R.color.goldenrod
-//                                )
-//                            )
-//                            .setDirection(Shimmer.Direction.LEFT_TO_RIGHT)
-//                            .setAutoStart(true)
-//                            .build()
-//
-//                    setShimmer(shimmer)
-//                }
-//
-//
-//                val requestOptions = RequestOptions()
-//                requestOptions.placeholder(shimmerDrawable)
-
 
                 Glide.with(characterHolder.image.context)
-//                    .setDefaultRequestOptions(requestOptions)
                     .load(item.iconWebLink)
-                    .placeholder(R.drawable.loading_image)
+                    .placeholder(createShimmer(characterHolder.image.context))
                     .error(R.drawable.loading_image)
                     .circleCrop()
                     .into(characterHolder.image)

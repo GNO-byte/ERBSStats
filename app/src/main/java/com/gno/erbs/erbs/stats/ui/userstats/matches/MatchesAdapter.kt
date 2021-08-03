@@ -14,13 +14,14 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.matches.UserGame
+import com.gno.erbs.erbs.stats.ui.base.BaseAdapter
 import com.gno.erbs.erbs.stats.ui.top.RankAdapter
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MatchesAdapter(
-) : ListAdapter<UserGame, RecyclerView.ViewHolder>(MatchesDiffUtilCallback()) {
+) : BaseAdapter<UserGame, RecyclerView.ViewHolder>(MatchesDiffUtilCallback()) {
 
     companion object {
         private const val TYPE_LOADING = 1
@@ -127,7 +128,7 @@ class MatchesAdapter(
 
     private fun loadImage(view: ImageView,webLink: String){
         Glide.with(view.context).load(webLink)
-            .placeholder(R.drawable.loading_image)
+            .placeholder(createShimmer(view.context))
             .error(R.drawable.loading_image)
             .into(view)
     }

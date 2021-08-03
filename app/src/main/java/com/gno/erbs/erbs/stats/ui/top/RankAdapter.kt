@@ -12,10 +12,11 @@ import com.bumptech.glide.Glide
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.rank.Rank
+import com.gno.erbs.erbs.stats.ui.base.BaseAdapter
 
 class RankAdapter(
     private val cellClickListener: (Int) -> Unit
-) : ListAdapter<Rank, RecyclerView.ViewHolder>(RankDiffUtilCallback()) {
+) : BaseAdapter<Rank, RecyclerView.ViewHolder>(RankDiffUtilCallback()) {
 
     companion object {
         private const val TYPE_LOADING = 1
@@ -72,7 +73,7 @@ class RankAdapter(
                 rankHolder.nickname.text = item.nickname
                 rankHolder.mmr.text = item.mmr.toString()
                 Glide.with(rankHolder.rankImage.context).load(item.rankTierImageWebLink)
-                    .placeholder(R.drawable.loading_image)
+                    .placeholder(createShimmer(rankHolder.rankImage.context))
                     .error(R.drawable.loading_image)
                     .circleCrop()
                     .into(rankHolder.rankImage)

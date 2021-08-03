@@ -63,7 +63,7 @@ class UserStatsFragment : BaseFragment() {
 
                 context?.let { thisContext ->
                     Glide.with(thisContext).load(usersStats[0].topCharacterHalfImageWebLink)
-                        .placeholder(R.drawable.loading_image)
+                        .placeholder(createShimmer(thisContext))
                         .error(R.drawable.loading_image)
                         .into(binding.topCharacterImage)
 

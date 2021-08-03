@@ -10,9 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreSkill
+import com.gno.erbs.erbs.stats.ui.base.BaseAdapter
 import com.gno.erbs.erbs.stats.ui.top.RankAdapter
 
-class SkillsAdapter : ListAdapter<CoreSkill, RecyclerView.ViewHolder>(SkillsDiffUtilCallback()) {
+class SkillsAdapter : BaseAdapter<CoreSkill, RecyclerView.ViewHolder>(SkillsDiffUtilCallback()) {
 
     companion object {
         private const val TYPE_LOADING = 1
@@ -74,7 +75,7 @@ class SkillsAdapter : ListAdapter<CoreSkill, RecyclerView.ViewHolder>(SkillsDiff
                 rankHolder.skillDescription.text = item.description
 
                 Glide.with(rankHolder.skillImage.context).load(item.image)
-                    .placeholder(R.drawable.loading_image)
+                    .placeholder(createShimmer(rankHolder.skillImage.context))
                     .error(R.drawable.loading_image)
                     .circleCrop()
                     .into(rankHolder.skillImage)

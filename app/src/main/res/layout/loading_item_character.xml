@@ -6,12 +6,12 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:shimmer_auto_start="true"
-    app:shimmer_colored="false">
+    app:shimmer_colored="false"
+    android:layout_margin="8dp">
 
         <View
             style="@style/Theme.ERBSStats.Loading"
             android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="8dp" />
+            android:layout_height="80dp" />
 
 </com.facebook.shimmer.ShimmerFrameLayout>

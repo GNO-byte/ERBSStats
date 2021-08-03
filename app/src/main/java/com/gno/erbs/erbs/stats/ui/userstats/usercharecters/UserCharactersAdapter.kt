@@ -10,10 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.userstats.CharacterStat
+import com.gno.erbs.erbs.stats.ui.base.BaseAdapter
 
 
 class UserCharactersAdapter :
-    ListAdapter<CharacterStat, RecyclerView.ViewHolder>(UserCharactersDiffUtilCallback()) {
+    BaseAdapter<CharacterStat, RecyclerView.ViewHolder>(UserCharactersDiffUtilCallback()) {
 
     companion object {
         private const val TYPE_LOADING = 1
@@ -81,7 +82,7 @@ class UserCharactersAdapter :
             TYPE_CHARACTER -> {
                 val characterHolder = holder as CharacterHolder
                 Glide.with(characterHolder.image.context).load(item.WebLinkImage)
-                    .placeholder(R.drawable.loading_image)
+                    .placeholder(createShimmer(characterHolder.image.context))
                     .error(R.drawable.loading_image)
                     .circleCrop()
                     .into(characterHolder.image)

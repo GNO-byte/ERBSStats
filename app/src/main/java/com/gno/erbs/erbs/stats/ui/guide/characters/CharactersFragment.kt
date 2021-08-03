@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.gno.erbs.erbs.stats.MainActivity
+import com.facebook.shimmer.Shimmer
+import com.facebook.shimmer.ShimmerDrawable
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentCharactersBinding
 import com.gno.erbs.erbs.stats.ui.base.BaseFragment
@@ -37,6 +38,7 @@ class CharactersFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.recyclerViewCharacters.adapter = characterGuidesAdapter
         characterGuidesAdapter.addLoading()
         viewModel.charactersLiveData.observe(viewLifecycleOwner) {

@@ -15,12 +15,13 @@ import com.bumptech.glide.Glide
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentOverviewBinding
 import com.gno.erbs.erbs.stats.model.Tier
+import com.gno.erbs.erbs.stats.ui.base.BaseFragment
 import com.gno.erbs.erbs.stats.ui.userstats.UserStatsViewModel
 import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
 
-class OverviewFragment : Fragment() {
+class OverviewFragment : BaseFragment() {
 
     companion object {
         fun newInstance() = OverviewFragment()
@@ -70,7 +71,7 @@ class OverviewFragment : Fragment() {
                     tierImage.contentDescription = Tier.findByMmr(it.mmr).title
                     context?.let { thisContext ->
                         Glide.with(thisContext).load(it.rankTierImageWebLink)
-                            .placeholder(R.drawable.loading_image)
+                            .placeholder(createShimmer(thisContext))
                             .error(R.drawable.loading_image)
                             .into(tierImage)
                     }

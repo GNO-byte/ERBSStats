@@ -58,7 +58,7 @@ class CharacterDetailFragment : BaseFragment() {
                 context?.let { thisContext ->
                     Glide.with(thisContext)
                         .load(characterStats.characterImageHalfWebLink ?: R.drawable.loading_image)
-                        .placeholder(R.drawable.loading_image)
+                        .placeholder(createShimmer(thisContext))
                         .error(R.drawable.loading_image)
                         .into(binding.characterImage)
 

@@ -23,12 +23,13 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.characters.WeaponType
+import com.gno.erbs.erbs.stats.ui.base.BaseAdapter
 import com.gno.erbs.erbs.stats.ui.top.RankAdapter
 import com.google.android.material.color.MaterialColors
 
 
 class WeaponTypesAdapter :
-    ListAdapter<WeaponType, RecyclerView.ViewHolder>(WeaponTypesDiffUtilCallback()) {
+    BaseAdapter<WeaponType, RecyclerView.ViewHolder>(WeaponTypesDiffUtilCallback()) {
 
     companion object {
         private const val TYPE_LOADING = 1
@@ -85,7 +86,7 @@ class WeaponTypesAdapter :
 
                 weaponTypeHolder.weaponName.text = item.name
                 Glide.with(weaponTypeHolder.weaponImage.context).load(item.weaponTypeImageWebLink)
-                    .placeholder(R.drawable.loading_image)
+                    .placeholder(createShimmer(weaponTypeHolder.weaponImage.context))
                     .error(R.drawable.loading_image)
                     .circleCrop()
                     .into(weaponTypeHolder.weaponImage)

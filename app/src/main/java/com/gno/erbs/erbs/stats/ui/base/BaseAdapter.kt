@@ -1,21 +1,17 @@
 package com.gno.erbs.erbs.stats.ui.base
 
 import android.content.Context
-import android.os.Bundle
-import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
-import com.gno.erbs.erbs.stats.MainActivity
 import com.gno.erbs.erbs.stats.R
 import com.google.android.material.color.MaterialColors
 
-abstract class BaseFragment : Fragment() {
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (activity as MainActivity).searchEnable()
-    }
+abstract class BaseAdapter<T, VH : RecyclerView.ViewHolder>(diffCallback: DiffUtil.ItemCallback<T>) :
+    ListAdapter<T, VH>(diffCallback) {
 
     protected fun createShimmer(context: Context): ShimmerDrawable {
         return ShimmerDrawable().apply {
@@ -37,4 +33,5 @@ abstract class BaseFragment : Fragment() {
             setShimmer(shimmer)
         }
     }
+
 }
