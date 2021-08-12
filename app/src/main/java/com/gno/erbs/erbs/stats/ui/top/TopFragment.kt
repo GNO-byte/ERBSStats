@@ -1,5 +1,6 @@
 package com.gno.erbs.erbs.stats.ui.top
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,14 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionInflater
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentTopBinding
 import com.gno.erbs.erbs.stats.repository.DataRepository
 import com.gno.erbs.erbs.stats.ui.base.BaseFragment
 
 class TopFragment : BaseFragment() {
-
-
 
     private val viewModel: TopViewModel by lazy {
         ViewModelProvider(this).get(TopViewModel::class.java)
@@ -30,6 +30,14 @@ class TopFragment : BaseFragment() {
     private val rankAdapter = RankAdapter { code ->
         val bundle = bundleOf("code" to code)
         findNavController().navigate(R.id.nav_user_stats, bundle)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+//        val transition =
+//            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+//        sharedElementEnterTransition = transition
+//        sharedElementReturnTransition = transition
     }
 
     override fun onCreateView(

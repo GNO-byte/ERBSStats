@@ -9,12 +9,9 @@
     android:layout_marginTop="16dp"
     android:layout_marginEnd="8dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
 
         <LinearLayout
             android:id="@+id/common"
@@ -55,7 +52,6 @@
                 android:layout_marginStart="8dp"
                 tools:text="@sample/usergames.json/userGames/startDtm" />
 
-
         </LinearLayout>
 
         <TextView
@@ -78,20 +74,59 @@
             app:layout_constraintStart_toStartOf="@+id/common"
             app:layout_constraintTop_toBottomOf="@+id/common">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
+                style="@style/Theme.ERBSStats.SmallImage"
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlaySmallImage"
                 android:id="@+id/character"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="start|top"
                 tools:srcCompat="@tools:sample/avatars" />
 
-            <ImageView
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/loading_character"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:shimmer_auto_start="true"
+                android:layout_gravity="start|top"
+                app:shimmer_colored="false">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage"
+                    app:strokeColor="@color/goldenrod" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                style="@style/Theme.ERBSStats.SmallImage"
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlaySmallImage"
                 android:id="@+id/character_weapon"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="end|bottom"
                 tools:srcCompat="@tools:sample/avatars" />
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/loading_character_weapon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:shimmer_auto_start="true"
+                android:layout_gravity="end|bottom"
+                app:shimmer_colored="false">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage"
+                    app:strokeColor="@color/goldenrod" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
         </FrameLayout>
 
@@ -199,7 +234,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/common"
             app:layout_constraintStart_toStartOf="@+id/common"
             app:layout_constraintTop_toBottomOf="@+id/avatar">
@@ -211,6 +248,26 @@
                 android:layout_weight="1"
                 tools:srcCompat="@tools:sample/avatars" />
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/loading_item1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_weight="1"
+                android:visibility="gone"
+
+                app:shimmer_auto_start="true"
+                app:shimmer_colored="false">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
+                    app:strokeColor="@color/goldenrod" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <ImageView
                 android:id="@+id/item2"
                 android:layout_width="50dp"
@@ -218,6 +275,26 @@
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 tools:srcCompat="@tools:sample/avatars" />
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/loading_item2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_weight="1"
+                android:visibility="gone"
+
+                app:shimmer_auto_start="true"
+                app:shimmer_colored="false">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
+                    app:strokeColor="@color/goldenrod" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
             <ImageView
                 android:id="@+id/item3"
@@ -227,6 +304,26 @@
                 android:layout_weight="1"
                 tools:srcCompat="@tools:sample/avatars" />
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/loading_item3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_weight="1"
+                android:visibility="gone"
+
+                app:shimmer_auto_start="true"
+                app:shimmer_colored="false">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
+                    app:strokeColor="@color/goldenrod" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <ImageView
                 android:id="@+id/item4"
                 android:layout_width="50dp"
@@ -234,6 +331,27 @@
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 tools:srcCompat="@tools:sample/avatars" />
+
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/loading_item4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_weight="1"
+                android:visibility="gone"
+
+                app:shimmer_auto_start="true"
+                app:shimmer_colored="false">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
+                    app:strokeColor="@color/goldenrod" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
             <ImageView
                 android:id="@+id/item5"
@@ -243,6 +361,26 @@
                 android:layout_weight="1"
                 tools:srcCompat="@tools:sample/avatars" />
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/loading_item5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_weight="1"
+                android:visibility="gone"
+
+                app:shimmer_auto_start="true"
+                app:shimmer_colored="false">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
+                    app:strokeColor="@color/goldenrod" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <ImageView
                 android:id="@+id/item6"
                 android:layout_width="50dp"
@@ -251,7 +389,25 @@
                 android:layout_weight="1"
                 tools:srcCompat="@tools:sample/avatars" />
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/loading_item6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_weight="1"
+                android:visibility="gone"
 
+                app:shimmer_auto_start="true"
+                app:shimmer_colored="false">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
+                    app:strokeColor="@color/goldenrod" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

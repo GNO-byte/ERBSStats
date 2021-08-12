@@ -14,9 +14,7 @@ class MainApplication : Application() {
     private fun init() {
 
         DataRepository(applicationContext)
-        GlobalScope.launch {
-            DataRepository.initCoreDate()
-        }
+
 
     }
 }

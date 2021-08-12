@@ -12,7 +12,7 @@ tools:context=".ui.userstats.UserStatsFragment">
 <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBarLayout"
     android:layout_width="match_parent"
-    android:layout_height="260dp"
+    android:layout_height="200dp"
     android:fitsSystemWindows="false"
     app:elevation="0dp">
 
@@ -24,31 +24,53 @@ tools:context=".ui.userstats.UserStatsFragment">
         app:layout_anchorGravity="center"
         app:layout_scrollFlags="scroll|enterAlways|exitUntilCollapsed">
 
+
         <androidx.appcompat.widget.Toolbar
-            style="@style/Theme.ERBSStats.ThemeOverlayTopBorder"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="100dp"
             app:elevation="0dp"
-            android:layout_gravity="bottom"
-            app:layout_collapseMode="pin">
+            android:fitsSystemWindows="false"
+            android:gravity="top"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:layout_collapseMode="pin"
+            app:popupTheme="@style/Theme.ERBSStats.PopupOverlay">
 
-            <TextView
+        <TextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:text="Characters"
                 tools:text="Characters"
                 android:textAppearance="@style/Theme.ERBSStats.TitleTextAppearance" />
 
         </androidx.appcompat.widget.Toolbar>
 
+        <FrameLayout
+            style="@style/Theme.ERBSStats.ThemeOverlayTopBorder"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="7dp"
+                android:layout_gravity="center"
+                android:src="@drawable/grip"/>
+
+
+        </FrameLayout>
 
     </com.google.android.material.appbar.CollapsingToolbarLayout>
 
 </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        style="@style/Theme.ERBSStats.ThemeOverlayLineFomTwoSides"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"

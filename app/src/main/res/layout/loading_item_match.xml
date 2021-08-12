@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
     android:layout_marginTop="16dp"
-    android:layout_marginEnd="8dp">
+    android:layout_marginEnd="8dp"
+    app:strokeWidth="0dp">
 
 
     <com.facebook.shimmer.ShimmerFrameLayout
@@ -22,7 +23,7 @@
             android:layout_height="wrap_content">
 
 
-            <View
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/common"
                 style="@style/Theme.ERBSStats.Loading"
                 android:layout_width="250dp"
@@ -31,9 +32,10 @@
                 app:layout_constraintEnd_toStartOf="@+id/server"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll" />
 
-            <View
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/server"
                 style="@style/Theme.ERBSStats.Loading"
                 android:layout_width="100dp"
@@ -43,18 +45,33 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/common"
                 app:layout_constraintTop_toTopOf="@+id/common"
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                 tools:text="@sample/usergames.json/userGames/serverName" />
 
-            <View
+            <FrameLayout
                 android:id="@+id/avatar"
-                style="@style/Theme.ERBSStats.Loading"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="@+id/common"
                 app:layout_constraintTop_toBottomOf="@+id/common">
 
-            </View>
+                <com.google.android.material.imageview.ShapeableImageView
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="start|top"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="end|bottom"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage" />
+
+
+            </FrameLayout>
 
             <LinearLayout
                 android:id="@+id/indicators"
@@ -68,45 +85,40 @@
                 app:layout_constraintStart_toEndOf="@+id/avatar"
                 app:layout_constraintTop_toTopOf="@+id/avatar">
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="15dp"
                     android:layout_height="48sp"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll" />
 
-                </View>
-
-                <View
-                    style="@style/Theme.ERBSStats.Loading"
-                    android:layout_width="15dp"
-                    android:layout_height="48sp"
-                    android:layout_marginStart="8dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                </View>
-
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="15dp"
                     android:layout_height="48sp"
                     android:layout_marginStart="8dp"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll" />
 
-                </View>
+                <com.google.android.material.imageview.ShapeableImageView
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="15dp"
+                    android:layout_height="48sp"
+                    android:layout_marginStart="8dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll" />
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="35dp"
                     android:layout_height="48sp"
                     android:layout_marginStart="8dp"
                     android:gravity="center"
-                    android:orientation="vertical">
-
-                </View>
-
+                    android:orientation="vertical"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll" />
 
             </LinearLayout>
 
@@ -121,52 +133,58 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/avatar">
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/item1"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll" />
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/item2"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="8dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll" />
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/item3"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="8dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll" />
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/item4"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="8dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll" />
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/item5"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="8dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll" />
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/item6"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="8dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll" />
 
 
             </LinearLayout>

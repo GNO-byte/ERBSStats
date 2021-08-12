@@ -35,6 +35,9 @@
         <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
 
         <item name="android:textColorHint">@color/grey_400</item>
+
+        <item name="materialCardViewStyle">@style/Theme.ERBSStats.CardView</item>
+
     </style>
 
     <style name="TabLayout.ERBSStats" parent="Widget.MaterialComponents.TabLayout">
@@ -43,9 +46,9 @@
         <item name="tabTextColor">@color/erbs_tabs_icon_color_selector</item>
     </style>
 
-    <!--    <style name="AppBarLayout.ERBSStats" parent="Widget.MaterialComponents.AppBarLayout.Primary">-->
-    <!--        <item name="android:background">@drawable/rounded_bottom_border</item>-->
-    <!--    </style>-->
+<!--        <style name="AppBarLayout.ERBSStats" parent="Widget.MaterialComponents.AppBarLayout.Primary">-->
+<!--            <item name="android:background">@drawable/rounded_bottom_border</item>-->
+<!--        </style>-->
 
 
     <style name="Theme.ERBSStats.NoActionBar">
@@ -53,9 +56,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="CardView.ERBSStats" parent="CardView">
-        <item name="cardBackgroundColor">?attr/colorPrimary</item>
-    </style>
 
     <style name="Theme.ERBSStats.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -72,13 +72,23 @@
         <item name="android:background">@drawable/rounded_search_border</item>
     </style>
 
+    <style name="Theme.ERBSStats.ThemeOverlayLineFomTwoSides">
+        <item name="android:background">@drawable/line_from_two_sides</item>
+    </style>
+
+    <style name="Theme.ERBSStats.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="strokeColor">@color/goldenrod</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
     <style name="Theme.ERBSStats.MiddleTextAppearance">
         <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/goldenrod</item>
     </style>
 
     <style name="Theme.ERBSStats.TitleTextAppearance" >
         <item name="android:textSize">32sp</item>
-        <item name="colorOnPrimary">@color/goldenrod</item>
+        <item name="android:textColor">@color/goldenrod</item>
     </style>
 
     <style name="Theme.ERBSStats.ItemTeamMode" >
@@ -90,5 +100,38 @@
     <style name="Theme.ERBSStats.Loading" >
         <item name="android:background">@color/goldenrod</item>
     </style>
+
+
+    <style name="Theme.ERBSStats.Logo" >
+        <item name="android:background">@color/white</item>
+        <item name="android:src">@drawable/logo_black</item>
+    </style>
+
+    <style name="Theme.ERBSStats.MiniImage">
+        <item name="cornerSize">50%</item>
+        <item name="strokeColor">@color/goldenrod</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+
+    <style name="Theme.ERBSStats.SmallImage">
+        <item name="strokeColor">@color/goldenrod</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+
+    <style name="Theme.ERBSStats.ShapeAppearanceOverlaySmallImage">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll">
+        <item name="cornerSize">10%</item>
+    </style>
+
+    <style name="Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage">
+        <item name="cornerSize">50%</item>
+    </style>
+
+
 
 </resources>

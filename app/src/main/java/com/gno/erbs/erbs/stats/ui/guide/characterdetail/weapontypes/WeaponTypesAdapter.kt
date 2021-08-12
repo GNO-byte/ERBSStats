@@ -1,19 +1,15 @@
 package com.gno.erbs.erbs.stats.ui.guide.characterdetail.weapontypes
 
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.data.RadarData
@@ -23,13 +19,12 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.characters.WeaponType
-import com.gno.erbs.erbs.stats.ui.base.BaseAdapter
-import com.gno.erbs.erbs.stats.ui.top.RankAdapter
+import com.gno.erbs.erbs.stats.ui.base.BaseListAdapter
 import com.google.android.material.color.MaterialColors
 
 
 class WeaponTypesAdapter :
-    BaseAdapter<WeaponType, RecyclerView.ViewHolder>(WeaponTypesDiffUtilCallback()) {
+    BaseListAdapter<WeaponType, RecyclerView.ViewHolder>(WeaponTypesDiffUtilCallback()) {
 
     companion object {
         private const val TYPE_LOADING = 1
@@ -85,11 +80,11 @@ class WeaponTypesAdapter :
                 val weaponTypeHolder = holder as WeaponTypeHolder
 
                 weaponTypeHolder.weaponName.text = item.name
-                Glide.with(weaponTypeHolder.weaponImage.context).load(item.weaponTypeImageWebLink)
-                    .placeholder(createShimmer(weaponTypeHolder.weaponImage.context))
-                    .error(R.drawable.loading_image)
-                    .circleCrop()
-                    .into(weaponTypeHolder.weaponImage)
+
+                weaponTypeHolder.weaponImage.visibility = View.GONE
+                weaponTypeHolder.loading.visibility = View.VISIBLE
+
+                loadImage(weaponTypeHolder.weaponImage,item.weaponTypeImageWebLink,weaponTypeHolder.loading)
                 weaponTypeHolder.chart.fill(item)
 
             }
@@ -103,6 +98,7 @@ class WeaponTypesAdapter :
         val weaponImage: ImageView = itemView.findViewById(R.id.weapon_image)
         val weaponName: TextView = itemView.findViewById(R.id.weapon_name)
         var chart: RadarChart = itemView.findViewById(R.id.chart)
+        val loading: ShimmerFrameLayout = itemView.findViewById(R.id.loading)
 
         init {
             chart.configure()

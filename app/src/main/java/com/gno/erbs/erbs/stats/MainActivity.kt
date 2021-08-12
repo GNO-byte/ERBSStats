@@ -12,12 +12,11 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import com.gno.erbs.erbs.stats.repository.DataRepository
+import com.gno.erbs.erbs.stats.repository.FirebaseService
 import com.gno.erbs.erbs.stats.ui.search.SearchDialogFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 
@@ -36,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         ///////////////////////////
 
         val appSharedPreferences = getSharedPreferences("APP", Context.MODE_PRIVATE)
@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
             appSharedPreferences.edit().putBoolean("FIRST_LAUNCH", false)
                 .apply()
         }
+
         /////////////////////////////
 
         //val toolbar: Toolbar = findViewById(R.id.toolbar)

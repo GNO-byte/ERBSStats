@@ -4,14 +4,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.MenuObject
 
 class HomeAdapter(
-    private val cellClickListener: (Int) -> Unit
+    private val cellClickListener: (Int,View) -> Unit
 ) : ListAdapter<MenuObject, HomeAdapter.ViewHolder>(HomeDiffUtilCallback()) {
 
 
@@ -27,8 +29,9 @@ class HomeAdapter(
 
         holder.name.text = item.name
 
-        holder.constraintLayout.setOnClickListener {
-            cellClickListener.invoke(item.navigationLink)
+        holder.cardView.setOnClickListener {
+            //ViewCompat.setTransitionName(holder.name,"transitionName")
+            cellClickListener.invoke(item.navigationLink,holder.name)
         }
 
 
@@ -36,7 +39,7 @@ class HomeAdapter(
 
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val constraintLayout: ConstraintLayout = view.findViewById(R.id.constraintlayout)
+        val cardView: CardView = view.findViewById(R.id.container)
         val name: TextView = view.findViewById(R.id.name)
     }
 

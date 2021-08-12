@@ -1,22 +1,16 @@
 package com.gno.erbs.erbs.stats.ui.home
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.gno.erbs.erbs.stats.MainActivity
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentHomeBinding
 import com.gno.erbs.erbs.stats.ui.base.BaseFragment
-import com.readystatesoftware.systembartint.SystemBarTintManager
 
 
 class HomeFragment : BaseFragment() {
@@ -27,9 +21,13 @@ class HomeFragment : BaseFragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
-    private val menuAdapter = HomeAdapter {
-        findNavController().navigate(it)
-    }
+//    private val menuAdapter = HomeAdapter { navLink, animView ->
+//
+//        val extras = FragmentNavigatorExtras(
+//            animView to "transitionName"
+//        )
+//        findNavController().navigate(R.id.action_nav_home_to_nav_top, null, null, extras)
+//    }
 
     private val viewModel: HomeViewModel by lazy {
         ViewModelProvider(this).get(HomeViewModel::class.java)
@@ -48,11 +46,21 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (activity as MainActivity).searchDisable()
+
+        val menuAdapter  =HomeAdapter { navLink, animView ->
+
+//            val extras = FragmentNavigatorExtras(
+//                animView to "transitionName"
+//            )
+ //                     findNavController().navigate(R.id.action_nav_home_to_nav_top, null, null, extras)
+            findNavController().navigate(navLink)
+        }
+
         binding.recyclerViewMenu.adapter = menuAdapter
 
         viewModel.menuObjectLiveData.observe(viewLifecycleOwner) { menu ->
             menuAdapter.submitList(menu)
-           // binding.searchGroup.
+            // binding.searchGroup.
         }
     }
 

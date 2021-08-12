@@ -8,7 +8,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="200dp"
         app:elevation="0dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -20,23 +20,46 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:titleEnabled="false">
 
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="100dp"
                 app:elevation="0dp"
-                android:layout_gravity="bottom"
+                android:fitsSystemWindows="false"
+                android:gravity="top"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
                 app:layout_collapseMode="pin"
-                style="@style/Theme.ERBSStats.ThemeOverlayTopBorder"
                 app:popupTheme="@style/Theme.ERBSStats.PopupOverlay">
 
                 <TextView
+                    android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
                     android:text="Search"
-                    android:textAppearance="@style/Theme.ERBSStats.TitleTextAppearance"/>
+                    tools:text="Search"
+                    android:textAppearance="@style/Theme.ERBSStats.TitleTextAppearance" />
 
             </androidx.appcompat.widget.Toolbar>
+
+            <FrameLayout
+                style="@style/Theme.ERBSStats.ThemeOverlayTopBorder"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="7dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/grip"/>
+
+
+            </FrameLayout>
 
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -44,6 +67,8 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        style="@style/Theme.ERBSStats.ThemeOverlayLineFomTwoSides"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never"
@@ -61,7 +86,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:itemCount="6"
-            tools:listitem="@layout/item_menu_object"
+            tools:listitem="@layout/item_found_object"
             tools:spanCount="2" />
 
 

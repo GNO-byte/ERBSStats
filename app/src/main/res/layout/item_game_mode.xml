@@ -9,18 +9,45 @@
     android:gravity="center_vertical"
     tools:context=".ui.userstats.UserStatsFragment">
 
-    <ImageView
-        android:id="@+id/Tier_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+    <LinearLayout
+        android:id="@+id/Tier_image_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="8dp"
-        android:adjustViewBounds="true"
         app:layout_constraintBottom_toBottomOf="@+id/top_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/mmr_title"
-        android:contentDescription="@string/tier_image" />
+        >
+
+    <ImageView
+        android:id="@+id/tier_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="8dp"
+        android:adjustViewBounds="true"
+            android:contentDescription="@string/tier_image" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:shimmer_auto_start="true"
+        app:shimmer_colored="false">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            style="@style/Theme.ERBSStats.Loading"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="8dp"
+            android:adjustViewBounds="true"
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
+            app:strokeColor="@color/goldenrod" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/mmr_title"
@@ -29,7 +56,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/mmr"
-        app:layout_constraintStart_toEndOf="@+id/Tier_image"
+        app:layout_constraintStart_toEndOf="@+id/Tier_image_container"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -48,7 +75,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/rank"
-        app:layout_constraintStart_toEndOf="@+id/Tier_image"
+        app:layout_constraintStart_toEndOf="@+id/Tier_image_container"
         app:layout_constraintTop_toBottomOf="@+id/mmr_title" />
 
     <TextView
@@ -67,7 +94,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/top"
-        app:layout_constraintStart_toEndOf="@+id/Tier_image"
+        app:layout_constraintStart_toEndOf="@+id/Tier_image_container"
         app:layout_constraintTop_toBottomOf="@+id/rank_title" />
 
     <TextView

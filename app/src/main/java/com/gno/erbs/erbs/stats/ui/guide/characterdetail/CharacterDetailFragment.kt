@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
-import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentCharacterDetailBinding
 import com.gno.erbs.erbs.stats.ui.base.BaseFragment
 
@@ -55,16 +53,12 @@ class CharacterDetailFragment : BaseFragment() {
                 binding.loadingName.visibility = View.GONE
                 binding.name.visibility = View.VISIBLE
 
-                context?.let { thisContext ->
-                    Glide.with(thisContext)
-                        .load(characterStats.characterImageHalfWebLink ?: R.drawable.loading_image)
-                        .placeholder(createShimmer(thisContext))
-                        .error(R.drawable.loading_image)
-                        .into(binding.characterImage)
+                loadImage(
+                    binding.characterImage,
+                    characterStats.characterImageHalfWebLink,
+                    binding.loadingImage
+                )
 
-                    binding.loadingImage.visibility = View.GONE
-                    binding.characterImage.visibility = View.VISIBLE
-                }
 
             }
         }

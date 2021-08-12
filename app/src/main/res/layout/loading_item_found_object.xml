@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="48dp"
+    app:strokeWidth="0dp"
     android:layout_marginEnd="8dp"
     android:layout_marginStart="8dp"
     android:layout_marginTop="16dp"
@@ -21,7 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <View
+            <com.google.android.material.imageview.ShapeableImageView
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                 android:id="@+id/name"
                 style="@style/Theme.ERBSStats.Loading"
                 android:layout_width="0dp"
@@ -34,7 +36,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@tools:sample/first_names" />
 
-            <View
+            <com.google.android.material.imageview.ShapeableImageView
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                 android:id="@+id/type"
                 style="@style/Theme.ERBSStats.Loading"
                 android:layout_width="100dp"

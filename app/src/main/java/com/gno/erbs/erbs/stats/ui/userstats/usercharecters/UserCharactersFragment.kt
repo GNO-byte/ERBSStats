@@ -45,6 +45,7 @@ class UserCharactersFragment : Fragment() {
        }
             binding.recyclerViewUserCharacters.adapter = charactersAdapter
 
+        binding.head.imageCharacter.visibility = View.INVISIBLE
         binding.head.name.text = "Name"
         binding.head.totalGames.text = "Total games"
         binding.head.maxKillings.text = "Max killings"

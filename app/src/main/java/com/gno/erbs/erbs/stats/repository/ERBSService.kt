@@ -1,6 +1,5 @@
 package com.gno.erbs.erbs.stats.repository
 
-import android.app.Application
 import android.content.Context
 import com.gno.erbs.erbs.stats.model.erbs.Response
 import com.gno.erbs.erbs.stats.model.erbs.characters.Character
@@ -18,7 +17,6 @@ import com.gno.erbs.erbs.stats.model.erbs.rank.Rank
 import com.gno.erbs.erbs.stats.model.erbs.userstats.UserStats
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
@@ -41,16 +39,16 @@ interface ERBSService {
         @Path("seasonId") seasonId: String,
     ): Response<List<UserStats>>
 
-   @GET("/v1/user/nickname")
+    @GET("/v1/user/nickname")
     suspend fun getUserResponse(
         @Query("query") userName: String
     ): Response<User>
 
-     @GET("/v1/rank/{userNum}/{seasonId}/{matchingTeamMode}")
+    @GET("/v1/rank/{userNum}/{seasonId}/{matchingTeamMode}")
     suspend fun getTopUserRanksResponse(
         @Path("userNum") userNumber: String,
         @Path("seasonId") seasonId: String,
-     @Path("matchingTeamMode") teamMode: String,
+        @Path("matchingTeamMode") teamMode: String,
     ): Response<List<Rank>>
 
     @GET("v1/user/games/{userNum}")
@@ -97,12 +95,8 @@ interface ERBSService {
         private const val BASE_URL = "https://open-api.bser.io"
         private var INSTANCE: ERBSService? = null
 
-        operator fun invoke(context: Context): ERBSService{
-            return initialize(context)
-        }
-
-        private fun initialize(context: Context): ERBSService {
-            if(INSTANCE == null) {
+        operator fun invoke(context: Context): ERBSService {
+            if (INSTANCE == null) {
                 INSTANCE = Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(createKeyInterceptor(KeysHelper.getApiKey(context)))
@@ -112,6 +106,7 @@ interface ERBSService {
             return INSTANCE ?: throw IllegalStateException("ERBSService must be initialized")
 
         }
+
 
         private fun createKeyInterceptor(apiKey: String): OkHttpClient {
             val logging = HttpLoggingInterceptor()

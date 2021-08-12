@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/game_mode"
@@ -11,30 +12,55 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
         android:layout_margin="8dp"
+        android:gravity="center_vertical"
         tools:context=".ui.userstats.UserStatsFragment">
 
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+        <LinearLayout
+            android:id="@+id/image_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="top|start"
             android:adjustViewBounds="true"
-            android:contentDescription="skill image"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                style="@style/Theme.ERBSStats.SmallImage"                android:id="@+id/image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="skill image"
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlaySmallImage"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:shimmer_auto_start="true"
+                app:shimmer_colored="false">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    style="@style/Theme.ERBSStats.Loading"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage"
+                    app:strokeColor="@color/goldenrod" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/name"
             android:layout_width="152dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/image"
-            app:layout_constraintStart_toEndOf="@+id/image"
-            app:layout_constraintTop_toTopOf="@+id/image"
+            app:layout_constraintBottom_toBottomOf="@+id/image_group"
+            app:layout_constraintStart_toEndOf="@+id/image_group"
+            app:layout_constraintTop_toTopOf="@+id/image_group"
             tools:text="@tools:sample/first_names" />
 
         <TextView
@@ -52,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image"
+            app:layout_constraintTop_toBottomOf="@+id/image_group"
             tools:text="@tools:sample/lorem/random" />
 
         <!--        <com.google.android.youtube.player.YouTubePlayerView-->

@@ -15,8 +15,7 @@ class HomeViewModel : BaseViewModel() {
             menuObjectLiveData.postValue(
                 listOf(
                     MenuObject("Top", R.id.nav_top),
-                    MenuObject("Characters",R.id.nav_characters),
-                    MenuObject("Player",R.id.nav_user_stats)
+                    MenuObject("Characters",R.id.nav_characters)
                     ))
         }
     }

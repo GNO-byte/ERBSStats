@@ -6,17 +6,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.recyclerview.widget.ListAdapter
+import androidx.appcompat.view.menu.MenuView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.rank.Rank
-import com.gno.erbs.erbs.stats.ui.base.BaseAdapter
+import com.gno.erbs.erbs.stats.ui.base.BaseListAdapter
 
 class RankAdapter(
     private val cellClickListener: (Int) -> Unit
-) : BaseAdapter<Rank, RecyclerView.ViewHolder>(RankDiffUtilCallback()) {
+) : BaseListAdapter<Rank, RecyclerView.ViewHolder>(RankDiffUtilCallback()) {
 
     companion object {
         private const val TYPE_LOADING = 1
@@ -72,11 +72,11 @@ class RankAdapter(
                 rankHolder.rankNumber.text = item.rankNumber.toString()
                 rankHolder.nickname.text = item.nickname
                 rankHolder.mmr.text = item.mmr.toString()
-                Glide.with(rankHolder.rankImage.context).load(item.rankTierImageWebLink)
-                    .placeholder(createShimmer(rankHolder.rankImage.context))
-                    .error(R.drawable.loading_image)
-                    .circleCrop()
-                    .into(rankHolder.rankImage)
+
+                rankHolder.rankImage.visibility = View.GONE
+                rankHolder.loading.visibility = View.VISIBLE
+
+                loadImage(rankHolder.rankImage,item.rankTierImageWebLink,rankHolder.loading)
 
                 rankHolder.linearLayout.setOnClickListener {
                     cellClickListener.invoke(item.userNum)
@@ -93,6 +93,7 @@ class RankAdapter(
         val rankNumber: TextView = itemView.findViewById(R.id.rank_number)
         val nickname: TextView = itemView.findViewById(R.id.nickname)
         val mmr: TextView = itemView.findViewById(R.id.mmr)
+        val loading: ShimmerFrameLayout = itemView.findViewById(R.id.loading)
     }
 
     class LoadingHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

@@ -1,26 +1,21 @@
 package com.gno.erbs.erbs.stats.ui.guide.characters
 
-import android.content.Context
-import android.graphics.drawable.InsetDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.facebook.shimmer.Shimmer
-import com.facebook.shimmer.ShimmerDrawable
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.characters.Character
-import com.gno.erbs.erbs.stats.ui.base.BaseAdapter
-import com.google.android.material.color.MaterialColors
+import com.gno.erbs.erbs.stats.ui.base.BaseListAdapter
+import com.google.android.material.imageview.ShapeableImageView
 
 
 class CharactersAdapter(
     private val cellClickListener: (Int) -> Unit
-) : BaseAdapter<Character, RecyclerView.ViewHolder>(CharactersDiffUtilCallback()) {
+) : BaseListAdapter<Character, RecyclerView.ViewHolder>(CharactersDiffUtilCallback()) {
 
     companion object {
         private const val TYPE_LOADING = 1
@@ -68,13 +63,7 @@ class CharactersAdapter(
 
                 val characterHolder = holder as CharacterHolder
 
-
-                Glide.with(characterHolder.image.context)
-                    .load(item.iconWebLink)
-                    .placeholder(createShimmer(characterHolder.image.context))
-                    .error(R.drawable.loading_image)
-                    .circleCrop()
-                    .into(characterHolder.image)
+                loadImage(characterHolder.image,item.iconWebLink,characterHolder.loading)
 
                 characterHolder.image.setOnClickListener {
                     cellClickListener.invoke(item.code)
@@ -92,6 +81,7 @@ class CharactersAdapter(
 
     class CharacterHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val image: ImageView = itemView.findViewById(R.id.character_guide_image)
+        val loading: ShimmerFrameLayout = itemView.findViewById(R.id.loading)
     }
 
     class LoadingHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintlayout"
-    android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:id="@+id/container"
+    android:layout_width="170dp"
+    android:layout_height="140dp"
     android:layout_margin="8dp"
     android:clickable="true"
+    app:cardCornerRadius="10dp"
     android:clipToPadding="false"
-    android:focusable="true"
-    android:padding="8dp">
+    android:focusable="true">
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textAppearance="@style/Theme.ERBSStats.MiddleTextAppearance"
+        android:textColor="@null"
+        android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -28,9 +29,12 @@
         android:id="@+id/image"
         android:layout_width="96dp"
         android:layout_height="96dp"
+        android:layout_margin="8dp"
+        android:layout_gravity="end|bottom"
         android:adjustViewBounds="true"
+        android:src="@drawable/logo_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

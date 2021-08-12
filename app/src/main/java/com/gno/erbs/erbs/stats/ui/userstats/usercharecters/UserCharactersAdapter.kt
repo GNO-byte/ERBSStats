@@ -5,16 +5,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.userstats.CharacterStat
-import com.gno.erbs.erbs.stats.ui.base.BaseAdapter
+import com.gno.erbs.erbs.stats.ui.base.BaseListAdapter
 
 
 class UserCharactersAdapter :
-    BaseAdapter<CharacterStat, RecyclerView.ViewHolder>(UserCharactersDiffUtilCallback()) {
+    BaseListAdapter<CharacterStat, RecyclerView.ViewHolder>(UserCharactersDiffUtilCallback()) {
 
     companion object {
         private const val TYPE_LOADING = 1
@@ -81,11 +81,12 @@ class UserCharactersAdapter :
             }
             TYPE_CHARACTER -> {
                 val characterHolder = holder as CharacterHolder
-                Glide.with(characterHolder.image.context).load(item.WebLinkImage)
-                    .placeholder(createShimmer(characterHolder.image.context))
-                    .error(R.drawable.loading_image)
-                    .circleCrop()
-                    .into(characterHolder.image)
+
+                characterHolder.image.visibility = View.GONE
+                characterHolder.loading.visibility = View.VISIBLE
+
+                loadImage(characterHolder.image,item.WebLinkImage,characterHolder.loading)
+
                 characterHolder.name.text = item.characterName
                 characterHolder.totalGames.text = item.totalGames.toString()
                 characterHolder.maxKillings.text = item.maxKillings.toString()
@@ -98,6 +99,7 @@ class UserCharactersAdapter :
 
     class CharacterHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val image: ImageView = itemView.findViewById(R.id.image_character)
+        val loading: ShimmerFrameLayout = itemView.findViewById(R.id.loading)
         val name: TextView = itemView.findViewById(R.id.name)
         val totalGames: TextView = itemView.findViewById(R.id.total_games)
         val maxKillings: TextView = itemView.findViewById(R.id.max_killings)

@@ -28,7 +28,6 @@ class SearchDialogFragment : BottomSheetDialogFragment() {
     }
 
     lateinit var binding: FragmentSearchDialogBinding
-    private var searchView:SearchView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,16 +43,12 @@ class SearchDialogFragment : BottomSheetDialogFragment() {
 
         }
 
-        if(searchView == null){
-            searchView = binding.search
-        }
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.search?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
                 return false
             }

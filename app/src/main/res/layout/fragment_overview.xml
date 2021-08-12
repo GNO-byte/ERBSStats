@@ -26,7 +26,8 @@
                 android:layout_margin="8dp"
                 android:gravity="center_vertical">
 
-                <ImageView
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     android:id="@+id/Tier_image"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="80dp"
@@ -39,7 +40,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/mmr_title" />
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     android:id="@+id/mmr_title"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="100dp"
@@ -50,7 +52,8 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-                <TextView
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     android:id="@+id/rank_title"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="100dp"
@@ -60,7 +63,8 @@
                     app:layout_constraintStart_toEndOf="@+id/Tier_image"
                     app:layout_constraintTop_toBottomOf="@+id/mmr_title" />
 
-                <TextView
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     android:id="@+id/top_title"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="100dp"
@@ -77,13 +81,15 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintTop_toBottomOf="@+id/top_title">
 
-                    <View
+                    <com.google.android.material.imageview.ShapeableImageView
+                        app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                         style="@style/Theme.ERBSStats.Loading"
                         android:layout_width="50dp"
                         android:layout_height="24sp"
                         tools:text="HP" />
 
-                    <View
+                    <com.google.android.material.imageview.ShapeableImageView
+                        app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                         style="@style/Theme.ERBSStats.Loading"
                         android:layout_width="30dp"
                         android:layout_height="24sp"
@@ -91,7 +97,8 @@
                         android:gravity="center_horizontal"
                         tools:text="55" />
 
-                    <View
+                    <com.google.android.material.imageview.ShapeableImageView
+                        app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                         style="@style/Theme.ERBSStats.Loading"
                         android:layout_width="match_parent"
                         android:layout_height="24sp"
@@ -106,13 +113,15 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintTop_toBottomOf="@+id/line1">
 
-                    <View
+                    <com.google.android.material.imageview.ShapeableImageView
+                        app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                         style="@style/Theme.ERBSStats.Loading"
                         android:layout_width="50dp"
                         android:layout_height="24sp"
                         tools:text="HP" />
 
-                    <View
+                    <com.google.android.material.imageview.ShapeableImageView
+                        app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                         style="@style/Theme.ERBSStats.Loading"
                         android:layout_width="30dp"
                         android:layout_height="24sp"
@@ -120,7 +129,8 @@
                         android:gravity="center_horizontal"
                         tools:text="55" />
 
-                    <View
+                    <com.google.android.material.imageview.ShapeableImageView
+                        app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                         style="@style/Theme.ERBSStats.Loading"
                         android:layout_width="match_parent"
                         android:layout_height="24sp"
@@ -135,13 +145,15 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintTop_toBottomOf="@+id/line2">
 
-                    <View
+                    <com.google.android.material.imageview.ShapeableImageView
+                        app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                         style="@style/Theme.ERBSStats.Loading"
                         android:layout_width="50dp"
                         android:layout_height="24sp"
                         tools:text="HP" />
 
-                    <View
+                    <com.google.android.material.imageview.ShapeableImageView
+                        app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                         style="@style/Theme.ERBSStats.Loading"
                         android:layout_width="30dp"
                         android:layout_height="24sp"
@@ -149,14 +161,14 @@
                         android:gravity="center_horizontal"
                         tools:text="55" />
 
-                    <View
+                    <com.google.android.material.imageview.ShapeableImageView
+                        app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                         style="@style/Theme.ERBSStats.Loading"
                         android:layout_width="match_parent"
                         android:layout_height="24sp"
                         android:layout_marginStart="16dp" />
 
                 </LinearLayout>
-
 
                 <LinearLayout
                     android:id="@+id/line4"
@@ -165,13 +177,15 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintTop_toBottomOf="@+id/line3">
 
-                    <View
+                    <com.google.android.material.imageview.ShapeableImageView
+                        app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                         style="@style/Theme.ERBSStats.Loading"
                         android:layout_width="50dp"
                         android:layout_height="24sp"
                         tools:text="HP" />
 
-                    <View
+                    <com.google.android.material.imageview.ShapeableImageView
+                        app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                         style="@style/Theme.ERBSStats.Loading"
                         android:layout_width="30dp"
                         android:layout_height="24sp"
@@ -179,7 +193,8 @@
                         android:gravity="center_horizontal"
                         tools:text="55" />
 
-                    <View
+                    <com.google.android.material.imageview.ShapeableImageView
+                        app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                         style="@style/Theme.ERBSStats.Loading"
                         android:layout_width="match_parent"
                         android:layout_height="24sp"

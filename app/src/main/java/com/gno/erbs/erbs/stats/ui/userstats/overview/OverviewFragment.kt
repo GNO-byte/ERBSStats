@@ -9,9 +9,9 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentOverviewBinding
 import com.gno.erbs.erbs.stats.model.Tier
@@ -62,19 +62,22 @@ class OverviewFragment : BaseFragment() {
                             false
                         ) as ConstraintLayout
 
-                    val tierImage: ImageView = itemGameMode.findViewById(R.id.Tier_image)
+                    val tierImage: ImageView = itemGameMode.findViewById(R.id.tier_image)
+                    val loading: ShimmerFrameLayout = itemGameMode.findViewById(R.id.loading)
+
                     val mmr: TextView = itemGameMode.findViewById(R.id.mmr)
                     val rank: TextView = itemGameMode.findViewById(R.id.rank)
                     val top: TextView = itemGameMode.findViewById(R.id.top)
                     val parameters: LinearLayout = itemGameMode.findViewById(R.id.parameters)
 
                     tierImage.contentDescription = Tier.findByMmr(it.mmr).title
-                    context?.let { thisContext ->
-                        Glide.with(thisContext).load(it.rankTierImageWebLink)
-                            .placeholder(createShimmer(thisContext))
-                            .error(R.drawable.loading_image)
-                            .into(tierImage)
-                    }
+
+                    tierImage.visibility = View.GONE
+                    loading.visibility = View.VISIBLE
+
+
+                    loadImage(tierImage, it.rankTierImageWebLink, loading)
+
 
                     mmr.text = it.mmr.toString()
                     rank.text = it.rank.toString()
@@ -107,12 +110,18 @@ class OverviewFragment : BaseFragment() {
                         it.averageHunts.toInt(),
                         it.averageHunts.toInt()
                     )
-                    parameters.createParameter(layoutInflater, "Top 1",
-                        (it.top1 * 100).roundToInt(), 100)
-                    parameters.createParameter(layoutInflater, "Top 2",
-                        (it.top2 * 100).roundToInt(), 100)
-                    parameters.createParameter(layoutInflater, "Top 3",
-                        (it.top3 * 100).roundToInt(), 100)
+                    parameters.createParameter(
+                        layoutInflater, "Top 1",
+                        (it.top1 * 100).roundToInt(), 100
+                    )
+                    parameters.createParameter(
+                        layoutInflater, "Top 2",
+                        (it.top2 * 100).roundToInt(), 100
+                    )
+                    parameters.createParameter(
+                        layoutInflater, "Top 3",
+                        (it.top3 * 100).roundToInt(), 100
+                    )
                     parameters.createParameter(
                         layoutInflater,
                         "Total games",

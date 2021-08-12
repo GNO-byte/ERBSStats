@@ -7,13 +7,21 @@
     </item>
 
     <item>
-        <shape>
-            <solid android:color="@color/eerie_black" />
-            <corners
-                android:bottomLeftRadius="0dp"
-                android:bottomRightRadius="0dp"
-                android:topLeftRadius="32dp"
-                android:topRightRadius="32dp" />
-        </shape>
+        <inset android:insetBottom="-2dp">
+
+            <shape>
+
+                <solid android:color="@color/eerie_black" />
+                <stroke
+                    android:width="1dp"
+                    android:color="@color/goldenrod" />
+
+                <corners
+                    android:bottomLeftRadius="0dp"
+                    android:bottomRightRadius="0dp"
+                    android:topLeftRadius="32dp"
+                    android:topRightRadius="32dp" />
+            </shape>
+        </inset>
     </item>
 </layer-list>

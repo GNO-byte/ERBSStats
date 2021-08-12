@@ -2,20 +2,17 @@ package com.gno.erbs.erbs.stats.ui.base
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestListener
 import com.facebook.shimmer.ShimmerDrawable
-import com.gno.erbs.erbs.stats.MainActivity
 import com.gno.erbs.erbs.stats.ui.LoadingImageService
 
-abstract class BaseFragment : Fragment() {
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (activity as MainActivity).searchEnable()
-    }
+abstract class BaseListAdapter<T, VH : RecyclerView.ViewHolder>(diffCallback: DiffUtil.ItemCallback<T>) :
+    ListAdapter<T, VH>(diffCallback) {
 
     protected fun createGlideListener(
         image: ImageView,
@@ -29,6 +26,7 @@ abstract class BaseFragment : Fragment() {
     ) {
         LoadingImageService.loadImage(view, webLink, loading)
     }
+
 
     protected fun createShimmer(context: Context): ShimmerDrawable {
         return LoadingImageService.createShimmer(context)

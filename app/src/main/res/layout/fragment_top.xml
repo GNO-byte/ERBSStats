@@ -10,7 +10,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="200dp"
         app:elevation="0dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -32,6 +32,7 @@
 
                 <TextView
                     android:id="@+id/name"
+                    android:transitionName="transitionName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
@@ -42,10 +43,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_gravity="bottom"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
                 style="@style/Theme.ERBSStats.ThemeOverlayTopBorder">
 
             <include
@@ -53,8 +52,10 @@
                 layout="@layout/item_rank"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
                />
 
         </LinearLayout>
@@ -65,11 +66,13 @@
     </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            style="@style/Theme.ERBSStats.ThemeOverlayLineFomTwoSides"
             android:id="@+id/recycler_view_ranks"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_rank"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

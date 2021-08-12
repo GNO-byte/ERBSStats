@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
@@ -25,15 +27,39 @@
             android:contentDescription="@string/tier_image"
             android:textAlignment="textEnd" />
 
-        <ImageView
-            android:id="@+id/weapon_image"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="top|start"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="weapon image" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/weapon_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="8dp"
+                android:adjustViewBounds="true"
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage"
+                android:contentDescription="weapon image" />
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/loading"
+                app:shimmer_auto_start="true"
+                app:shimmer_colored="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    style="@style/Theme.ERBSStats.Loading"
+                    app:strokeColor="@color/goldenrod"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage"
+                    android:layout_margin="8dp"/>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+        </LinearLayout>
 
         <com.github.mikephil.charting.charts.RadarChart
             android:id="@+id/chart"

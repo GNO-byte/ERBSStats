@@ -28,14 +28,16 @@
 
             <TableRow>
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="30dp"
                     android:layout_height="24sp"
                     android:layout_margin="8dp"
                     android:layout_weight="2" />
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="15dp"
                     android:layout_height="24sp"
@@ -43,7 +45,8 @@
                     android:layout_margin="8dp"
                     android:layout_weight="1" />
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="15dp"
                     android:layout_height="24sp"
@@ -56,14 +59,16 @@
 
             <TableRow>
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="30dp"
                     android:layout_height="24sp"
                     android:layout_margin="8dp"
                     android:layout_weight="2" />
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="15dp"
                     android:layout_height="24sp"
@@ -71,7 +76,8 @@
                     android:layout_margin="8dp"
                     android:layout_weight="1" />
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="15dp"
                     android:layout_height="24sp"
@@ -83,14 +89,16 @@
 
             <TableRow>
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="30dp"
                     android:layout_height="24sp"
                     android:layout_margin="8dp"
                     android:layout_weight="2" />
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="15dp"
                     android:layout_height="24sp"
@@ -98,7 +106,8 @@
                     android:layout_margin="8dp"
                     android:layout_weight="1" />
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="15dp"
                     android:layout_height="24sp"
@@ -110,14 +119,16 @@
 
             <TableRow>
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="30dp"
                     android:layout_height="24sp"
                     android:layout_margin="8dp"
                     android:layout_weight="2" />
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="15dp"
                     android:layout_height="24sp"
@@ -125,7 +136,8 @@
                     android:layout_margin="8dp"
                     android:layout_weight="1" />
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="15dp"
                     android:layout_height="24sp"
@@ -138,14 +150,16 @@
 
             <TableRow>
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="30dp"
                     android:layout_height="24sp"
                     android:layout_margin="8dp"
                     android:layout_weight="2" />
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="15dp"
                     android:layout_height="24sp"
@@ -153,7 +167,8 @@
                     android:layout_margin="8dp"
                     android:layout_weight="1" />
 
-                <View
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="15dp"
                     android:layout_height="24sp"

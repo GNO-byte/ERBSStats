@@ -4,6 +4,7 @@ import android.content.Context
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreCharacter
 import com.gno.erbs.erbs.stats.model.drive.imagelinkstructure.ImagesLinkStructure
 import com.gno.erbs.erbs.stats.repository.FoundItem
+import com.gno.erbs.erbs.stats.repository.ImageService
 import com.gno.erbs.erbs.stats.repository.KeysHelper
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.api.client.http.apache.ApacheHttpTransport
@@ -12,20 +13,23 @@ import com.google.api.services.drive.Drive
 import com.google.api.services.drive.model.File
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.Reader
 
-object DriveService {
+object DriveService : ImageService {
 
     private var coreImageLinkStructureId: String? = null
     private var coreCharactersId: String? = null
 
     private lateinit var service: Drive
     var imagesLinkStructure: ImagesLinkStructure? = null
-    var coreCharacters: List<CoreCharacter>? = null
+    override var coreCharacters: List<CoreCharacter>? = null
 
     operator fun invoke(context: Context): DriveService {
+
 
         coreImageLinkStructureId = KeysHelper.getDriveCoreImageLinkStructureId(context)
         coreCharactersId = KeysHelper.getDriveCoreCharactersId(context)
@@ -38,6 +42,11 @@ object DriveService {
             Drive.Builder(ApacheHttpTransport(), JacksonFactory.getDefaultInstance(), credential)
                 .setApplicationName("ERBS")
                 .build()
+
+        GlobalScope.launch {
+            initImagesLinkStructure()
+            initCoreCharacters()
+        }
 
         return this
 
@@ -81,14 +90,14 @@ object DriveService {
 
     ///////
 
-    fun getCharacterImageMiniLink(): List<FoundItem> {
+    override suspend fun getCharacterImageMiniLink(): List<FoundItem> {
 
         val imageMiniFiles = imagesLinkStructure?.charactersImagesMini?.let { getFolderFiles(it) }
         return if (imageMiniFiles != null) createFoundItems(imageMiniFiles) else listOf()
 
     }
 
-    fun getCharacterImageFiles(
+    override suspend fun getCharacterImageFiles(
         characterImageType: CharacterImageType,
         characterName: String
     ): FoundItem? {
@@ -104,7 +113,7 @@ object DriveService {
 
     }
 
-    fun getRankTierFile(vararg mmrs: Int): List<FoundItem> {
+    override suspend fun getRankTierFile(vararg mmrs: Int): List<FoundItem> {
 
         val files = imagesLinkStructure?.rankTier?.let { getFolderFiles(it) }
 
@@ -133,14 +142,14 @@ object DriveService {
         return createFoundItems(resultFiles)
     }
 
-    fun getSkillImage(characterName: String): List<FoundItem> {
+    override suspend fun getSkillImage(characterName: String): List<FoundItem> {
 
         val skillsImagesFolder = getFilesCharacterSubFolder(characterName, "Skill icon")
         return if (skillsImagesFolder != null) createFoundItems(skillsImagesFolder) else listOf()
 
     }
 
-    fun getWeaponTypeFiles()
+    override suspend fun getWeaponTypeFiles()
             : List<FoundItem> {
 
         val skillIconWeaponFiles = imagesLinkStructure?.skillIconWeapon?.let { getFolderFiles(it) }
@@ -148,7 +157,7 @@ object DriveService {
 
     }
 
-    fun getItemImage(): List<FoundItem> {
+    override suspend fun getItemImage(): List<FoundItem> {
         val itemImageFiles = imagesLinkStructure?.equipment?.let { getFolderFiles(it) }
         return if (itemImageFiles != null) createFoundItems(itemImageFiles) else listOf()
     }
@@ -160,15 +169,18 @@ object DriveService {
         var foundFiles: List<File>? = null
 
         imagesLinkStructure?.let { thisImageLinkStructure ->
+
             val charactersFolders =
                 thisImageLinkStructure.charactersFolder?.let { getFolderFiles(it) }
 
             val foundCharacterFolder =
                 charactersFolders?.find { compareNames(it.name, characterName) }
+
             val characterFolder = foundCharacterFolder?.id?.let { getFolderFiles(it) }
 
             val foundImageCharacterFolder =
                 characterFolder?.find { compareNames(it.name, nameFolder) }
+
             foundFiles = foundImageCharacterFolder?.let { getFolderFiles(it.id) }
 
         }
@@ -188,7 +200,7 @@ object DriveService {
 
         foundFile.addAll(response.files)
 
-        var token =  response.nextPageToken
+        var token = response.nextPageToken
 
         while (token != null) {
 
@@ -199,12 +211,12 @@ object DriveService {
                 .setFields("nextPageToken,files(id, name,webContentLink)")
                 .execute()
 
-            token =  response.nextPageToken
+            token = response.nextPageToken
             foundFile.addAll(response.files)
 
         }
 
-        return  foundFile
+        return foundFile
     }
 
 
@@ -212,7 +224,7 @@ object DriveService {
         FoundItem(it.name, it.webContentLink)
     }
 
-    fun compareNames(nameFile: String, searchName: String): Boolean {
+    override fun compareNames(nameFile: String, searchName: String): Boolean {
         return nameFile.contains(searchName, true) ||
                 nameFile.replace(" ", "").contains(
                     searchName.replace(" ", ""), true

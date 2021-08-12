@@ -5,15 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreSkill
-import com.gno.erbs.erbs.stats.ui.base.BaseAdapter
-import com.gno.erbs.erbs.stats.ui.top.RankAdapter
+import com.gno.erbs.erbs.stats.ui.base.BaseListAdapter
 
-class SkillsAdapter : BaseAdapter<CoreSkill, RecyclerView.ViewHolder>(SkillsDiffUtilCallback()) {
+class SkillsAdapter : BaseListAdapter<CoreSkill, RecyclerView.ViewHolder>(SkillsDiffUtilCallback()) {
 
     companion object {
         private const val TYPE_LOADING = 1
@@ -74,11 +73,10 @@ class SkillsAdapter : BaseAdapter<CoreSkill, RecyclerView.ViewHolder>(SkillsDiff
                 rankHolder.skillType.text = item.type
                 rankHolder.skillDescription.text = item.description
 
-                Glide.with(rankHolder.skillImage.context).load(item.image)
-                    .placeholder(createShimmer(rankHolder.skillImage.context))
-                    .error(R.drawable.loading_image)
-                    .circleCrop()
-                    .into(rankHolder.skillImage)
+                rankHolder.loading.visibility = View.VISIBLE
+                rankHolder.skillImage.visibility = View.GONE
+
+                loadImage(rankHolder.skillImage,item.image,rankHolder.loading)
 
             }
 
@@ -91,7 +89,7 @@ class SkillsAdapter : BaseAdapter<CoreSkill, RecyclerView.ViewHolder>(SkillsDiff
             var skillType: TextView = itemView.findViewById(R.id.type)
             var skillDescription: TextView = itemView.findViewById(R.id.description)
             val skillImage: ImageView = itemView.findViewById(R.id.image)
-            //var skillVideo: YouTubePlayerView = itemView.findViewById(R.id.video)
+            val loading: ShimmerFrameLayout =  itemView.findViewById(R.id.loading)
 
         }
 

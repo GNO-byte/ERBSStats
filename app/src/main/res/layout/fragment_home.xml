@@ -8,7 +8,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="200dp"
         app:elevation="0dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -26,17 +26,26 @@
                 android:gravity="bottom"
                 android:orientation="vertical">
 
+                <FrameLayout
+                    style="@style/Theme.ERBSStats.ThemeOverlayLineFomTwoSides"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
                 <TextView
+                    android:id="@+id/head"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_gravity="center_horizontal|bottom"
                     android:text="What you looking for?"
                     android:textAppearance="@style/Theme.ERBSStats.TitleTextAppearance" />
 
+                </FrameLayout>
+
+
                 <androidx.appcompat.widget.Toolbar
+                    style="@style/Theme.ERBSStats.ThemeOverlayBottomBorder"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
-                    style="@style/Theme.ERBSStats.ThemeOverlayBottomBorder"
                     android:paddingTop="16dp"
                     app:contentInsetLeft="0dp"
                     app:contentInsetStart="0dp"
@@ -52,9 +61,9 @@
                         <fragment
                             android:id="@+id/search_dialog"
                             android:name="com.gno.erbs.erbs.stats.ui.search.SearchDialogFragment"
-                            tools:layout="@layout/fragment_search_dialog"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            tools:layout="@layout/fragment_search_dialog" />
 
                     </LinearLayout>
 
@@ -75,12 +84,14 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewMenu"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:overScrollMode="never"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             app:layoutManager="GridLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:spanCount="2"

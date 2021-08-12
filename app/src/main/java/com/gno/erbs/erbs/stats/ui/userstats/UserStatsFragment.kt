@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
-import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentUserStatsBinding
 import com.gno.erbs.erbs.stats.repository.DataRepository
 import com.gno.erbs.erbs.stats.ui.base.BaseFragment
@@ -58,19 +56,16 @@ class UserStatsFragment : BaseFragment() {
             viewModel.userStatsLiveData.observe(viewLifecycleOwner) { usersStats ->
                 binding.name.text = usersStats[0].nickname
 
-                binding.loadingName.visibility = View.GONE
                 binding.name.visibility = View.VISIBLE
+                binding.loadingName.visibility = View.GONE
 
-                context?.let { thisContext ->
-                    Glide.with(thisContext).load(usersStats[0].topCharacterHalfImageWebLink)
-                        .placeholder(createShimmer(thisContext))
-                        .error(R.drawable.loading_image)
-                        .into(binding.topCharacterImage)
 
-                    binding.loadingImage.visibility = View.GONE
-                    binding.topCharacterImage.visibility = View.VISIBLE
+                loadImage(
+                    binding.topCharacterImage,
+                    usersStats[0].topCharacterHalfImageWebLink,
+                    binding.loadingImage
+                )
 
-                }
 
             }
 

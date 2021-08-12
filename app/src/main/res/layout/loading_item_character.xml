@@ -6,12 +6,15 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:shimmer_auto_start="true"
-    app:shimmer_colored="false"
-    android:layout_margin="8dp">
+    app:shimmer_colored="false">
 
-        <View
-            style="@style/Theme.ERBSStats.Loading"
-            android:layout_width="80dp"
-            android:layout_height="80dp" />
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/character_guide_image"
+        style="@style/Theme.ERBSStats.Loading"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_margin="8dp"
+        android:contentDescription="loading"
+        app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage" />
 
 </com.facebook.shimmer.ShimmerFrameLayout>
