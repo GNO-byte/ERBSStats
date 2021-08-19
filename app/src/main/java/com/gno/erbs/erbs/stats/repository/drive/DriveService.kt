@@ -30,7 +30,6 @@ object DriveService : ImageService {
 
     operator fun invoke(context: Context): DriveService {
 
-
         coreImageLinkStructureId = KeysHelper.getDriveCoreImageLinkStructureId(context)
         coreCharactersId = KeysHelper.getDriveCoreCharactersId(context)
 
@@ -161,6 +160,8 @@ object DriveService : ImageService {
         val itemImageFiles = imagesLinkStructure?.equipment?.let { getFolderFiles(it) }
         return if (itemImageFiles != null) createFoundItems(itemImageFiles) else listOf()
     }
+
+    override suspend fun getDataVersion() = 0
 
     ////////
 

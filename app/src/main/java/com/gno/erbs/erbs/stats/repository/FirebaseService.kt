@@ -3,6 +3,7 @@ package com.gno.erbs.erbs.stats.repository
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreCharacter
 import com.gno.erbs.erbs.stats.model.firebase.FolderContent
 import com.gno.erbs.erbs.stats.repository.drive.CharacterImageType
+import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.component1
@@ -11,23 +12,25 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.Reader
+import kotlin.coroutines.resumeWithException
 
 
 object FirebaseService : ImageService {
 
     var storageRef = FirebaseStorage.getInstance().reference
+    var fireRealtimeDatabase = FirebaseDatabase.getInstance()
+
     override var coreCharacters: List<CoreCharacter>? = null
 
     ///////https://stackoverflow.com/questions/67918324/firebase-cloud-firestore-security-rules-only-allow-read-not-write
 
     init {
-
-
         GlobalScope.launch {
             initCoreCharacters()
         }
@@ -38,6 +41,7 @@ object FirebaseService : ImageService {
         return getFolderContent(listRef)
 
     }
+
 
     private suspend fun getFolderContent(storageReference: StorageReference): FolderContent {
         val folders = mutableListOf<StorageReference>()
@@ -57,6 +61,7 @@ object FirebaseService : ImageService {
         return FolderContent(folders, files)
 
     }
+
 
     suspend fun initCoreCharacters() {
 
@@ -81,6 +86,36 @@ object FirebaseService : ImageService {
         return s.toString()
     }
 
+    override suspend fun getDataVersion(): Int? {
+
+        val storageVersionReference = fireRealtimeDatabase.getReference("storageVersion")
+        var version: Int? = null
+
+        storageVersionReference.awaitQueryValue<Long>()
+            .let {
+                version = it.toInt()
+            }
+
+        return version
+
+
+    }
+
+    private suspend inline fun <reified T> Query.awaitQueryValue(): T =
+        suspendCancellableCoroutine { continuation ->
+            addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    (snapshot.value as T).let {
+                        continuation.resume(it) { println("load version cancelled") }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    continuation.resumeWithException(Throwable(error.message))
+                }
+            })
+        }
+
 
     override suspend fun getCharacterImageMiniLink(): List<FoundItem> {
 
@@ -103,7 +138,7 @@ object FirebaseService : ImageService {
             )
         }
 
-         val a = foundCharacterImage
+        val a = foundCharacterImage
         return if (foundCharacterImage != null) createFoundItem(foundCharacterImage) else null
     }
 
@@ -163,7 +198,6 @@ object FirebaseService : ImageService {
         return createFoundItems(imageMiniFolder.files)
     }
 
-
     ////////////////////////
 
 
@@ -174,11 +208,10 @@ object FirebaseService : ImageService {
 
         val charactersFolders = getFolderContent("/ERBS/Character").folders
         val characterFolder = charactersFolders.find { compareNames(it.name, characterName) }
-        val foundFolder = characterFolder?.let{getFolderContent("${it.path}/$nameFolder")}
+        val foundFolder = characterFolder?.let { getFolderContent("${it.path}/$nameFolder") }
         return foundFolder ?: FolderContent()
 
     }
-
 
     override fun compareNames(nameFile: String, searchName: String): Boolean {
         return nameFile.contains(searchName, true) ||
@@ -187,11 +220,12 @@ object FirebaseService : ImageService {
                 )
     }
 
-    private suspend fun createFoundItem(storageReference: StorageReference): FoundItem =
-        FoundItem(storageReference.name, storageReference.downloadUrl.await().toString())
+    private fun createFoundItem(storageReference: StorageReference): FoundItem =
+        FoundItem(storageReference.name, null,storageReference)
 
-    private suspend fun createFoundItems(driveFiles: List<StorageReference>): List<FoundItem> =
+    private fun createFoundItems(driveFiles: List<StorageReference>): List<FoundItem> =
         driveFiles.map {
-            FoundItem(it.name, null,it)
+            FoundItem(it.name, null, it)
         }
+
 }

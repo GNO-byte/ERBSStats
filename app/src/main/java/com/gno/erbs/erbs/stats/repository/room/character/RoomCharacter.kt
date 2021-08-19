@@ -1,13 +1,15 @@
-package com.gno.erbs.erbs.stats.repository.room
+package com.gno.erbs.erbs.stats.repository.room.character
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 
 
 @Entity
 data class RoomCharacter(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
+    val time: Date? = null,
     val attackPower: Double,
     val attackSpeed: Double,
     val attackSpeedLimit: Double,
@@ -27,8 +29,5 @@ data class RoomCharacter(
     val sightRange: Int,
     val spRegen: Double,
     val uiHeight: Double,
-
-    //additional param
-    var iconWebLink: String?
-
+    val iconWebLink: String?,
     )

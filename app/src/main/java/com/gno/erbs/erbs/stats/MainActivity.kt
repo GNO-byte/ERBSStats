@@ -2,6 +2,7 @@ package com.gno.erbs.erbs.stats
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.FrameLayout
@@ -16,7 +17,14 @@ import com.gno.erbs.erbs.stats.repository.FirebaseService
 import com.gno.erbs.erbs.stats.ui.search.SearchDialogFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 

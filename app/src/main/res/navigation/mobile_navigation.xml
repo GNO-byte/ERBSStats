@@ -83,5 +83,14 @@
             android:id="@+id/action_nav_search_to_nav_user_stats"
             app:destination="@id/nav_user_stats" />
     </fragment>
+    <fragment
+        android:id="@+id/initFragment"
+        android:name="com.gno.erbs.erbs.stats.ui.init.InitFragment"
+        android:label="fragment_init"
+        tools:layout="@layout/fragment_init" >
+        <action
+            android:id="@+id/action_initFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
 
 </navigation>

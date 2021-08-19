@@ -6,12 +6,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.matches.UserGame
 import com.gno.erbs.erbs.stats.ui.base.BaseListAdapter
-import com.google.android.material.imageview.ShapeableImageView
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -116,51 +114,51 @@ class MatchesAdapter(
 
                 //companyImage
 
-                     loadImage(
-                        rankHolder.item1,
-                        item.equipment.item1WebLink,
-                        rankHolder.loadingItem1
-                    )
+                loadImage(
+                    rankHolder.item1,
+                    item.equipment.item1WebLink,
+                    rankHolder.loadingItem1
+                )
 
 
-           //     if (item.equipment.item2WebLink.isNotEmpty()) {
-                    loadImage(
-                        rankHolder.item2,
-                        item.equipment.item2WebLink,
-                        rankHolder.loadingItem2
-                    )
+                //     if (item.equipment.item2WebLink.isNotEmpty()) {
+                loadImage(
+                    rankHolder.item2,
+                    item.equipment.item2WebLink,
+                    rankHolder.loadingItem2
+                )
                 //     }
 
                 //if (item.equipment.item3WebLink.isNotEmpty()) {
-                    loadImage(
-                        rankHolder.item3,
-                        item.equipment.item3WebLink,
-                        rankHolder.loadingItem3
-                    )
+                loadImage(
+                    rankHolder.item3,
+                    item.equipment.item3WebLink,
+                    rankHolder.loadingItem3
+                )
                 //}
 
                 //if (item.equipment.item4WebLink.isNotEmpty()) {
-                    loadImage(
-                        rankHolder.item4,
-                        item.equipment.item4WebLink,
-                        rankHolder.loadingItem4
-                    )
+                loadImage(
+                    rankHolder.item4,
+                    item.equipment.item4WebLink,
+                    rankHolder.loadingItem4
+                )
                 //}
 
                 //if (item.equipment.item5WebLink.isNotEmpty()) {
-                    loadImage(
-                        rankHolder.item5,
-                        item.equipment.item5WebLink,
-                        rankHolder.loadingItem5
-                    )
+                loadImage(
+                    rankHolder.item5,
+                    item.equipment.item5WebLink,
+                    rankHolder.loadingItem5
+                )
                 //}
 
                 //if (item.equipment.item6WebLink.isNotEmpty()) {
-                    loadImage(
-                        rankHolder.item6,
-                        item.equipment.item6WebLink,
-                        rankHolder.loadingItem6
-                    )
+                loadImage(
+                    rankHolder.item6,
+                    item.equipment.item6WebLink,
+                    rankHolder.loadingItem6
+                )
                 //}
 
             }

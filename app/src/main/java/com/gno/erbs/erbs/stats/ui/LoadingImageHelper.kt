@@ -15,7 +15,7 @@ import com.gno.erbs.erbs.stats.R
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.imageview.ShapeableImageView
 
-object LoadingImageService {
+object LoadingImageHelper {
 
 
     fun loadImage(

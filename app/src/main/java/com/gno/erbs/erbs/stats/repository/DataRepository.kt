@@ -3,8 +3,6 @@ package com.gno.erbs.erbs.stats.repository
 import android.content.Context
 import com.gno.erbs.erbs.stats.model.CharacterStats
 import com.gno.erbs.erbs.stats.model.TeamMode
-import com.gno.erbs.erbs.stats.model.aesop.item.Item
-import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreCharacter
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreSkill
 import com.gno.erbs.erbs.stats.model.erbs.Response
 import com.gno.erbs.erbs.stats.model.erbs.characters.Character
@@ -17,9 +15,18 @@ import com.gno.erbs.erbs.stats.model.erbs.rank.Rank
 import com.gno.erbs.erbs.stats.model.erbs.userstats.CharacterStat
 import com.gno.erbs.erbs.stats.model.erbs.userstats.UserStats
 import com.gno.erbs.erbs.stats.repository.drive.CharacterImageType
+import com.gno.erbs.erbs.stats.repository.room.Converter
+import com.gno.erbs.erbs.stats.repository.room.RoomService
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.Query
+import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.coroutines.resumeWithException
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KProperty
 
@@ -27,15 +34,50 @@ object DataRepository {
 
     private val aesopService = AesopService()
     private var erbsService: ERBSService? = null
-    private var imageService: ImageService? = null
+    private var imageService: ImageService = FirebaseService
     private val defaultValue = DefaultValue
+    private var roomService: RoomService? = null
 
-    operator fun invoke(context: Context): DataRepository {
+    suspend operator fun invoke(context: Context): DataRepository {
         erbsService = ERBSService(context)
-        imageService = FirebaseService
-        //imageService = DriveService(context)
+        roomService = RoomService(context)
+
+        initData(context)
+
         return this
     }
+
+    private suspend fun initData(context: Context) {
+
+        val dataVersion = DefaultValue.getDataVersion(context)
+        val exchangeDataVersion = imageService.getDataVersion()
+        if (dataVersion != exchangeDataVersion) {
+            DefaultValue.setDataVersion(context, exchangeDataVersion ?: 0)
+            updateCharacters()
+            updateCoreCharacters()
+        }
+    }
+
+    private suspend fun updateCharacters() {
+
+        val characters = erbsService?.getCharacters()?.result ?: listOf()
+        addIconWebLink(characters, "iconWebLink", "name")
+
+        roomService?.addCharacters(characters.map {
+            Converter.conv(it)
+        })
+
+    }
+
+    private fun updateCoreCharacters() {
+
+        roomService?.let { thisRoomService ->
+            imageService.coreCharacters?.mapNotNull { Converter.conv(it) }?.let {
+                thisRoomService.addCoreCharacters(it)
+            }
+        }
+    }
+
 
     fun setDefaultValues(context: Context) {
         defaultValue
@@ -67,16 +109,12 @@ object DataRepository {
         defaultValue.setUserNumber(context, value)
     }
 
-//    suspend fun getItem(itemId: Int): Item {
-//        return aesopService.getItem(itemId)[0]
-//    }
 
-    suspend fun getCharacters(withIconWebLink: Boolean = false): List<Character> {
-
-        val characters = erbsService?.getCharacters()?.result ?: listOf()
-        if (withIconWebLink) addIconWebLink(characters, "iconWebLink", "name")
-        return characters
-
+    fun getCharacters(): List<Character> {
+        var roomCharacters = roomService?.getCharacters()
+        return roomCharacters?.let { thisRoomCharacters ->
+            thisRoomCharacters.map { Converter.conv(it) }
+        } ?: listOf()
     }
 
     suspend fun getUserStats(
@@ -116,17 +154,18 @@ object DataRepository {
 
     private suspend fun addTopCharacterImage(userStats: List<UserStats>) {
 
-        imageService?.let { thisImageService ->
+        imageService.let { thisImageService ->
             userStats.forEach { userStat ->
                 val topCharacterName =
                     userStat.characterStats.maxByOrNull {
-                        it.usages ?: 0 }?.characterName
+                        it.usages ?: 0
+                    }?.characterName
 
                 topCharacterName?.let { characterName ->
                     userStat.topCharacterHalfImageWebLink = thisImageService.getCharacterImageFiles(
                         CharacterImageType.HALF,
                         characterName
-                    )?.getWebLink()
+                    )?.getWebLink(roomService)
                 }
 
             }
@@ -160,12 +199,12 @@ object DataRepository {
             searchTierRankImageMap += searchName to null
         }
 
-        val files = imageService?.getRankTierFile(*mmrSet.toIntArray())
+        val files = imageService.getRankTierFile(*mmrSet.toIntArray())
 
         searchTierRankImageMap.forEach { mapEntry ->
-            searchTierRankImageMap[mapEntry.key] = files?.find { driveFile ->
-                imageService?.compareNames(driveFile.name, mapEntry.key) ?: false
-            }?.getWebLink()
+            searchTierRankImageMap[mapEntry.key] = files.find { driveFile ->
+                imageService.compareNames(driveFile.name, mapEntry.key) ?: false
+            }?.getWebLink(roomService)
 
         }
 
@@ -200,36 +239,11 @@ object DataRepository {
             )
             charactersStats.addAll(it.characterStats)
         }
-        //addImageCharacterStats(charactersStats)
+
         addIconWebLink(charactersStats, "WebLinkImage", "characterName")
         return charactersStats
     }
 
-//    private fun addImageCharacterStats(characterStats: MutableList<CharacterStat>) {
-//
-//        val characterSearchMap = mutableMapOf<String, String?>()
-//
-//        characterStats.forEach { characterStats ->
-//            characterStats.characterName?.let {
-//                characterSearchMap += it to null
-//            }
-//        }
-//
-//        val files = DriveService.getCharacterImageFiles(
-//            CharacterImageType.MINI,
-//            *characterSearchMap.keys.toTypedArray()
-//        )
-//
-//        characterSearchMap.forEach { map ->
-//            characterSearchMap[map.key] = files.first { driveFile ->
-//                driveService?.compareNames(driveFile.name, map.key) ?: false
-//            }.webContentLink
-//        }
-//
-//        characterStats.forEach { characterStats ->
-//            characterStats.WebLinkImage = characterSearchMap[characterStats.characterName]
-//        }
-//    }
 
     suspend fun getUserGames(
         userNumber: String,
@@ -237,8 +251,8 @@ object DataRepository {
         nextPage: String
     ): Response<List<UserGame>>? {
 
-        val response = erbsService?.getUserGamesResponse(userNumber,nextPage)
-        val userGames =response?.result ?: listOf()
+        val response = erbsService?.getUserGamesResponse(userNumber, nextPage)
+        val userGames = response?.result ?: listOf()
         addAdditionalParamUserGames(userGames, mmr)
 
         addCharacterWebLink(userGames)
@@ -249,9 +263,9 @@ object DataRepository {
     }
 
 
-    private suspend fun addCharacterWebLink(userGames: List<UserGame>) {
+    private fun addCharacterWebLink(userGames: List<UserGame>) {
 
-        val characters = getCharacters(true)
+        val characters = getCharacters()
 
         userGames.forEach { userGame ->
             userGame.characterImageWebLink =
@@ -261,7 +275,7 @@ object DataRepository {
 
     private suspend fun addItemWeaponTypeWebLink(userGames: List<UserGame>) {
         val itemsWeapon = erbsService?.getItemsWeapon()?.result
-        val itemWeaponImage = imageService?.getWeaponTypeFiles()
+        val itemWeaponImage = imageService.getWeaponTypeFiles()
 
         val equipmentList = mutableListOf<Int>()
 
@@ -289,9 +303,9 @@ object DataRepository {
                 userGame.weaponTypeImageWebLink = null
             } else {
                 try {
-                    userGame.weaponTypeImageWebLink = itemWeaponImage?.first { driveFile ->
-                        imageService?.compareNames(driveFile.name, findType) ?: false
-                    }?.getWebLink()
+                    userGame.weaponTypeImageWebLink = itemWeaponImage.first { driveFile ->
+                        imageService.compareNames(driveFile.name, findType)
+                    }.getWebLink(roomService)
                 } catch (e: Exception) {
                     Timber.e(e)
                 }
@@ -301,7 +315,7 @@ object DataRepository {
         }
     }
 
-    suspend fun addItemWebLink(userGames: List<UserGame>) {
+    private suspend fun addItemWebLink(userGames: List<UserGame>) {
 
         val equipmentLinks = mutableMapOf<Int, String?>()
 
@@ -314,9 +328,9 @@ object DataRepository {
             equipmentLinks += userGame.equipment.item6Id to null
         }
 
-        val itemImage = imageService?.getItemImage()
+        val itemImage = imageService.getItemImage()
 
-        itemImage?.let {
+        itemImage.let {
             fillItemsImage(equipmentLinks, it, erbsService?.getItemsWeapon()?.result)
             fillItemsImage(equipmentLinks, it, erbsService?.getItemsArmor()?.result)
             fillItemsImage(equipmentLinks, it, erbsService?.getItemsSpecial()?.result)
@@ -357,195 +371,15 @@ object DataRepository {
             val foundItemCode = foundItem.code ?: 0
 
             if (foundItemName != "" && foundItemCode != 0) {
-                imageService?.let { thisImageService ->
+                imageService.let { thisImageService ->
                     val findDriveFile = itemsImages.find { foundImage ->
                         thisImageService.compareNames(foundImage.name, foundItemName)
                     }
-                    equipmentLinks += foundItemCode to findDriveFile?.getWebLink()
+                    equipmentLinks += foundItemCode to findDriveFile?.getWebLink(roomService)
                 }
             }
         }
-
-/* deprecate
-//        val foundItemsType = foundItems.map {
-//            it?.weaponType
-//        }.toSet().filterNotNull()
-
-//        foundItemsType.forEach { foundItemType ->
-//            var driveIdWeapon: String? = null
-//            try {
-//                driveIdWeapon = driveService?.imagesLinkStructure?.weapon?.found { weapon ->
-//                    weapon.weaponType == foundItemType
-//                }?.id
-//
-//            } catch (e: java.lang.Exception) {
-//                Timber.e(e)
-//            }
-
-//            driveIdWeapon?.let { id ->
-//                val folderfiles = driveService?.getFolderFiles(id)
-//                val foundItemsWithType = foundItems.filter { foundItem ->
-//                    foundItem.weaponType == foundItemType
-//                }
-//
-//                foundItemsWithType.forEach { foundItemWithType ->
-//                    foundItemWithType.name?.let { nameItem ->
-//                        foundItemWithType.code?.let { code ->
-//                            try {
-//                                val findDriveFile = folderfiles?.first { driveFile ->
-//                                    driveFile.name.contains(nameItem, ignoreCase = true)
-//                                }
-//                                equipmentLinks += code to findDriveFile?.webContentLink
-//                                val v3 = equipmentLinks
-//                            } catch (e: Exception) {
-//                                Timber.e(e)
-//                            }
-//
-//                        }
-//
-//                    }
-//                }
-//
-//            }
-//        }*/
-
     }
-
-/* deprecate
-//    private suspend fun fillItemsArmor(
-//        equipmentLinks: MutableMap<Int, String?>,
-//        itemsImages: List<FoundItem>
-//    ) {
-//
-//        val itemsArmor = erbsService?.getItemsArmor()?.result
-//        val foundItems = mutableListOf<ItemArmor?>()
-//
-//        equipmentLinks.forEach { equipmentLink ->
-//            itemsArmor?.let { thisItemArmor ->
-//                foundItems.add(thisItemArmor.find { itemsArmor -> itemsArmor.code == equipmentLink.key })
-//
-//            }
-//        }
-//
-//        foundItems.filterNotNull()
-//
-//        foundItems.forEach { foundItem ->
-//            if (foundItem?.name != null && foundItem.code != null) {
-//                driveService?.let { thisDriveService ->
-//                    val findDriveFile = itemsImages.find {
-//                        thisDriveService.compareNames(it.name, foundItem.name)
-//                    }
-//                    equipmentLinks += foundItem.code to findDriveFile?.webLink
-//                }
-//
-//            }
-//        }
-//
-//        val foundItemsType = foundItems.map {
-//            it.armorType
-//        }.toSet().filterNotNull()
-//
-//        foundItemsType.forEach { foundItemType ->
-//            var driveIdArmor: String? = null
-//            try {
-//                driveIdArmor = driveService?.imagesLinkStructure?.armor?.first { armor ->
-//                    armor.armorType == foundItemType
-//                }?.id
-//
-//            } catch (e: java.lang.Exception) {
-//                Timber.e(e)
-//            }
-//
-//            driveIdArmor?.let { id ->
-//                val folderfiles = driveService?.getFolderFiles(id)
-//                val foundItemsWithType = foundItems.filter { foundItem ->
-//                    foundItem.armorType == foundItemType
-//                }
-//
-//                foundItemsWithType.forEach { foundItemWithType ->
-//                    foundItemWithType.name?.let { nameItem ->
-//                        foundItemWithType.code?.let { code ->
-//                            try {
-//                                val v = foundItemType
-//                                val v2 = driveIdArmor
-//                                val findDriveFile = folderfiles?.first { driveFile ->
-//                                    driveFile.name.contains(nameItem, true)
-//                                            || driveFile.name.replace(" ", "")
-//                                        .contains(nameItem.replace(" ", ""), true)
-//                                }
-//                                equipmentLinks += code to findDriveFile?.webContentLink
-//                                val v3 = equipmentLinks
-//                            } catch (e: Exception) {
-//                                Timber.e(e)
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//
-//    }
-//
-//    private suspend fun fillItemsSpecial(
-//        equipmentLinks: MutableMap<Int, String?>,
-//        itemImage: List<FoundItem>?
-//    ) {
-//
-//        val itemsSpecial = erbsService?.getItemsSpecial()?.result
-//        val foundItems = mutableListOf<ItemSpecial>()
-//
-//        equipmentLinks.forEach { equipmentLink ->
-//            try {
-//                itemsSpecial?.let { thisItemSpecial ->
-//                    foundItems.add(thisItemSpecial.first { itemsSpecial -> itemsSpecial.code == equipmentLink.key })
-//                }
-//            } catch (e: Exception) {
-//                Timber.e(e)
-//            }
-//        }
-//
-//        val foundItemsGrade = foundItems.map {
-//            it.itemGrade
-//        }.toSet().filterNotNull()
-//
-//        foundItemsGrade.forEach { foundItemGrade ->
-//            var driveIdSpecial: String? = null
-//            try {
-//                driveIdSpecial =
-//                    driveService?.imagesLinkStructure?.special?.first { special ->
-//                        special.itemGrade == foundItemGrade
-//                    }?.id
-//
-//            } catch (e: java.lang.Exception) {
-//                Timber.e(e)
-//            }
-//
-//            driveIdSpecial?.let { id ->
-//                val folderfiles = driveService?.getFolderFiles(id)
-//                val foundItemsWithType = foundItems.filter { foundItem ->
-//                    foundItem.itemGrade == foundItemGrade
-//                }
-//
-//                foundItemsWithType.forEach { foundItemWithType ->
-//                    foundItemWithType.name?.let { nameItem ->
-//                        foundItemWithType.code?.let { code ->
-//                            try {
-//                                val v = foundItemGrade
-//                                val v2 = driveIdSpecial
-//                                val findDriveFile = folderfiles?.first { driveFile ->
-//                                    driveFile.name.contains(nameItem, ignoreCase = true)
-//                                }
-//                                equipmentLinks += code to findDriveFile?.webContentLink
-//                                val v3 = equipmentLinks
-//                            } catch (e: Exception) {
-//                                Timber.e(e)
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-*/
 
     private fun addAdditionalParamUserGames(userGames: List<UserGame>, lastMmr: Int) {
 
@@ -575,21 +409,21 @@ object DataRepository {
 
     suspend fun getCharacter(name: String): List<Character>? {
         return erbsService?.getCharacters()?.result?.filter { character ->
-            imageService?.compareNames(character.name, name) ?: (character.name == name)
+            imageService.compareNames(character.name, name) ?: (character.name == name)
         }
     }
 
     suspend fun getCharacterWeaponTypes(code: Int): List<WeaponType> {
         val weaponTypes =
             erbsService?.getCharacterWeaponTypes()?.result?.filter { it.characterCode == code }
-        val weaponTypeFiles = imageService?.getWeaponTypeFiles()
+        val weaponTypeFiles = imageService.getWeaponTypeFiles()
 
         weaponTypes?.forEach { weaponType ->
             weaponType.mastery?.let { mastery ->
                 try {
-                    weaponType.weaponTypeImageWebLink = weaponTypeFiles?.first { driveFile ->
-                        imageService?.compareNames(driveFile.name, mastery) ?: false
-                    }?.getWebLink()
+                    weaponType.weaponTypeImageWebLink = weaponTypeFiles.first { driveFile ->
+                        imageService.compareNames(driveFile.name, mastery) ?: false
+                    }?.getWebLink(roomService)
                 } catch (e: java.lang.Exception) {
                     Timber.e(e)
                 }
@@ -637,12 +471,12 @@ object DataRepository {
             searchTierRankImageMap += searchName to null
         }
 
-        val files = imageService?.getRankTierFile(*mmrSet.toIntArray())
+        val files = imageService.getRankTierFile(*mmrSet.toIntArray())
 
         searchTierRankImageMap.forEach { mapEntry ->
             searchTierRankImageMap[mapEntry.key] = files?.find { driveFile ->
-                imageService?.compareNames(driveFile.name, mapEntry.key) ?: false
-            }?.getWebLink()
+                imageService.compareNames(driveFile.name, mapEntry.key) ?: false
+            }?.getWebLink(roomService)
 
         }
 
@@ -665,20 +499,19 @@ object DataRepository {
         }
     }
 
-    suspend fun  addCharacterHalfWebLink(characterStats: CharacterStats) {
+    suspend fun addCharacterHalfWebLink(characterStats: CharacterStats) {
         characterStats.name
-        imageService?.let { thisImageService ->
+        imageService.let { thisImageService ->
             characterStats.characterImageHalfWebLink = thisImageService.getCharacterImageFiles(
                 CharacterImageType.HALF,
                 characterStats.name
-            )?.getWebLink()
+            )?.getWebLink(roomService)
         }
-
 
     }
 
-    fun getCoreCharacter(code: Int): CoreCharacter? {
-        return imageService?.coreCharacters?.find { it.code == code }
+    fun getCoreCharacter(code: Int) = roomService?.let { thisRoomService ->
+        thisRoomService.getCoreCharacters()?.map { Converter.conv(it) }?.find { it.code == code }
     }
 
     suspend fun getSkills(code: Int): List<CoreSkill>? {
@@ -704,7 +537,7 @@ object DataRepository {
                             driveFile.name,
                             key
                         )
-                    }?.getWebLink()
+                    }?.getWebLink(roomService)
                 }
             }
         }
@@ -723,7 +556,7 @@ object DataRepository {
 
     suspend fun getUser(searchString: String): List<User> {
 
-        var foundUsers = mutableListOf<User>()
+        val foundUsers = mutableListOf<User>()
 
         try {
             erbsService?.getUserResponse(searchString)?.result?.let { foundUsers.add(it) }
@@ -735,28 +568,26 @@ object DataRepository {
 
     }
 
-
     /////
-
 
     private suspend fun <T : Any> addIconWebLink(
         items: List<T>,
         namePropertyImageLink: String,
         namePropertyName: String
     ) {
-        imageService?.let { thisImageService ->
+        imageService.let { thisImageService ->
             val miniImageItems = thisImageService.getCharacterImageMiniLink()
             items.forEach { item ->
 
                 val foundName = getInstanceProperty<String?>(item, namePropertyName)
 
-                foundName?.let{ thisFoundName ->
+                foundName?.let { thisFoundName ->
                     val link = miniImageItems.find {
                         thisImageService.compareNames(
                             it.name,
                             thisFoundName
                         )
-                    }?.getWebLink()
+                    }?.getWebLink(roomService)
                     setInstanceProperty(item, namePropertyImageLink, link)
 
                 }
@@ -765,12 +596,12 @@ object DataRepository {
         }
     }
 
-    fun <R> getInstanceProperty(instance: Any, propertyName: String): R {
+    private fun <R> getInstanceProperty(instance: Any, propertyName: String): R {
         val property = instance::class.members.first { it.name == propertyName } as KProperty<*>
-        return property.getter.call(instance) as R
+        return property.getter.call(instance)  as R
     }
 
-    fun <R> setInstanceProperty(instance: Any, propertyName: String, value: R) {
+    private fun <R> setInstanceProperty(instance: Any, propertyName: String, value: R) {
         val property = instance::class.members.first { it.name == propertyName }
         if (property is KMutableProperty<*>) {
             property.setter.call(instance, value)

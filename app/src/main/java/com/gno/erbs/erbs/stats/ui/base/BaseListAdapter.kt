@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestListener
 import com.facebook.shimmer.ShimmerDrawable
-import com.gno.erbs.erbs.stats.ui.LoadingImageService
+import com.gno.erbs.erbs.stats.ui.LoadingImageHelper
 
 abstract class BaseListAdapter<T, VH : RecyclerView.ViewHolder>(diffCallback: DiffUtil.ItemCallback<T>) :
     ListAdapter<T, VH>(diffCallback) {
@@ -17,19 +17,19 @@ abstract class BaseListAdapter<T, VH : RecyclerView.ViewHolder>(diffCallback: Di
     protected fun createGlideListener(
         image: ImageView,
         loading: View
-    ): RequestListener<Drawable> = LoadingImageService.createGlideListener(image, loading)
+    ): RequestListener<Drawable> = LoadingImageHelper.createGlideListener(image, loading)
 
 
     fun loadImage(
         view: ImageView, webLink: String?,
         loading: View
     ) {
-        LoadingImageService.loadImage(view, webLink, loading)
+        LoadingImageHelper.loadImage(view, webLink, loading)
     }
 
 
     protected fun createShimmer(context: Context): ShimmerDrawable {
-        return LoadingImageService.createShimmer(context)
+        return LoadingImageHelper.createShimmer(context)
     }
 
 }

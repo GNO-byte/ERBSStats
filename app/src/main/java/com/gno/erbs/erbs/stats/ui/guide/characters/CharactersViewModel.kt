@@ -12,7 +12,7 @@ class CharactersViewModel : BaseViewModel() {
 
     init {
         scope.launch {
-            charactersLiveData.postValue(DataRepository.getCharacters(true))
+            charactersLiveData.postValue(DataRepository.getCharacters())
         }
     }
 

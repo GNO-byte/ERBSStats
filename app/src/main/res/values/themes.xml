@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <attr format="reference" name="searchViewStyle"/>
-    <attr format="reference" name="textColorPrimary"/>
+    <attr name="searchViewStyle" format="reference" />
+    <attr name="textColorPrimary" format="reference" />
 
     <!-- Base application theme. -->
     <style name="Theme.ERBSStats" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -17,7 +17,7 @@
         <item name="colorAccent">@color/goldenrod</item>
 
         <item name="android:textColorSecondary">@color/white</item>
-<!--        <item name="android:textColorHint">@color/goldenrod</item>-->
+        <!--        <item name="android:textColorHint">@color/goldenrod</item>-->
 
         <item name="colorSurface">@color/bunker</item>
         <item name="colorOnSurface">@color/white</item>
@@ -40,15 +40,19 @@
 
     </style>
 
+    <style name="Theme.ERBSStats.SplashScreen" parent="Theme.ERBSStats">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+
     <style name="TabLayout.ERBSStats" parent="Widget.MaterialComponents.TabLayout">
         <item name="android:background">@null</item>
         <item name="tabIndicatorColor">?attr/colorSecondary</item>
         <item name="tabTextColor">@color/erbs_tabs_icon_color_selector</item>
     </style>
 
-<!--        <style name="AppBarLayout.ERBSStats" parent="Widget.MaterialComponents.AppBarLayout.Primary">-->
-<!--            <item name="android:background">@drawable/rounded_bottom_border</item>-->
-<!--        </style>-->
+    <!--        <style name="AppBarLayout.ERBSStats" parent="Widget.MaterialComponents.AppBarLayout.Primary">-->
+    <!--            <item name="android:background">@drawable/rounded_bottom_border</item>-->
+    <!--        </style>-->
 
 
     <style name="Theme.ERBSStats.NoActionBar">
@@ -61,8 +65,9 @@
 
     <style name="Theme.ERBSStats.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="Theme.ERBSStats.ThemeOverlayTopBorder"><item name="android:background">@drawable/rounded_top_border</item>
-        </style>
+    <style name="Theme.ERBSStats.ThemeOverlayTopBorder">
+        <item name="android:background">@drawable/rounded_top_border</item>
+    </style>
 
     <style name="Theme.ERBSStats.ThemeOverlayBottomBorder">
         <item name="android:background">@drawable/rounded_bottom_border</item>
@@ -86,23 +91,23 @@
         <item name="android:textColor">@color/goldenrod</item>
     </style>
 
-    <style name="Theme.ERBSStats.TitleTextAppearance" >
+    <style name="Theme.ERBSStats.TitleTextAppearance">
         <item name="android:textSize">32sp</item>
         <item name="android:textColor">@color/goldenrod</item>
     </style>
 
-    <style name="Theme.ERBSStats.ItemTeamMode" >
+    <style name="Theme.ERBSStats.ItemTeamMode">
         <item name="android:textSize">24sp</item>
         <item name="android:background">@color/goldenrod</item>
     </style>
 
 
-    <style name="Theme.ERBSStats.Loading" >
+    <style name="Theme.ERBSStats.Loading">
         <item name="android:background">@color/goldenrod</item>
     </style>
 
 
-    <style name="Theme.ERBSStats.Logo" >
+    <style name="Theme.ERBSStats.Logo">
         <item name="android:background">@color/white</item>
         <item name="android:src">@drawable/logo_black</item>
     </style>
