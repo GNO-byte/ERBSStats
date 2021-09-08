@@ -2,21 +2,27 @@ package com.gno.erbs.erbs.stats.ui.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.MenuObject
-import com.gno.erbs.erbs.stats.ui.base.BaseViewModel
+import com.gno.erbs.erbs.stats.repository.DataRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class HomeViewModel : BaseViewModel() {
+class HomeViewModel : ViewModel() {
     val menuObjectLiveData = MutableLiveData<List<MenuObject>?>()
+    val illustrationLiveData = MutableLiveData<List<String>?>()
 
     init {
-        scope.launch {
-            menuObjectLiveData.postValue(
-                listOf(
-                    MenuObject("Top", R.id.nav_top),
-                    MenuObject("Characters",R.id.nav_characters)
-                    ))
-        }
+            viewModelScope.launch(Dispatchers.IO) {
+                menuObjectLiveData.postValue(
+                    listOf(
+                        MenuObject("Top", R.id.nav_top),
+                        MenuObject("Characters", R.id.nav_characters)
+                    )
+
+                )
+                illustrationLiveData.postValue(DataRepository.getIllustrations())
+            }
     }
 }

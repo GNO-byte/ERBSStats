@@ -1,43 +1,49 @@
 package com.gno.erbs.erbs.stats.ui.search
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.gno.erbs.erbs.stats.model.FoundObject
 import com.gno.erbs.erbs.stats.model.FoundObjectsTypes
 import com.gno.erbs.erbs.stats.repository.DataRepository
-import com.gno.erbs.erbs.stats.ui.base.BaseViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SearchViewModel : BaseViewModel() {
+class SearchViewModel : ViewModel() {
 
-    val foundObjectLiveData = MutableLiveData<List<FoundObject>?>()
-
+    val foundObjectLiveData = MutableLiveData<List<FoundObject?>>()
+    private var downloadCompleted = false
 
     fun find(searchString: String) {
-
-        scope.launch {
-            val foundObjects = mutableListOf<FoundObject>()
-            foundObjects.findCharacter(searchString)
-            foundObjects.findPlayer(searchString)
-            foundObjectLiveData.postValue(foundObjects)
-        }
-    }
-
-    private suspend fun MutableList<FoundObject>.findCharacter(searchString: String) {
-        val foundCharacters = DataRepository.getCharacter(searchString)
-        foundCharacters?.let{ thisFoundCharacters ->
-            thisFoundCharacters.forEach {
-                this.add(FoundObject(it.name,FoundObjectsTypes.USER,it.code))
+        if (!downloadCompleted) {
+            viewModelScope.launch(Dispatchers.IO) {
+                val foundObjects = mutableListOf<FoundObject?>()
+                foundObjects.findCharacter(searchString)
+                foundObjects.findPlayer(searchString)
+                foundObjectLiveData.postValue(foundObjects)
+                downloadCompleted = true
             }
         }
     }
 
-    private suspend fun MutableList<FoundObject>.findPlayer(searchString: String) {
-        val users = DataRepository.getUser(searchString)
-        users.let{ thisUsers ->
-            thisUsers.forEach {
-                this.add(FoundObject(it.nickname,FoundObjectsTypes.PLAYER,it.userNum))
+    private fun MutableList<FoundObject?>.findCharacter(searchString: String) {
+        DataRepository.getCharacter(searchString)?.let { characters ->
+            characters.forEach {
+                this.add(FoundObject(it.name, FoundObjectsTypes.CHARACTER, it.code))
             }
         }
+    }
+
+    private suspend fun MutableList<FoundObject?>.findPlayer(searchString: String) {
+        DataRepository.getUser(searchString)?.let { user ->
+            if (user.nickname != "Not Found") this.add(
+                FoundObject(
+                    user.nickname,
+                    FoundObjectsTypes.PLAYER,
+                    user.userNum
+                )
+            )
+        } ?: this.add(null)
     }
 
 

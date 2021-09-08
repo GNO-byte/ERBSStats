@@ -18,12 +18,11 @@
 
         <com.google.android.material.imageview.ShapeableImageView
                android:layout_width="40dp"
-            android:layout_height="24sp"
             android:layout_weight="1"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
-            style="@style/Theme.ERBSStats.Loading" />
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text"
+            style="@style/Theme.ERBSStats.Loading.Text" />
 
         <com.google.android.material.imageview.ShapeableImageView
             style="@style/Theme.ERBSStats.Loading"
@@ -31,26 +30,24 @@
             android:layout_height="30dp"
             android:layout_marginEnd="8dp"
             android:adjustViewBounds="true"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage"
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.SmallImage"
             android:contentDescription="loading rank image"
             />
 
         <com.google.android.material.imageview.ShapeableImageView
-            style="@style/Theme.ERBSStats.Loading"
+            style="@style/Theme.ERBSStats.Loading.Text"
             android:layout_width="180dp"
-            android:layout_height="24sp"
             android:layout_weight="1"
             android:layout_marginEnd="8dp"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text"
             />
 
         <com.google.android.material.imageview.ShapeableImageView
-            style="@style/Theme.ERBSStats.Loading"
+            style="@style/Theme.ERBSStats.Loading.Text"
             android:layout_width="70dp"
-            android:layout_height="24sp"
             android:layout_weight="1"
             android:layout_marginEnd="8dp"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text"
             />
 
     </LinearLayout>

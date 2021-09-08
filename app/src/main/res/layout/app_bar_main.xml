@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <include layout="@layout/content_main" />
+    <include
+        android:id="@+id/content_main"
+        layout="@layout/content_main" />
 
     <FrameLayout
         android:id="@+id/fab_container"
@@ -14,12 +16,15 @@
         android:layout_width="wrap_content"
         android:layout_gravity="bottom|end"
         android:visibility="invisible">
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/abc_ic_search_api_material" />
+        app:srcCompat="@drawable/abc_ic_search_api_material"
+        android:contentDescription="@string/search_button" />
+
     </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

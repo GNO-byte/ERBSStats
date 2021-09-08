@@ -31,16 +31,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/head"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:text="What you looking for?"
-                    android:textAppearance="@style/Theme.ERBSStats.TitleTextAppearance" />
-
+                    <TextView
+                        android:id="@+id/head"
+                        style="@style/Theme.ERBSStats.TextAppearance.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:text="What you looking for?" />
                 </FrameLayout>
-
 
                 <androidx.appcompat.widget.Toolbar
                     style="@style/Theme.ERBSStats.ThemeOverlayBottomBorder"
@@ -75,30 +73,40 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:overScrollMode="never"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            app:layoutManager="GridLayoutManager"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:spanCount="2"
-            tools:itemCount="6"
-            tools:listitem="@layout/item_menu_object"
-            tools:spanCount="2" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewMenu"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:overScrollMode="never"
+                app:layoutManager="GridLayoutManager"
+                app:spanCount="2"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_menu_object" />
 
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/slider"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_margin="8dp"
+                tools:listitem="@layout/item_illustration" />
 
-    </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
+
+    </ScrollView>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

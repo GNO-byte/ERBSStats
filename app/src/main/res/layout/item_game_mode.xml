@@ -26,7 +26,8 @@
         android:layout_height="80dp"
         android:layout_marginStart="8dp"
         android:adjustViewBounds="true"
-            android:contentDescription="@string/tier_image" />
+            android:contentDescription="@string/tier_image"
+        tools:src="@tools:sample/avatars"/>
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/loading"
@@ -42,7 +43,7 @@
             android:layout_height="80dp"
             android:layout_marginStart="8dp"
             android:adjustViewBounds="true"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.All"
             app:strokeColor="@color/goldenrod" />
 
     </com.facebook.shimmer.ShimmerFrameLayout>
@@ -106,6 +107,16 @@
         app:layout_constraintTop_toTopOf="@+id/top_title"
         tools:text="0.1" />
 
+    <TextView
+        android:id="@+id/team_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Solo" />
+
     <LinearLayout
         android:id="@+id/parameters"
         android:layout_width="0dp"
@@ -122,5 +133,11 @@
         tools:context=".ui.userstats.UserStatsFragment"
         android:orientation="vertical"/>
 
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/parameters" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,13 +1,20 @@
 package com.gno.erbs.erbs.stats.ui.userstats
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.lifecycle.ViewModelProvider
+import com.gno.erbs.erbs.stats.MainActivity
+import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentUserStatsBinding
-import com.gno.erbs.erbs.stats.repository.DataRepository
+import com.gno.erbs.erbs.stats.model.Season
 import com.gno.erbs.erbs.stats.ui.base.BaseFragment
+import com.google.android.material.tabs.TabLayoutMediator
 
 class UserStatsFragment : BaseFragment() {
 
@@ -16,6 +23,7 @@ class UserStatsFragment : BaseFragment() {
     }
 
     private lateinit var binding: FragmentUserStatsBinding
+    var loading = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,48 +39,100 @@ class UserStatsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.let { thisActivity ->
-
-            binding.name.visibility = View.GONE
-            binding.loadingName.visibility = View.VISIBLE
+        activity?.let { activity ->
 
             binding.topCharacterImage.visibility = View.GONE
             binding.loadingImage.visibility = View.VISIBLE
 
-
-            val foundIdInt = arguments?.getInt("code", 0) ?: 0
-            var foundId = ""
-            if (foundIdInt == 0) {
-                foundId = DataRepository.getDefaultUserNumber(thisActivity)
-            } else {
-                foundId = foundIdInt.toString()
-                DataRepository.setDefaultUserNumber(thisActivity, foundId)
+            val foundId = arguments?.getInt("code", 0).let{
+                if(it == 0) null else it.toString()
             }
 
-            val seasonId = DataRepository.getDefaultSeasonId(thisActivity)
+            binding.name.text = arguments?.getString("name", "")
 
-            viewModel.loadUserStats(foundId, seasonId)
+            val seasonId =
+                arguments?.getString("seasonId", null)
 
-            viewModel.userStatsLiveData.observe(viewLifecycleOwner) { usersStats ->
-                binding.name.text = usersStats[0].nickname
+            loading = true
+            viewModel.loadUserStats(foundId, seasonId, activity)
 
-                binding.name.visibility = View.VISIBLE
-                binding.loadingName.visibility = View.GONE
+            initSeasonSpinner(activity, binding.season) { seasonName, context ->
+                changeSeason(seasonName, context)
+            }
 
+            viewModel.userStatsLiveData.observe(viewLifecycleOwner) { userStats ->
+                loading = false
+                userStats?.let { usersStats ->
 
-                loadImage(
-                    binding.topCharacterImage,
-                    usersStats[0].topCharacterHalfImageWebLink,
-                    binding.loadingImage
-                )
+                    binding.name.text = usersStats[0].nickname
 
+                    loadImage(
+                        binding.topCharacterImage,
+                        usersStats[0].topCharacterHalfImageWebLink,
+                        binding.loadingImage
+                    )
 
+                } ?: (activity as MainActivity).showConnectionError {
+                    viewModel.loadUserStats(
+                        foundId,
+                        seasonId,
+                        activity
+                    )
+                }
             }
 
             binding.pager.adapter =
-                ViewPagerAdapter(thisActivity.supportFragmentManager, requireContext())
-            binding.tabs.setupWithViewPager(binding.pager)
+                ViewPagerAdapter(childFragmentManager, lifecycle)
+
+            TabLayoutMediator(binding.tabs, binding.pager) { tab, position ->
+                tab.text =
+                    (binding.pager.adapter as ViewPagerAdapter).getPageTitle(position)
+            }.attach()
+
         }
+    }
+
+    private fun initSeasonSpinner(
+        context: Context,
+        spinner: Spinner,
+        run: (String, Context) -> Unit
+    ) {
+        spinner.adapter = ArrayAdapter(
+            context,
+            R.layout.item_season,
+            Season.values().map { it.title }).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+
+        viewModel.getCurrentSeason(context)?.let {
+            spinner.setSelection((spinner.adapter as ArrayAdapter<String>).getPosition(it.title))
+        }
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (!loading) {
+                    parent?.getItemAtPosition(position)?.let {
+                        run.invoke(it as String, context)
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                ///
+            }
+        }
+
+    }
+
+    private fun changeSeason(seasonName: String, context: Context) {
+        binding.topCharacterImage.visibility = View.GONE
+        binding.loadingImage.visibility = View.VISIBLE
+        viewModel.changeSeason(seasonName, context)
     }
 
 }

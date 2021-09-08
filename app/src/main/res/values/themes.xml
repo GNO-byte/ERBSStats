@@ -30,7 +30,7 @@
         <!-- Customize your theme here. -->
 
         <item name="tabStyle">@style/TabLayout.ERBSStats</item>
-        <!--        <item name="appBarLayoutStyle">@style/AppBarLayout.ERBSStats</item>-->
+
 
         <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
 
@@ -38,7 +38,10 @@
 
         <item name="materialCardViewStyle">@style/Theme.ERBSStats.CardView</item>
 
+        <item name="android:textViewStyle">@style/Theme.ERBSStats.textViewStyle</item>
+
     </style>
+
 
     <style name="Theme.ERBSStats.SplashScreen" parent="Theme.ERBSStats">
         <item name="android:windowBackground">@drawable/splash_screen</item>
@@ -50,9 +53,9 @@
         <item name="tabTextColor">@color/erbs_tabs_icon_color_selector</item>
     </style>
 
-    <!--        <style name="AppBarLayout.ERBSStats" parent="Widget.MaterialComponents.AppBarLayout.Primary">-->
-    <!--            <item name="android:background">@drawable/rounded_bottom_border</item>-->
-    <!--        </style>-->
+    <style name="Theme.ERBSStats.textViewStyle" parent="Widget.AppCompat.TextView" >
+        <item name="android:textSize">16sp</item>
+    </style>
 
 
     <style name="Theme.ERBSStats.NoActionBar">
@@ -86,31 +89,12 @@
         <item name="strokeWidth">1dp</item>
     </style>
 
-    <style name="Theme.ERBSStats.MiddleTextAppearance">
-        <item name="android:textSize">24sp</item>
-        <item name="android:textColor">@color/goldenrod</item>
-    </style>
-
-    <style name="Theme.ERBSStats.TitleTextAppearance">
-        <item name="android:textSize">32sp</item>
-        <item name="android:textColor">@color/goldenrod</item>
-    </style>
-
-    <style name="Theme.ERBSStats.ItemTeamMode">
-        <item name="android:textSize">24sp</item>
-        <item name="android:background">@color/goldenrod</item>
-    </style>
-
-
-    <style name="Theme.ERBSStats.Loading">
-        <item name="android:background">@color/goldenrod</item>
-    </style>
-
 
     <style name="Theme.ERBSStats.Logo">
         <item name="android:background">@color/white</item>
         <item name="android:src">@drawable/logo_black</item>
     </style>
+
 
     <style name="Theme.ERBSStats.MiniImage">
         <item name="cornerSize">50%</item>
@@ -118,25 +102,65 @@
         <item name="strokeWidth">1dp</item>
     </style>
 
-
     <style name="Theme.ERBSStats.SmallImage">
         <item name="strokeColor">@color/goldenrod</item>
         <item name="strokeWidth">1dp</item>
     </style>
 
 
-    <style name="Theme.ERBSStats.ShapeAppearanceOverlaySmallImage">
+    <style name="Theme.ERBSStats.ItemTeamMode">
+        <item name="android:textSize">24sp</item>
+        <item name="android:background">@color/goldenrod</item>
+    </style>
+
+    <!--    ///////////////////-->
+
+    <style name="Theme.ERBSStats.Loading">
+        <item name="android:background">@color/goldenrod</item>
+    </style>
+
+    <!--    android:layout_height="24sp"-->
+    <style name="Theme.ERBSStats.Loading.Text">
+        <item name="android:layout_height">16sp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+
+    </style>
+
+    <!--    ///////////////////-->
+
+    <style name="Theme.ERBSStats.ShapeAppearanceOverlay"/>
+
+    <style name="Theme.ERBSStats.ShapeAppearanceOverlay.SmallImage">
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll">
-        <item name="cornerSize">10%</item>
+    <style name="Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer"/>
+
+    <style name="Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.All">
+        <item name="cornerSize">20%</item>
     </style>
 
-    <style name="Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage">
-        <item name="cornerSize">50%</item>
+    <style name="Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text" parent="Theme.ERBSStats.ShapeAppearanceOverlay.SmallImage" />
+
+    <style name="Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.SmallImage" parent="Theme.ERBSStats.ShapeAppearanceOverlay.SmallImage" />
+
+    <!--    ///////////////////-->
+
+    <style name="Theme.ERBSStats.TextAppearance"/>
+
+    <style name="Theme.ERBSStats.TextAppearance.Middle">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Theme.ERBSStats.TextAppearance.Middle.Alternative"  >
+        <item name="android:textColor">@color/goldenrod</item>
+    </style>
 
+    <style name="Theme.ERBSStats.TextAppearance.Title">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
 </resources>

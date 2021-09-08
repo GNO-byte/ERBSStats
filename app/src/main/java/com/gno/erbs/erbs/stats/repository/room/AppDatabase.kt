@@ -9,10 +9,9 @@ import com.gno.erbs.erbs.stats.repository.room.cache.RoomCache
 import com.gno.erbs.erbs.stats.repository.room.cache.RoomCacheDao
 import com.gno.erbs.erbs.stats.repository.room.character.RoomCharacter
 import com.gno.erbs.erbs.stats.repository.room.character.RoomCharacterDao
-import com.gno.erbs.erbs.stats.repository.room.corecharacter.RoomCoreCharacter
-import com.gno.erbs.erbs.stats.repository.room.corecharacter.RoomCoreCharacterDao
-import com.gno.erbs.erbs.stats.repository.room.corecharacter.RoomCoreSkill
-import com.gno.erbs.erbs.stats.repository.room.corecharacter.RoomCoreWeapon
+import com.gno.erbs.erbs.stats.repository.room.corecharacter.*
+import com.gno.erbs.erbs.stats.repository.room.history.RoomHistory
+import com.gno.erbs.erbs.stats.repository.room.history.RoomHistoryDao
 import com.gno.erbs.erbs.stats.repository.room.update.RoomUpdate
 import com.gno.erbs.erbs.stats.repository.room.update.RoomUpdateDao
 
@@ -22,7 +21,9 @@ import com.gno.erbs.erbs.stats.repository.room.update.RoomUpdateDao
         RoomCoreSkill::class,
         RoomCoreWeapon::class,
         RoomUpdate::class,
-        RoomCache::class], version = 1
+        RoomCache::class,
+        RoomHistory::class,
+        RoomCoreCharacterSkillCrossRef::class], version = 1
 )
 @TypeConverters(DateTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -31,6 +32,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun roomCoreCharacterDao(): RoomCoreCharacterDao
     abstract fun roomUpdateDao(): RoomUpdateDao
     abstract fun roomCacheDao(): RoomCacheDao
+    abstract fun roomHistoryDao(): RoomHistoryDao
 
     companion object {
         var INSTANCE: AppDatabase? = null

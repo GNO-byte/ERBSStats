@@ -11,7 +11,8 @@ import java.util.*
 data class FoundItem(
     val name: String,
     private var webLink: String? = null,
-    private val storageReference: StorageReference? = null
+    private val storageReference: StorageReference? = null,
+    private val path: String? = null
 ) {
 
     suspend fun getWebLink(): String? {
@@ -28,14 +29,14 @@ data class FoundItem(
 
         if (currentWebLink == null) {
 
-            roomService?.let { thisRoomService ->
-                val currentDate = thisRoomService.getCurrentDate()
-                val cache = thisRoomService.getcache(name)
+            roomService?.let { roomService ->
+                val currentDate = roomService.getCurrentDate()
+                val cache = roomService.getcache("$path/$name")
 
                 currentWebLink = cache?.date?.let {
-                    if (currentDate.afterTheDay(cache.date)) loadUrl(thisRoomService, currentDate)
+                    if (currentDate.afterTheDay(cache.date)) loadUrl(roomService, currentDate)
                     else cache.wevLink
-                } ?: loadUrl(thisRoomService, currentDate)
+                } ?: loadUrl(roomService, currentDate)
 
             } ?: run { currentWebLink = getWebLink() }
         }
@@ -73,12 +74,17 @@ data class FoundItem(
     }
 
     private suspend fun loadUrl(
-        thisRoomService: RoomService,
+        roomService: RoomService,
         currentDate: Date
     ): String? {
         val currentWebLink = storageReference?.downloadUrl?.await()?.toString()
         GlobalScope.launch {
-            currentWebLink?.let { thisRoomService.addcache(RoomCache(name, it, currentDate)) }
+            currentWebLink?.let {
+                GlobalScope.launch {
+                    roomService.addCache(RoomCache("$path/$name", it, currentDate))
+
+                }
+            }
         }
         return currentWebLink
     }

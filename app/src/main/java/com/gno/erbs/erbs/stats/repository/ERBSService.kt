@@ -15,15 +15,15 @@ import com.gno.erbs.erbs.stats.model.erbs.matches.item.weapon.ItemWeapon
 import com.gno.erbs.erbs.stats.model.erbs.nickname.User
 import com.gno.erbs.erbs.stats.model.erbs.rank.Rank
 import com.gno.erbs.erbs.stats.model.erbs.userstats.UserStats
+import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-import java.util.concurrent.TimeUnit
+import timber.log.Timber
 
 interface ERBSService {
 
@@ -99,7 +99,7 @@ interface ERBSService {
             if (INSTANCE == null) {
                 INSTANCE = Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .client(createKeyInterceptor(KeysHelper.getApiKey(context)))
+                    .client(createDefaultClient(KeysHelper.getApiKey(context)))
                     .addConverterFactory(GsonConverterFactory.create())
                     .build().create()
             }
@@ -107,29 +107,31 @@ interface ERBSService {
 
         }
 
-
-        private fun createKeyInterceptor(apiKey: String): OkHttpClient {
-            val logging = HttpLoggingInterceptor()
-            logging.level = HttpLoggingInterceptor.Level.BODY
+        private fun createDefaultClient(apiKey: String): OkHttpClient {
 
             val httpClient = OkHttpClient.Builder()
             httpClient.addInterceptor { chain ->
                 val original = chain.request()
-
                 val requestBuilder = original.newBuilder()
                     .header("x-api-key", apiKey)
-
                 val request = requestBuilder.build()
                 chain.proceed(request)
-            }
-
-            httpClient.connectTimeout(30, TimeUnit.SECONDS)
-            httpClient.readTimeout(30, TimeUnit.SECONDS)
-
-            httpClient.addNetworkInterceptor(logging)
+            }.addInterceptor { chain ->
+                val request = chain.request()
+                var response = chain.proceed(request)
+                var tryCount = 0
+                while (!response.isSuccessful && tryCount < 3) {
+                    Timber.e("Request is not successful - $tryCount")
+                    tryCount++
+                    response.close()
+                    response = chain.proceed(request);
+                }
+                response
+            }.dispatcher(Dispatcher().apply { maxRequestsPerHost = 1 })
 
             return httpClient.build()
         }
+
 
     }
 

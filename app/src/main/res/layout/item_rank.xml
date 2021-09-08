@@ -15,12 +15,11 @@
 
     <TextView
         android:id="@+id/rank_number"
-        android:layout_width="40dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:textAppearance="@style/Theme.ERBSStats.MiddleTextAppearance"
-        tools:text="1"
+        tools:text="Rank"
         />
 
     <LinearLayout
@@ -52,12 +51,11 @@
             android:layout_height="30dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage" />
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.SmallImage" />
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 
     </LinearLayout>
-
 
     <TextView
         android:id="@+id/nickname"
@@ -65,7 +63,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:textAppearance="@style/Theme.ERBSStats.MiddleTextAppearance"
         tools:text="nickname"/>
 
     <TextView
@@ -74,7 +71,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:textAppearance="@style/Theme.ERBSStats.MiddleTextAppearance"
         tools:text="1000"/>
 
 </LinearLayout>

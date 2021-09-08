@@ -1,8 +1,14 @@
 package com.gno.erbs.erbs.stats.repository
 
+import android.content.Context
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreCharacter
 import com.gno.erbs.erbs.stats.model.firebase.FolderContent
 import com.gno.erbs.erbs.stats.repository.drive.CharacterImageType
+import com.gno.erbs.erbs.stats.repository.room.RoomService
+import com.google.firebase.FirebaseApp
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -30,11 +36,24 @@ object FirebaseService : ImageService {
 
     ///////https://stackoverflow.com/questions/67918324/firebase-cloud-firestore-security-rules-only-allow-read-not-write
 
-    init {
+
+    operator fun invoke(context: Context): FirebaseService {
+
         GlobalScope.launch {
+            FirebaseAuth.getInstance().signInAnonymously()
+
+            FirebaseApp.initializeApp(context)
+            val firebaseAppCheck = FirebaseAppCheck.getInstance()
+            firebaseAppCheck.installAppCheckProviderFactory(
+                DebugAppCheckProviderFactory.getInstance()
+            )
+
             initCoreCharacters()
         }
+
+        return this
     }
+
 
     private suspend fun getFolderContent(folderPath: String): FolderContent {
         val listRef = storageRef.child(folderPath)
@@ -120,7 +139,7 @@ object FirebaseService : ImageService {
     override suspend fun getCharacterImageMiniLink(): List<FoundItem> {
 
         val imageMiniFolder = getFolderContent("/ERBS/Characters image mini")
-        return createFoundItems(imageMiniFolder.files)
+        return createFoundItems(imageMiniFolder.files, "Characters image mini")
 
     }
 
@@ -139,7 +158,10 @@ object FirebaseService : ImageService {
         }
 
         val a = foundCharacterImage
-        return if (foundCharacterImage != null) createFoundItem(foundCharacterImage) else null
+        return if (foundCharacterImage != null) createFoundItem(
+            foundCharacterImage,
+            "$characterName/Default"
+        ) else null
     }
 
 
@@ -173,33 +195,36 @@ object FirebaseService : ImageService {
             }
         }
 
-        return createFoundItems(resultFiles)
+        return createFoundItems(resultFiles, "Rank Tier")
 
     }
-
 
     override suspend fun getSkillImage(characterName: String): List<FoundItem> {
 
         val skillsImagesFiles = getFilesContentCharacterSubFolder(characterName, "Skill Icon")
-        return createFoundItems(skillsImagesFiles.files)
+        return createFoundItems(skillsImagesFiles.files, "Skill Icon")
 
     }
 
     override suspend fun getWeaponTypeFiles(): List<FoundItem> {
 
-        val imageMiniFolder = getFolderContent("/ERBS/weapon skills")
-        return createFoundItems(imageMiniFolder.files)
+        val imageMiniFolder = getFolderContent("/ERBS/Weapon skills")
+        return createFoundItems(imageMiniFolder.files, "Weapon skills")
 
     }
 
     override suspend fun getItemImage(): List<FoundItem> {
 
-        val imageMiniFolder = getFolderContent("/ERBS/items icons")
-        return createFoundItems(imageMiniFolder.files)
+        val imageMiniFolder = getFolderContent("/ERBS/Items icons")
+        return createFoundItems(imageMiniFolder.files, "Items icons")
+    }
+
+    override suspend fun getIllustrations(): List<FoundItem> {
+        val pictures = getFolderContent("/ERBS/Wallpapers")
+        return createFoundItems(pictures.files, "Wallpapers")
     }
 
     ////////////////////////
-
 
     private suspend fun getFilesContentCharacterSubFolder(
         characterName: String,
@@ -220,12 +245,16 @@ object FirebaseService : ImageService {
                 )
     }
 
-    private fun createFoundItem(storageReference: StorageReference): FoundItem =
-        FoundItem(storageReference.name, null,storageReference)
 
-    private fun createFoundItems(driveFiles: List<StorageReference>): List<FoundItem> =
+    private fun createFoundItems(
+        driveFiles: List<StorageReference>,
+        path: String
+    ): List<FoundItem> =
         driveFiles.map {
-            FoundItem(it.name, null, it)
+            createFoundItem(it, path)
         }
+
+    private fun createFoundItem(storageReference: StorageReference, path: String): FoundItem =
+        FoundItem(storageReference.name, null, storageReference, path)
 
 }

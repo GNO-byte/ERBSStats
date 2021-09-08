@@ -17,7 +17,6 @@ import com.google.android.material.imageview.ShapeableImageView
 
 object LoadingImageHelper {
 
-
     fun loadImage(
         view: ImageView, webLink: String?,
         loading: View
@@ -32,7 +31,6 @@ object LoadingImageHelper {
             .error(R.drawable.loading_image)
             .into(view)
     }
-
 
     fun createShimmer(context: Context): ShimmerDrawable {
         return ShimmerDrawable().apply {
@@ -54,7 +52,6 @@ object LoadingImageHelper {
             setShimmer(shimmer)
         }
     }
-
 
     fun createGlideListener(
         image: ImageView,

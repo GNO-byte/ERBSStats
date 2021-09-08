@@ -94,7 +94,7 @@ class MatchesAdapter(
                 rankHolder.kills.text = item.playerKill.toString()
                 rankHolder.assistants.text = item.playerAssistant.toString()
                 rankHolder.hunter.text = item.monsterKill.toString()
-                rankHolder.mmr.text = item.mmr.toString()
+               // rankHolder.mmr.text = item.mmr.toString()
 
                 item.characterImageWebLink?.let {
                     loadImage(
@@ -113,55 +113,29 @@ class MatchesAdapter(
                 }
 
                 //companyImage
-
-                loadImage(
-                    rankHolder.item1,
-                    item.equipment.item1WebLink,
-                    rankHolder.loadingItem1
-                )
-
-
-                //     if (item.equipment.item2WebLink.isNotEmpty()) {
-                loadImage(
-                    rankHolder.item2,
-                    item.equipment.item2WebLink,
-                    rankHolder.loadingItem2
-                )
-                //     }
-
-                //if (item.equipment.item3WebLink.isNotEmpty()) {
-                loadImage(
-                    rankHolder.item3,
-                    item.equipment.item3WebLink,
-                    rankHolder.loadingItem3
-                )
-                //}
-
-                //if (item.equipment.item4WebLink.isNotEmpty()) {
-                loadImage(
-                    rankHolder.item4,
-                    item.equipment.item4WebLink,
-                    rankHolder.loadingItem4
-                )
-                //}
-
-                //if (item.equipment.item5WebLink.isNotEmpty()) {
-                loadImage(
-                    rankHolder.item5,
-                    item.equipment.item5WebLink,
-                    rankHolder.loadingItem5
-                )
-                //}
-
-                //if (item.equipment.item6WebLink.isNotEmpty()) {
-                loadImage(
-                    rankHolder.item6,
-                    item.equipment.item6WebLink,
-                    rankHolder.loadingItem6
-                )
-                //}
-
+                loadingItem(rankHolder.item1, item.equipment.item1WebLink, rankHolder.loadingItem1)
+                loadingItem(rankHolder.item2, item.equipment.item2WebLink, rankHolder.loadingItem2)
+                loadingItem(rankHolder.item3, item.equipment.item3WebLink, rankHolder.loadingItem3)
+                loadingItem(rankHolder.item4, item.equipment.item4WebLink, rankHolder.loadingItem4)
+                loadingItem(rankHolder.item5, item.equipment.item5WebLink, rankHolder.loadingItem5)
+                loadingItem(rankHolder.item6, item.equipment.item6WebLink, rankHolder.loadingItem6)
             }
+        }
+    }
+
+    fun loadingItem(
+        view: ImageView, webLink: String?,
+        loading: View
+    ) {
+        if (webLink != "noItem") {
+            loadImage(
+                view,
+                webLink,
+                loading
+            )
+        } else {
+            view.visibility = View.VISIBLE
+            loading.visibility = View.GONE
         }
     }
 
@@ -176,7 +150,7 @@ class MatchesAdapter(
         val kills: TextView = itemView.findViewById(R.id.kills)
         val assistants: TextView = itemView.findViewById(R.id.assistants)
         val hunter: TextView = itemView.findViewById(R.id.hunter)
-        val mmr: TextView = itemView.findViewById(R.id.mmr)
+        //val mmr: TextView = itemView.findViewById(R.id.mmr)
         val item1: ImageView = itemView.findViewById(R.id.item1)
         val item2: ImageView = itemView.findViewById(R.id.item2)
         val item3: ImageView = itemView.findViewById(R.id.item3)

@@ -4,14 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.facebook.shimmer.Shimmer
-import com.facebook.shimmer.ShimmerDrawable
+import com.gno.erbs.erbs.stats.MainActivity
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentCharactersBinding
+import com.gno.erbs.erbs.stats.repository.NavigateHelper
 import com.gno.erbs.erbs.stats.ui.base.BaseFragment
 
 class CharactersFragment : BaseFragment() {
@@ -22,9 +21,9 @@ class CharactersFragment : BaseFragment() {
         ViewModelProvider(this).get(CharactersViewModel::class.java)
     }
 
-    private val characterGuidesAdapter = CharactersAdapter { code ->
-        val bundle = bundleOf("code" to code)
-        findNavController().navigate(R.id.nav_character_detail, bundle)
+    private val characterGuidesAdapter = CharactersAdapter { code, name ->
+        val bundle = bundleOf("code" to code, "name" to name)
+        NavigateHelper.go(findNavController(), R.id.nav_character_detail, bundle)
     }
 
     override fun onCreateView(
@@ -41,8 +40,13 @@ class CharactersFragment : BaseFragment() {
 
         binding.recyclerViewCharacters.adapter = characterGuidesAdapter
         characterGuidesAdapter.addLoading()
-        viewModel.charactersLiveData.observe(viewLifecycleOwner) {
-            characterGuidesAdapter.submitList(it)
+
+        viewModel.charactersLiveData.observe(viewLifecycleOwner) { characters ->
+            characters?.let {
+                characterGuidesAdapter.submitList(characters)
+            } ?: activity?.let {
+                (it as MainActivity).showConnectionError { viewModel.loadCharacters() }
+            }
         }
     }
 }

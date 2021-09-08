@@ -12,6 +12,9 @@ interface RoomCharacterDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCharacter(character: RoomCharacter)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertCharacters(characters: List<RoomCharacter>)
+
     @Query("SELECT * FROM RoomCharacter")
     fun getCharacters(): List<RoomCharacter>
 

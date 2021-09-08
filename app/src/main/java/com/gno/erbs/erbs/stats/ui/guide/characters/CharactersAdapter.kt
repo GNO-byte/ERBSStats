@@ -14,7 +14,7 @@ import com.google.android.material.imageview.ShapeableImageView
 
 
 class CharactersAdapter(
-    private val cellClickListener: (Int) -> Unit
+    private val cellClickListener: (Int, String) -> Unit
 ) : BaseListAdapter<Character, RecyclerView.ViewHolder>(CharactersDiffUtilCallback()) {
 
     companion object {
@@ -66,7 +66,7 @@ class CharactersAdapter(
                 loadImage(characterHolder.image,item.iconWebLink,characterHolder.loading)
 
                 characterHolder.image.setOnClickListener {
-                    cellClickListener.invoke(item.code)
+                    cellClickListener.invoke(item.code,item.name)
                 }
             }
         }

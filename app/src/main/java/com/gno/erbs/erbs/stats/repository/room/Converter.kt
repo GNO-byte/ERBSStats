@@ -4,10 +4,12 @@ import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreCharacter
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreSkill
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreWeapon
 import com.gno.erbs.erbs.stats.model.erbs.characters.Character
+import com.gno.erbs.erbs.stats.repository.NavigationHistory
 import com.gno.erbs.erbs.stats.repository.room.character.RoomCharacter
 import com.gno.erbs.erbs.stats.repository.room.corecharacter.RoomCoreCharacter
 import com.gno.erbs.erbs.stats.repository.room.corecharacter.RoomCoreSkill
 import com.gno.erbs.erbs.stats.repository.room.corecharacter.RoomCoreWeapon
+import com.gno.erbs.erbs.stats.repository.room.history.RoomHistory
 
 object Converter {
 
@@ -64,7 +66,7 @@ object Converter {
             coreCharacter.background,
             coreCharacter.name,
             coreCharacter.skills?.mapNotNull { conv(it, code) },
-            coreCharacter.weapons?.mapNotNull { conv(it, code) }
+            coreCharacter.weapons?.mapNotNull { conv(it) }
         )
     }
 
@@ -82,8 +84,8 @@ object Converter {
         )
     }
 
-    fun conv(coreWeapon: CoreWeapon, characterCode: Int) = coreWeapon.id?.let { id ->
-        RoomCoreWeapon(id, characterCode, coreWeapon.name)
+    fun conv(coreWeapon: CoreWeapon) = coreWeapon.id?.let { id ->
+        RoomCoreWeapon(id, coreWeapon.name)
     }
 
     fun conv(coreCharacter: RoomCoreCharacter) =
@@ -106,4 +108,7 @@ object Converter {
     )
 
     fun conv(coreWeapon: RoomCoreWeapon) = CoreWeapon(coreWeapon.id, coreWeapon.name)
+
+    fun conv(roomHistory: RoomHistory) = NavigationHistory(roomHistory.date,roomHistory.bundle,roomHistory.navigateId)
+
 }

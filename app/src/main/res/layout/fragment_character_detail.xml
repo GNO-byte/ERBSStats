@@ -28,8 +28,8 @@
 
             <ImageView
                 android:id="@+id/character_image"
-                android:layout_width="100dp"
-                android:layout_height="154dp"
+                android:layout_width="110dp"
+                android:layout_height="170dp"
                 android:layout_gravity="right"
                 android:contentDescription="character image"
                 tools:src="@tools:sample/avatars"/>
@@ -45,11 +45,12 @@
                 android:visibility="gone">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.All"
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_margin="8dp"
-                    android:layout_width="100dp"
-                    android:layout_height="154dp" />
+                    android:layout_width="88dp"
+                    android:layout_height="135dp"
+                    android:foregroundGravity="top" />
 
             </com.facebook.shimmer.ShimmerFrameLayout>
 
@@ -67,27 +68,11 @@
 
                 <TextView
                     android:id="@+id/name"
+                    style="@style/Theme.ERBSStats.TextAppearance.Middle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="Character 1"
-                    android:textAppearance="@style/Theme.ERBSStats.TitleTextAppearance" />
+                    tools:text="Character 1" />
 
-                <com.facebook.shimmer.ShimmerFrameLayout
-                    android:id="@+id/loading_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:shimmer_auto_start="true"
-                    app:shimmer_colored="false"
-                    android:visibility="gone">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
-                        style="@style/Theme.ERBSStats.Loading"
-                        android:layout_width="150dp"
-                        android:layout_margin="8dp"
-                        android:layout_height="32sp"/>
-
-                </com.facebook.shimmer.ShimmerFrameLayout>
             </androidx.appcompat.widget.Toolbar>
 
             <LinearLayout
@@ -112,18 +97,16 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <FrameLayout
         style="@style/Theme.ERBSStats.ThemeOverlayLineFomTwoSides"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.viewpager.widget.ViewPager
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
-    </androidx.core.widget.NestedScrollView>
+    </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -50,7 +50,7 @@ object DefaultValue {
     }
 
     fun setDefaultValues(context: Context) {
-        setSeasonId(context, "3")
+        setSeasonId(context, "5")
         setMatchingTeamMode(context, "1")
         setUserNumber(context, "1")
     }

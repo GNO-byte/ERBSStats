@@ -12,12 +12,14 @@ class SplashScreenActivity : AppCompatActivity() {
 
         (application as MainApplication).isInitialized.observe(this) {
             if (it) {
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(application, MainActivity::class.java)
+                //finish()
                 startActivity(intent)
-                finish()
             }
         }
+
     }
+
 }
 
 

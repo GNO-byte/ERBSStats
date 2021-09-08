@@ -34,21 +34,35 @@ class MatchesFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        activity?.let { thisActivity ->
+        activity?.let { activity ->
+            matchesAdapter.addLoading()
+
+            viewModel =
+                ViewModelProvider(activity.supportFragmentManager.fragments.first().childFragmentManager.fragments[0]).get(
+                    UserStatsViewModel::class.java
+                )
 
             matchesAdapter.addLoading()
 
             viewModel =
-                ViewModelProvider(thisActivity.supportFragmentManager.fragments.first().childFragmentManager.fragments[0]).get(
+                ViewModelProvider(activity.supportFragmentManager.fragments.first().childFragmentManager.fragments[0]).get(
                     UserStatsViewModel::class.java
                 )
+
+            viewModel.updateLiveData.observe(viewLifecycleOwner) {
+                if (it) {
+                    loading = true
+                    matchesAdapter.submitList(null)
+                    matchesAdapter.addLoading()
+                }
+            }
 
             viewModel.userGamesLiveData.observe(viewLifecycleOwner) {
                 matchesAdapter.submitList(it)
                 loading = false
             }
 
-
+            binding.recyclerViewMatches.adapter = matchesAdapter
             binding.recyclerViewMatches.addOnScrollListener(object :
                 RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -70,9 +84,6 @@ class MatchesFragment : Fragment() {
                     }
                 }
             })
-
-            binding.recyclerViewMatches.adapter = matchesAdapter
-
 
         }
     }

@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.gno.erbs.erbs.stats.MainActivity
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentSearchDialogBinding
+import com.gno.erbs.erbs.stats.repository.NavigateHelper
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.color.MaterialColors
@@ -37,8 +38,8 @@ class SearchDialogFragment : BottomSheetDialogFragment() {
 
         val changeColor = arguments?.getBoolean("CHANGE_COLOR", false) ?: false
         if (changeColor) {
-            context?.let { thisContext ->
-                binding.group.background = ContextCompat.getDrawable(thisContext, R.drawable.rounded_search_border)
+            context?.let { context ->
+                binding.group.background = ContextCompat.getDrawable(context, R.drawable.rounded_search_border)
             }
 
         }
@@ -55,7 +56,7 @@ class SearchDialogFragment : BottomSheetDialogFragment() {
 
             override fun onQueryTextSubmit(query: String): Boolean {
                 val bundle = bundleOf("searchString" to query)
-                findNavController().navigate(R.id.nav_search, bundle)
+                NavigateHelper.go(findNavController(),R.id.nav_search, bundle)
                 dismiss()
                 return false
             }

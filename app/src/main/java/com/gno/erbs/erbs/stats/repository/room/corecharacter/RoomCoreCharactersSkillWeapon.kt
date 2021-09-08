@@ -1,6 +1,7 @@
 package com.gno.erbs.erbs.stats.repository.room.corecharacter
 
 import androidx.room.Embedded
+import androidx.room.Junction
 import androidx.room.Relation
 
 class RoomCoreCharactersSkillWeapon (
@@ -13,7 +14,8 @@ class RoomCoreCharactersSkillWeapon (
     val skills: List<RoomCoreSkill>,
     @Relation(
         parentColumn = "code",
-        entityColumn = "characterCode"
+        entityColumn = "id",
+        associateBy = Junction(RoomCoreCharacterSkillCrossRef::class)
     )
     val weapons: List<RoomCoreWeapon>,
 

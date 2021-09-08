@@ -25,7 +25,8 @@ interface ImageService{
 
     suspend fun getDataVersion():Int?
 
-    fun compareNames(nameFile: String, searchName: String): Boolean
+    suspend fun getIllustrations() : List<FoundItem>
 
+    fun compareNames(nameFile: String, searchName: String): Boolean
 
 }

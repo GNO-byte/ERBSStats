@@ -1,20 +1,28 @@
 package com.gno.erbs.erbs.stats.ui.guide.characters
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.gno.erbs.erbs.stats.model.erbs.characters.Character
 import com.gno.erbs.erbs.stats.repository.DataRepository
-import com.gno.erbs.erbs.stats.ui.base.BaseViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CharactersViewModel : BaseViewModel() {
+class CharactersViewModel : ViewModel() {
 
     val charactersLiveData = MutableLiveData<List<Character>>()
 
     init {
-        scope.launch {
+        loadCharacters()
+    }
+
+    fun loadCharacters() {
+        viewModelScope.launch(Dispatchers.IO) {
             charactersLiveData.postValue(DataRepository.getCharacters())
         }
+
     }
+
 
 
 }

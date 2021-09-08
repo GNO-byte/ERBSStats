@@ -6,16 +6,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.view.menu.MenuView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.rank.Rank
 import com.gno.erbs.erbs.stats.ui.base.BaseListAdapter
 
 class RankAdapter(
-    private val cellClickListener: (Int) -> Unit
+    private val cellClickListener: (Int, String) -> Unit
 ) : BaseListAdapter<Rank, RecyclerView.ViewHolder>(RankDiffUtilCallback()) {
 
     companion object {
@@ -52,7 +50,7 @@ class RankAdapter(
         }
     }
 
-    fun addLoading(){
+    fun addLoading() {
         val currentList = currentList.toMutableList()
         currentList.add(null)
         currentList.add(null)
@@ -76,10 +74,10 @@ class RankAdapter(
                 rankHolder.rankImage.visibility = View.GONE
                 rankHolder.loading.visibility = View.VISIBLE
 
-                loadImage(rankHolder.rankImage,item.rankTierImageWebLink,rankHolder.loading)
+                loadImage(rankHolder.rankImage, item.rankTierImageWebLink, rankHolder.loading)
 
                 rankHolder.linearLayout.setOnClickListener {
-                    cellClickListener.invoke(item.userNum)
+                    cellClickListener.invoke(item.userNum, item.nickname)
                 }
 
             }

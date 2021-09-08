@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/body"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.userstats.UserStatsFragment">
@@ -29,15 +30,29 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/Theme.ERBSStats.PopupOverlay">
 
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/name"
-                    android:transitionName="transitionName"
+                    style="@style/Theme.ERBSStats.TextAppearance.Middle"
+                    android:layout_margin="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:text="Top"
-                    android:textAppearance="@style/Theme.ERBSStats.TitleTextAppearance" />
+                    android:layout_gravity="start"
+                    android:text="@string/top"
+                    />
+
+                <Spinner
+                    android:id="@+id/season"
+                    android:layout_gravity="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    tools:listitem="@layout/item_season"/>
+
+                </FrameLayout>
 
             </androidx.appcompat.widget.Toolbar>
 

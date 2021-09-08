@@ -18,11 +18,25 @@ interface RoomCoreCharacterDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCoreWeapon(coreWeapon: List<RoomCoreWeapon>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertRoomCoreCharacterSkillCrossRef(coreWeapon: List<RoomCoreCharacterSkillCrossRef>)
+
+
     @Transaction
     fun insertCoreCharacterFull(roomCoreCharacter: RoomCoreCharacter) {
         insertCoreCharacter(roomCoreCharacter)
-        roomCoreCharacter.skills?.let { insertCoreSkill(it) }
-        roomCoreCharacter.weapons?.let { insertCoreWeapon(it) }
+
+        roomCoreCharacter.skills?.let {
+            insertCoreSkill(it)
+        }
+        roomCoreCharacter.weapons?.let { roomCoreWeapons ->
+            insertCoreWeapon(roomCoreWeapons)
+            insertRoomCoreCharacterSkillCrossRef(roomCoreWeapons.map {
+                RoomCoreCharacterSkillCrossRef(roomCoreCharacter.code, it.id)
+            })
+        }
+
+
     }
 
 }

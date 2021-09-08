@@ -35,13 +35,13 @@ class SkillsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        activity?.let { thisActivity ->
+        activity?.let { activity ->
 
             skillsAdapter.addLoading()
 
             viewModel =
                 ViewModelProvider(
-                    thisActivity.supportFragmentManager.fragments.first()
+                    activity.supportFragmentManager.fragments.first()
                         .childFragmentManager.fragments[0]
                 ).get(
                     CharacterDetailViewModel::class.java
@@ -49,7 +49,9 @@ class SkillsFragment : Fragment() {
         }
         binding.recyclerviewWeaponSkills.adapter = skillsAdapter
         viewModel.skillsLiveData.observe(viewLifecycleOwner) { coreSkills ->
-            skillsAdapter.submitList(coreSkills)
+            coreSkills?.let{
+                skillsAdapter.submitList(coreSkills)
+            }
         }
     }
 

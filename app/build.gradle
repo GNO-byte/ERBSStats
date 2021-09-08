@@ -88,10 +88,11 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
-
     implementation 'com.google.firebase:firebase-storage-ktx:20.0.0'
-    implementation 'com.firebaseui:firebase-ui-storage:7.2.0'
-    implementation 'com.google.firebase:firebase-database:20.0.1'
+    implementation 'com.firebaseui:firebase-ui-storage:8.0.0'
+    implementation 'com.google.firebase:firebase-database-ktx:20.0.1'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.0.1'
+    implementation 'com.google.firebase:firebase-appcheck-debug:16.0.0-beta02'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -135,6 +136,7 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
 
     implementation'androidx.room:room-runtime:2.3.0'
+    implementation'androidx.room:room-ktx:2.3.0'
     kapt "androidx.room:room-compiler:2.3.0"
 
     //implementation 'net.danlew:android.joda:2.10.9.1'

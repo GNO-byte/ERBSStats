@@ -23,11 +23,10 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.imageview.ShapeableImageView
-                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                 android:id="@+id/name"
-                style="@style/Theme.ERBSStats.Loading"
+                style="@style/Theme.ERBSStats.Loading.Text"
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text"
                 android:layout_width="0dp"
-                android:layout_height="24sp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -37,11 +36,10 @@
                 tools:text="@tools:sample/first_names" />
 
             <com.google.android.material.imageview.ShapeableImageView
-                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text"
                 android:id="@+id/type"
-                style="@style/Theme.ERBSStats.Loading"
+                style="@style/Theme.ERBSStats.Loading.Text"
                 android:layout_width="100dp"
-                android:layout_height="24sp"
                 android:layout_marginEnd="8dp"
                 android:gravity="end"
                 app:layout_constraintBottom_toBottomOf="@+id/name"

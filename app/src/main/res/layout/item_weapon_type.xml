@@ -22,8 +22,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_margin="8dp"
             android:contentDescription="@string/tier_image"
             android:textAlignment="textEnd" />
 
@@ -38,7 +37,7 @@
                 android:layout_height="40dp"
                 android:layout_margin="8dp"
                 android:adjustViewBounds="true"
-                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage"
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.SmallImage"
                 android:contentDescription="weapon image" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
@@ -54,7 +53,7 @@
                     app:strokeColor="@color/goldenrod"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.SmallImage"
                     android:layout_margin="8dp"/>
 
             </com.facebook.shimmer.ShimmerFrameLayout>

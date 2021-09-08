@@ -31,7 +31,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:contentDescription="skill image"
-                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlaySmallImage"
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.SmallImage"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
@@ -46,7 +46,7 @@
                     style="@style/Theme.ERBSStats.Loading"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.SmallImage"
                     app:strokeColor="@color/goldenrod" />
 
             </com.facebook.shimmer.ShimmerFrameLayout>
@@ -65,10 +65,13 @@
 
         <TextView
             android:id="@+id/type"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/name"
+            android:layout_marginStart="8dp"
+            android:gravity="end"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/name"
             app:layout_constraintTop_toTopOf="@+id/name"
             tools:text="@tools:sample/lorem" />
 
@@ -76,9 +79,9 @@
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_group"
+            app:layout_constraintTop_toBottomOf="@+id/type"
             tools:text="@tools:sample/lorem/random" />
 
         <!--        <com.google.android.youtube.player.YouTubePlayerView-->

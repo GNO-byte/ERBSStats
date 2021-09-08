@@ -21,5 +21,14 @@
     <string name="title_activity_splash_screeen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="search_button">Search button</string>
+    <string name="grip">grip</string>
+    <string name="first_item">first item</string>
+    <string name="second_item">second item</string>
+    <string name="third_item">third item</string>
+    <string name="fourth_subject">fourth subject</string>
+    <string name="fifth_subject">fifth subject</string>
+    <string name="sixth_subject">sixth subject</string>
+    <string name="game_logo">game logo</string>
 
 </resources>

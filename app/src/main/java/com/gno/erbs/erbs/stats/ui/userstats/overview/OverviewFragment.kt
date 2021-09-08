@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentOverviewBinding
+import com.gno.erbs.erbs.stats.model.TeamMode
 import com.gno.erbs.erbs.stats.model.Tier
 import com.gno.erbs.erbs.stats.ui.base.BaseFragment
 import com.gno.erbs.erbs.stats.ui.userstats.UserStatsViewModel
@@ -43,17 +44,28 @@ class OverviewFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        activity?.let { thisActivity ->
+        activity?.let { activity ->
 
             binding.overview.visibility = View.GONE
             binding.loading.visibility = View.VISIBLE
 
             viewModel =
-                ViewModelProvider(thisActivity.supportFragmentManager.fragments.first().childFragmentManager.fragments[0]).get(
+                ViewModelProvider(activity.supportFragmentManager.fragments.first().childFragmentManager.fragments[0]).get(
                     UserStatsViewModel::class.java
                 )
+
+            viewModel.updateLiveData.observe(viewLifecycleOwner) {
+                if (it) {
+                    binding.overview.visibility = View.GONE
+                    binding.loading.visibility = View.VISIBLE
+                }
+            }
+
             viewModel.userStatsLiveData.observe(viewLifecycleOwner) { usersStatsList ->
-                usersStatsList.forEach {
+
+                binding.overview.removeAllViews()
+
+                usersStatsList?.forEach {
 
                     val itemGameMode =
                         layoutInflater.inflate(
@@ -69,20 +81,21 @@ class OverviewFragment : BaseFragment() {
                     val rank: TextView = itemGameMode.findViewById(R.id.rank)
                     val top: TextView = itemGameMode.findViewById(R.id.top)
                     val parameters: LinearLayout = itemGameMode.findViewById(R.id.parameters)
+                    val teamMode: TextView = itemGameMode.findViewById(R.id.team_mode)
+
 
                     tierImage.contentDescription = Tier.findByMmr(it.mmr).title
 
                     tierImage.visibility = View.GONE
                     loading.visibility = View.VISIBLE
 
-
                     loadImage(tierImage, it.rankTierImageWebLink, loading)
-
 
                     mmr.text = it.mmr.toString()
                     rank.text = it.rank.toString()
                     top.text =
                         DecimalFormat("#.##").format(it.rank.toFloat() / it.rankSize.toFloat() * 100.0)
+                    teamMode.text = TeamMode.findByValue(it.matchingTeamMode).title
 
                     parameters.createParameter(
                         layoutInflater,
@@ -130,11 +143,10 @@ class OverviewFragment : BaseFragment() {
                     )
 
                     binding.overview.addView(itemGameMode)
-                }
 
+                }
                 binding.loading.visibility = View.GONE
                 binding.overview.visibility = View.VISIBLE
-
             }
         }
     }

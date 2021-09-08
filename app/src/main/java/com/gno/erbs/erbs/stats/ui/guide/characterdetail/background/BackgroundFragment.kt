@@ -4,13 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentBackgroundBinding
-import com.gno.erbs.erbs.stats.databinding.FragmentCharacterStatsBinding
 import com.gno.erbs.erbs.stats.ui.guide.characterdetail.CharacterDetailViewModel
 
 class BackgroundFragment : Fragment() {
@@ -36,23 +32,25 @@ class BackgroundFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        binding.background.visibility= View.GONE
-        binding.loading.visibility= View.VISIBLE
+        binding.background.visibility = View.GONE
+        binding.loading.visibility = View.VISIBLE
 
-        activity?.let { thisActivity ->
+        activity?.let { activity ->
             viewModel =
-                ViewModelProvider(thisActivity.supportFragmentManager.fragments.first()
-                    .childFragmentManager.fragments[0]).get(
+                ViewModelProvider(
+                    activity.supportFragmentManager.fragments.first()
+                        .childFragmentManager.fragments[0]
+                ).get(
                     CharacterDetailViewModel::class.java
                 )
         }
 
-        viewModel.coreCharacterLiveData.observe(viewLifecycleOwner) {
-            binding.background.text = it?.background ?:""
-
-            binding.loading.visibility= View.GONE
-            binding.background.visibility= View.VISIBLE
-
+        viewModel.coreCharacterLiveData.observe(viewLifecycleOwner) { coreCharacter ->
+            coreCharacter?.let {
+                binding.background.text = coreCharacter?.background ?: ""
+                binding.loading.visibility = View.GONE
+                binding.background.visibility = View.VISIBLE
+            }
         }
     }
 }

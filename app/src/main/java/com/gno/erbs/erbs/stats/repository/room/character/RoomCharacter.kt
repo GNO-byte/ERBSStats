@@ -7,7 +7,7 @@ import java.util.*
 
 @Entity
 data class RoomCharacter(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     val id: Int? = null,
     val time: Date? = null,
     val attackPower: Double,

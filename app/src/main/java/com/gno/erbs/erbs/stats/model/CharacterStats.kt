@@ -31,6 +31,7 @@ class CharacterStats private constructor(
             character: Character,
             characterLevelUp: CharacterLevelUpStat
         ): CharacterStats {
+
             return CharacterStats(
                 character.code,
                 character.name,
@@ -89,9 +90,8 @@ class CharacterStats private constructor(
             )
         }
 
-        fun calculateValueMaxLvl(minLVLValue: Double, LevelUpValue: Double): Double {
-            return DecimalFormat("#.##").format(minLVLValue + (MAX_LVL - 1) * LevelUpValue)
-                .toDouble()
+        private fun calculateValueMaxLvl(minLVLValue: Double, LevelUpValue: Double): Double {
+            return minLVLValue + (MAX_LVL - 1) * LevelUpValue
         }
     }
 }

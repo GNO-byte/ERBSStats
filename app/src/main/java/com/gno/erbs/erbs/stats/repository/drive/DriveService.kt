@@ -117,7 +117,7 @@ object DriveService : ImageService {
         val files = imagesLinkStructure?.rankTier?.let { getFolderFiles(it) }
 
         val resultFiles = mutableListOf<File>()
-        files?.let { thisFiles ->
+        files?.let { files ->
 
             for (mmr in mmrs) {
 
@@ -134,7 +134,7 @@ object DriveService : ImageService {
                     else -> "Unrank"
                 }
 
-                thisFiles.find { compareNames(it.name, searchName) }?.let { resultFiles.add(it) }
+                files.find { compareNames(it.name, searchName) }?.let { resultFiles.add(it) }
             }
         }
 
@@ -169,10 +169,10 @@ object DriveService : ImageService {
 
         var foundFiles: List<File>? = null
 
-        imagesLinkStructure?.let { thisImageLinkStructure ->
+        imagesLinkStructure?.let { imagesLinkStructure ->
 
             val charactersFolders =
-                thisImageLinkStructure.charactersFolder?.let { getFolderFiles(it) }
+                imagesLinkStructure.charactersFolder?.let { getFolderFiles(it) }
 
             val foundCharacterFolder =
                 charactersFolders?.find { compareNames(it.name, characterName) }
@@ -230,6 +230,10 @@ object DriveService : ImageService {
                 nameFile.replace(" ", "").contains(
                     searchName.replace(" ", ""), true
                 )
+    }
+
+    override suspend fun getIllustrations(): List<FoundItem> {
+        return emptyList()
     }
 
 

@@ -19,11 +19,10 @@
         app:shimmer_colored="false">
 
         <com.google.android.material.imageview.ShapeableImageView
-            style="@style/Theme.ERBSStats.Loading"
+            style="@style/Theme.ERBSStats.Loading.Text"
             android:layout_width="150dp"
-            android:layout_height="24sp"
             android:layout_gravity="top|end"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text"
             android:layout_margin="8dp" />
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -33,7 +32,7 @@
             android:layout_gravity="top|start"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage"
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.SmallImage"
             android:adjustViewBounds="true"/>
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -41,7 +40,7 @@
             android:layout_gravity="center"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.All"
             android:layout_margin="36dp" />
 
     </com.facebook.shimmer.ShimmerFrameLayout>

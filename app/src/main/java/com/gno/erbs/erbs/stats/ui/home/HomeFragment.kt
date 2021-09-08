@@ -1,16 +1,26 @@
 package com.gno.erbs.erbs.stats.ui.home
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.CompositePageTransformer
+import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
 import com.gno.erbs.erbs.stats.MainActivity
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentHomeBinding
+import com.gno.erbs.erbs.stats.repository.NavigateHelper
 import com.gno.erbs.erbs.stats.ui.base.BaseFragment
+import com.gno.erbs.erbs.stats.ui.home.adapter.HomeAdapter
+import com.gno.erbs.erbs.stats.ui.home.slider.HomeSliderAdapter
+import kotlin.math.abs
 
 
 class HomeFragment : BaseFragment() {
@@ -20,14 +30,6 @@ class HomeFragment : BaseFragment() {
     }
 
     private lateinit var binding: FragmentHomeBinding
-
-//    private val menuAdapter = HomeAdapter { navLink, animView ->
-//
-//        val extras = FragmentNavigatorExtras(
-//            animView to "transitionName"
-//        )
-//        findNavController().navigate(R.id.action_nav_home_to_nav_top, null, null, extras)
-//    }
 
     private val viewModel: HomeViewModel by lazy {
         ViewModelProvider(this).get(HomeViewModel::class.java)
@@ -45,40 +47,59 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (activity as MainActivity).searchDisable()
 
-        val menuAdapter  =HomeAdapter { navLink, animView ->
-
-//            val extras = FragmentNavigatorExtras(
-//                animView to "transitionName"
-//            )
- //                     findNavController().navigate(R.id.action_nav_home_to_nav_top, null, null, extras)
+        binding.recyclerViewMenu.adapter = HomeAdapter { navLink ->
             findNavController().navigate(navLink)
         }
-
-        binding.recyclerViewMenu.adapter = menuAdapter
-
         viewModel.menuObjectLiveData.observe(viewLifecycleOwner) { menu ->
-            menuAdapter.submitList(menu)
-            // binding.searchGroup.
+            (binding.recyclerViewMenu.adapter as HomeAdapter).submitList(menu)
         }
+
+        binding.slider.adapter = HomeSliderAdapter()
+        viewModel.illustrationLiveData.observe(viewLifecycleOwner) { url ->
+            (binding.slider.adapter as HomeSliderAdapter).submitList(url)
+            initSliderAutoScroll()
+        }
+
     }
 
-//    private fun initStatusBar(color: Int) {
-//        activity?.let { thisActivity ->
-//            val window = thisActivity.window
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-//                window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-//                val tintManager = SystemBarTintManager(thisActivity)
-//                tintManager.isStatusBarTintEnabled = true
-//                tintManager.setTintColor(color)
-//            }
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                window.decorView.systemUiVisibility =
-//                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//                window.statusBarColor = color
-//            }
-//        }
-//    }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as MainActivity).searchDisable()
+    }
+
+    private fun initSliderAutoScroll() {
+        binding.slider.clipToPadding = false;
+        binding.slider.clipChildren = false;
+        binding.slider.offscreenPageLimit = 3;
+        binding.slider.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER;
+
+        val compositePageTransformer = CompositePageTransformer()
+        compositePageTransformer.addTransformer(MarginPageTransformer(40))
+        compositePageTransformer.addTransformer { page, position ->
+            val r = 1 - abs(position)
+            page.scaleY = 0.85f + r * 0.15f
+        }
+
+        binding.slider.setPageTransformer(compositePageTransformer)
+
+        val sliderHandler = Handler()
+        val sliderRunnable = Runnable {
+            if ((binding.slider.adapter as HomeSliderAdapter).itemCount ==
+                binding.slider.currentItem + 1
+            ) binding.slider.currentItem = 0
+            else binding.slider.currentItem =  binding.slider.currentItem + 1
+        }
+
+        binding.slider.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                sliderHandler.removeCallbacks(sliderRunnable)
+                sliderHandler.postDelayed(sliderRunnable, 2000)
+            }
+        })
+    }
 }
+
+
 

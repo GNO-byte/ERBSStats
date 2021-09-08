@@ -1,20 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/loading"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:shimmer_auto_start="true"
-    app:shimmer_colored="false">
+    android:layout_margin="8dp"
+    android:adjustViewBounds="true"
+    android:orientation="horizontal"
+    android:scaleType="centerCrop">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/character_guide_image"
-        style="@style/Theme.ERBSStats.Loading"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_margin="8dp"
-        android:contentDescription="loading"
-        app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage" />
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</com.facebook.shimmer.ShimmerFrameLayout>
+        <com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:shimmer_auto_start="true"
+            app:shimmer_colored="false">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/character_guide_image"
+                style="@style/Theme.ERBSStats.Loading"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="loading"
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.SmallImage" />
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

@@ -13,7 +13,8 @@ import com.gno.erbs.erbs.stats.ui.LoadingImageHelper
 
 abstract class BaseFragment : Fragment() {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         (activity as MainActivity).searchEnable()
     }
 
@@ -21,7 +22,6 @@ abstract class BaseFragment : Fragment() {
         image: ImageView,
         loading: View
     ): RequestListener<Drawable> = LoadingImageHelper.createGlideListener(image, loading)
-
 
     fun loadImage(
         view: ImageView, webLink: String?,

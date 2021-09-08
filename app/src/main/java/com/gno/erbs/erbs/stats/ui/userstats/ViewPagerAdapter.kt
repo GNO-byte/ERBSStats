@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.ui.userstats.usercharecters.UserCharactersFragment
 import com.gno.erbs.erbs.stats.ui.userstats.matches.MatchesFragment
@@ -11,15 +13,15 @@ import com.gno.erbs.erbs.stats.ui.userstats.overview.OverviewFragment
 
 class ViewPagerAdapter(
     supportFragmentManager: FragmentManager,
-    context: Context
-) : FragmentStatePagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    val viewLifecycleOwner: Lifecycle,
+) : FragmentStateAdapter(supportFragmentManager, viewLifecycleOwner) {
 
     data class Page(val title: String, val ctor: () -> Fragment)
 
     @Suppress("MoveLambdaOutsideParentheses")
     private val pages = listOf(
         Page(
-            context.getString(R.string.stats_tab_1),
+            "Overview",
             { OverviewFragment.newInstance() }
         ),
         Page(
@@ -32,15 +34,16 @@ class ViewPagerAdapter(
         ),
     )
 
-    override fun getItem(position: Int): Fragment {
+    override fun createFragment(position: Int): Fragment {
         return pages[position].ctor()
     }
 
-    override fun getCount(): Int {
+    override fun getItemCount(): Int {
         return pages.size
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
+
+    fun getPageTitle(position: Int): String {
         return pages[position].title
     }
 }

@@ -1,23 +1,19 @@
 package com.gno.erbs.erbs.stats.ui.guide.characterdetail
 
-import android.provider.ContactsContract
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import com.gno.erbs.erbs.stats.model.CharacterStats
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreCharacter
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreSkill
-import com.gno.erbs.erbs.stats.model.erbs.characters.Character
 import com.gno.erbs.erbs.stats.model.erbs.characters.WeaponType
 import com.gno.erbs.erbs.stats.repository.DataRepository
-import com.gno.erbs.erbs.stats.ui.base.BaseViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class CharacterDetailViewModel : BaseViewModel() {
+class CharacterDetailViewModel : ViewModel() {
 
     val coreCharacterLiveData = MutableLiveData<CoreCharacter?>()
-    val characterStatsLiveData = MutableLiveData<CharacterStats>()
+    val characterStatsLiveData = MutableLiveData<CharacterStats?>()
     private val weaponTypesLiveData = MutableLiveData<List<WeaponType>?>()
     val resultWeaponTypesLiveData = weaponTypesLiveData.combineWith(coreCharacterLiveData)
     { weaponTypes, coreCharacter ->
@@ -27,7 +23,7 @@ class CharacterDetailViewModel : BaseViewModel() {
         weaponTypes
     }
     val skillsLiveData = MutableLiveData<List<CoreSkill>?>()
-
+    private var downloadCompleted = false
 
     fun <T, K, R> LiveData<T>.combineWith(
         liveData: LiveData<K>,
@@ -35,21 +31,24 @@ class CharacterDetailViewModel : BaseViewModel() {
     ): LiveData<R> {
         val result = MediatorLiveData<R>()
         result.addSource(this) {
-                result.value = block(this.value, liveData.value)
+            result.value = block(this.value, liveData.value)
         }
         result.addSource(liveData) {
-                result.value = block(this.value, liveData.value)
+            result.value = block(this.value, liveData.value)
         }
         return result
     }
 
     fun loadCharacterDetail(code: Int) {
 
-        scope.launch {
-            loadCoreCharacter(code)
-            loadCharacterStats(code)
-            loadWeaponTypes(code)
-            loadSkills(code)
+        if (!downloadCompleted) {
+            viewModelScope.launch(Dispatchers.IO) {
+                loadCoreCharacter(code)
+                loadCharacterStats(code)
+                loadWeaponTypes(code)
+                loadSkills(code)
+                downloadCompleted = true
+            }
         }
     }
 
@@ -58,8 +57,10 @@ class CharacterDetailViewModel : BaseViewModel() {
     }
 
     private suspend fun loadCharacterStats(code: Int) {
-        val characterAsync = scope.async { DataRepository.getCharacter(code) }
-        val characterLevelUpStatAsync = scope.async { DataRepository.getCharacterLevelUpStat(code) }
+        val characterAsync =
+            viewModelScope.async(Dispatchers.IO) { DataRepository.getCharacter(code) }
+        val characterLevelUpStatAsync =
+            viewModelScope.async(Dispatchers.IO) { DataRepository.getCharacterLevelUpStat(code) }
         val character = characterAsync.await()
         val characterLevelUpStat = characterLevelUpStatAsync.await()
 
@@ -67,6 +68,9 @@ class CharacterDetailViewModel : BaseViewModel() {
             val characterStats = CharacterStats(character, characterLevelUpStat)
             DataRepository.addCharacterHalfWebLink(characterStats)
             characterStatsLiveData.postValue(characterStats)
+        } else {
+            characterStatsLiveData.postValue(null)
+
         }
     }
 

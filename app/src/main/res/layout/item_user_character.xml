@@ -2,6 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
@@ -9,7 +10,7 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         style="@style/Theme.ERBSStats.SmallImage"
-        app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlaySmallImage"
+        app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.SmallImage"
         android:id="@+id/image_character"
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -33,7 +34,7 @@
             android:layout_height="30dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage" />
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.SmallImage" />
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 
@@ -42,41 +43,47 @@
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="2" />
+        android:layout_weight="2"
+        tools:text="User"/>
 
     <TextView
         android:id="@+id/total_games"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="2" />
+        android:layout_weight="2"
+        tools:text="10"/>
 
     <TextView
         android:id="@+id/max_killings"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="2" />
+        android:layout_weight="2"
+        tools:text="8"/>
 
     <TextView
         android:id="@+id/wins"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="2" />
+        android:layout_weight="2"
+        tools:text="5"/>
 
     <TextView
         android:id="@+id/top3"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="2" />
+        android:layout_weight="2"
+        tools:text="2"/>
 
     <TextView
         android:id="@+id/averageRank"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="2" />
+        android:layout_weight="2"
+        tools:text="100"/>
 
 </LinearLayout>

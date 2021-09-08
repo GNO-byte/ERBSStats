@@ -2,15 +2,17 @@ package com.gno.erbs.erbs.stats.ui.guide.characterdetail
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.gno.erbs.erbs.stats.ui.guide.characterdetail.background.BackgroundFragment
 import com.gno.erbs.erbs.stats.ui.guide.characterdetail.characterstats.CharacterStatsFragment
 import com.gno.erbs.erbs.stats.ui.guide.characterdetail.skills.SkillsFragment
 import com.gno.erbs.erbs.stats.ui.guide.characterdetail.weapontypes.WeaponTypesFragment
 
 class CharacterDetailViewPagerAdapter(
-    supportFragmentManager: FragmentManager,
-) : FragmentStatePagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    val supportFragmentManager: FragmentManager,
+    val viewLifecycleOwner: Lifecycle,
+    ) : FragmentStateAdapter(supportFragmentManager,viewLifecycleOwner){
 
     data class Page(val title: String, val ctor: () -> Fragment)
 
@@ -35,15 +37,17 @@ class CharacterDetailViewPagerAdapter(
 
         )
 
-    override fun getItem(position: Int): Fragment {
+
+    override fun createFragment(position: Int): Fragment {
         return pages[position].ctor()
     }
 
-    override fun getCount(): Int {
+    override fun getItemCount(): Int {
         return pages.size
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
-        return pages[position].title
+
+    fun getPageTitle(position: Int): String {
+         return pages[position].title
     }
 }

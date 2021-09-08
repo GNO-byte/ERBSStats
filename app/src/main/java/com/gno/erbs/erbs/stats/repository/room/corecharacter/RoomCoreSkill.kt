@@ -13,11 +13,11 @@ import com.gno.erbs.erbs.stats.repository.room.corecharacter.RoomCoreCharacter
     ]
 )
 data class RoomCoreSkill(
-    @PrimaryKey
     val id: String,
     @ColumnInfo(index = true)
     val characterCode: Int,
     val description: String?,
+    @PrimaryKey
     val group: Int?,
     val key: String?,
     val name: String?,

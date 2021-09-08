@@ -20,52 +20,47 @@
             android:layout_height="30dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerSmallImage" />
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.SmallImage" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            style="@style/Theme.ERBSStats.Loading"
+            style="@style/Theme.ERBSStats.Loading.Text"
             android:layout_width="30dp"
-            android:layout_height="24sp"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:layout_weight="2"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll" />
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            style="@style/Theme.ERBSStats.Loading"
+            style="@style/Theme.ERBSStats.Loading.Text"
             android:layout_width="30dp"
-            android:layout_height="24sp"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:layout_weight="2"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll" />
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            style="@style/Theme.ERBSStats.Loading"
+            style="@style/Theme.ERBSStats.Loading.Text"
             android:layout_width="30dp"
-            android:layout_height="24sp"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:layout_weight="2"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll" />
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            style="@style/Theme.ERBSStats.Loading"
+            style="@style/Theme.ERBSStats.Loading.Text"
             android:layout_width="30dp"
-            android:layout_height="24sp"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:layout_weight="2"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll" />
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            style="@style/Theme.ERBSStats.Loading"
+            style="@style/Theme.ERBSStats.Loading.Text"
             android:layout_width="30dp"
-            android:layout_height="24sp"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:layout_weight="2"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll" />
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text" />
 
     </LinearLayout>
 

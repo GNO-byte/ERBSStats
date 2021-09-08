@@ -33,12 +33,20 @@ class UserCharactersFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-       activity?.let{thisActivity ->
+       activity?.let{ activity ->
            charactersAdapter.addLoading()
            viewModel =
-               ViewModelProvider(thisActivity.supportFragmentManager.fragments.first().childFragmentManager.fragments[0]).get(
+               ViewModelProvider(activity.supportFragmentManager.fragments.first().childFragmentManager.fragments[0]).get(
                    UserStatsViewModel::class.java
                )
+
+           viewModel.updateLiveData.observe(viewLifecycleOwner) {
+               if (it) {
+                   charactersAdapter.submitList(null)
+                   charactersAdapter.addLoading()
+               }
+           }
+
            viewModel.userCharactersStatsLiveData.observe(viewLifecycleOwner){
                charactersAdapter.submitList(it)
            }

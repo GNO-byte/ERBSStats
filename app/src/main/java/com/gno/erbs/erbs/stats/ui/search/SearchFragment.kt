@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.gno.erbs.erbs.stats.MainActivity
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentSearchBinding
 import com.gno.erbs.erbs.stats.model.FoundObjectsTypes
+import com.gno.erbs.erbs.stats.repository.NavigateHelper
+import com.gno.erbs.erbs.stats.ui.ErrorHelper
 import com.gno.erbs.erbs.stats.ui.base.BaseFragment
 
 class SearchFragment : BaseFragment() {
@@ -25,10 +28,21 @@ class SearchFragment : BaseFragment() {
     }
 
     private val searchAdapter = SearchAdapter { foundObject ->
-        val bundle = bundleOf("code" to foundObject.code)
+
+        val bundle = bundleOf(
+            "code" to foundObject.code,
+            "name" to foundObject.name,
+            "seasonId" to "0"
+        )
+
         when (foundObject.type) {
-            FoundObjectsTypes.PLAYER -> findNavController().navigate(R.id.nav_user_stats, bundle)
-            FoundObjectsTypes.USER -> findNavController().navigate(
+            FoundObjectsTypes.PLAYER -> NavigateHelper.go(
+                findNavController(),
+                R.id.nav_user_stats,
+                bundle
+            )
+            FoundObjectsTypes.CHARACTER -> NavigateHelper.go(
+                findNavController(),
                 R.id.nav_character_detail,
                 bundle
             )
@@ -51,8 +65,12 @@ class SearchFragment : BaseFragment() {
 
         binding.recyclerviewMenu.adapter = searchAdapter
 
+
         viewModel.foundObjectLiveData.observe(viewLifecycleOwner) { foundObjects ->
-            searchAdapter.submitList(foundObjects)
+            foundObjects.forEach {
+                if (it == null) (activity as MainActivity).showConnectionError{searchAdapter.addLoading()}
+            }
+            searchAdapter.submitList(foundObjects.filterNotNull())
         }
     }
 

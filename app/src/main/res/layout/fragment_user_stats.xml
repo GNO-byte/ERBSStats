@@ -31,24 +31,25 @@
                 android:id="@+id/loading_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="center|top"
+                android:layout_margin="8dp"
                 android:visibility="gone"
                 app:shimmer_auto_start="true"
                 app:shimmer_colored="false">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
                     style="@style/Theme.ERBSStats.Loading"
-                    android:layout_width="92dp"
-                    android:layout_height="142dp"
-                    android:layout_gravity="top" />
+                    android:layout_width="88dp"
+                    android:layout_height="135dp"
+                    android:layout_gravity="top"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.All" />
 
             </com.facebook.shimmer.ShimmerFrameLayout>
 
             <ImageView
                 android:id="@+id/top_character_image"
-                android:layout_width="92dp"
-                android:layout_height="142dp"
+                android:layout_width="110dp"
+                android:layout_height="170dp"
                 android:layout_gravity="center_horizontal"
                 android:contentDescription="character image"
                 tools:src="@tools:sample/avatars" />
@@ -56,7 +57,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="105dp"
                 android:fitsSystemWindows="false"
                 android:gravity="top"
                 app:contentInsetLeft="0dp"
@@ -65,33 +66,22 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/Theme.ERBSStats.PopupOverlay">
 
-
-                <com.facebook.shimmer.ShimmerFrameLayout
-                    android:id="@+id/loading_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    app:shimmer_auto_start="true"
-                    app:shimmer_colored="false">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlayShimmerAll"
-                        android:layout_width="130dp"
-                        android:layout_height="32sp"
-                        android:layout_margin="8dp" />
-
-                </com.facebook.shimmer.ShimmerFrameLayout>
-
-
                 <TextView
+                    style="@style/Theme.ERBSStats.TextAppearance.Middle"
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="@string/app_name"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
                     tools:text="Player 1" />
+
+                <Spinner
+                    android:id="@+id/season"
+                    android:layout_gravity="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    tools:listitem="@layout/item_season"/>
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -111,25 +101,24 @@
 
                 </com.google.android.material.tabs.TabLayout>
 
-
             </LinearLayout>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <FrameLayout
         style="@style/Theme.ERBSStats.ThemeOverlayLineFomTwoSides"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.viewpager.widget.ViewPager
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    </androidx.core.widget.NestedScrollView>
+    </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
