@@ -1,4 +1,4 @@
 # ERBSStats
 
 
-![til](.gif/start.gif)
+![til](gif/start.gif)
