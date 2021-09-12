@@ -1,7 +1,5 @@
 package com.gno.erbs.erbs.stats.ui.home
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -14,9 +12,7 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.gno.erbs.erbs.stats.MainActivity
-import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentHomeBinding
-import com.gno.erbs.erbs.stats.repository.NavigateHelper
 import com.gno.erbs.erbs.stats.ui.base.BaseFragment
 import com.gno.erbs.erbs.stats.ui.home.adapter.HomeAdapter
 import com.gno.erbs.erbs.stats.ui.home.slider.HomeSliderAdapter
@@ -69,10 +65,10 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun initSliderAutoScroll() {
-        binding.slider.clipToPadding = false;
-        binding.slider.clipChildren = false;
-        binding.slider.offscreenPageLimit = 3;
-        binding.slider.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER;
+        binding.slider.clipToPadding = false
+        binding.slider.clipChildren = false
+        binding.slider.offscreenPageLimit = 3
+        binding.slider.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
 
         val compositePageTransformer = CompositePageTransformer()
         compositePageTransformer.addTransformer(MarginPageTransformer(40))
@@ -88,7 +84,7 @@ class HomeFragment : BaseFragment() {
             if ((binding.slider.adapter as HomeSliderAdapter).itemCount ==
                 binding.slider.currentItem + 1
             ) binding.slider.currentItem = 0
-            else binding.slider.currentItem =  binding.slider.currentItem + 1
+            else binding.slider.currentItem = binding.slider.currentItem + 1
         }
 
         binding.slider.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {

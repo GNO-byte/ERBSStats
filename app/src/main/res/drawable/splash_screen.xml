@@ -3,15 +3,10 @@
 
     <item android:drawable="@color/bunker" />
 
-
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/banner"/>
+            android:src="@mipmap/banner" />
     </item>
 
 </layer-list>
-
-<!--<size-->
-<!--android:width="152dp"-->
-<!--android:height="84dp"/>-->

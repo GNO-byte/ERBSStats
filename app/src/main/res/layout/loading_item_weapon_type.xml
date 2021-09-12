@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.google.android.material.card.MaterialCardView   xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:strokeWidth="0dp"
     android:layout_marginStart="8dp"
     android:layout_marginTop="16dp"
     android:layout_marginEnd="8dp"
-    app:shimmer_colored="false">
-
+    app:shimmer_colored="false"
+    app:strokeWidth="0dp">
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/loading"
@@ -22,8 +21,8 @@
             style="@style/Theme.ERBSStats.Loading.Text"
             android:layout_width="150dp"
             android:layout_gravity="top|end"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text"
-            android:layout_margin="8dp" />
+            android:layout_margin="8dp"
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text" />
 
         <com.google.android.material.imageview.ShapeableImageView
             style="@style/Theme.ERBSStats.Loading"
@@ -32,16 +31,16 @@
             android:layout_gravity="top|start"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.SmallImage"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true"
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.SmallImage" />
 
         <com.google.android.material.imageview.ShapeableImageView
             style="@style/Theme.ERBSStats.Loading"
-            android:layout_gravity="center"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.All"
-            android:layout_margin="36dp" />
+            android:layout_gravity="center"
+            android:layout_margin="36dp"
+            app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.All" />
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 

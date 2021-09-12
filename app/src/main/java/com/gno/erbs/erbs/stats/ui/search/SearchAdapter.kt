@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.FoundObject
 
@@ -42,7 +41,7 @@ class SearchAdapter(
         }
     }
 
-    fun addLoading(){
+    fun addLoading() {
         val currentList = currentList.toMutableList()
         currentList.add(null)
         currentList.add(null)

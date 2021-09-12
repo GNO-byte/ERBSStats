@@ -16,4 +16,4 @@ data class ItemSpecial(
     val specialItemType: String?,
     val stackable: Float?,
     val summonCode: Float?
-): SearchItem
+) : SearchItem

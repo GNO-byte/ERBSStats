@@ -1,26 +1,12 @@
 <resources>
     <string name="app_name">ERBSStats</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
     <string name="mmr">MMR</string>
     <string name="rank">№</string>
     <string name="top">Top</string>
     <string name="tier_image">tier image</string>
 
-    <string name="stats_tab_1">Overview</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_splash_screeen">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="search_button">Search button</string>
     <string name="grip">grip</string>
     <string name="first_item">first item</string>
@@ -30,5 +16,38 @@
     <string name="fifth_subject">fifth subject</string>
     <string name="sixth_subject">sixth subject</string>
     <string name="game_logo">game logo</string>
+    <string name="character_guide_image">character guide image</string>
+    <string name="splash_screen_loading_text">Loading the initial data. Wait please</string>
+    <string name="image_loading">image loading</string>
+    <string name="character_image">character image</string>
+    <string name="characters">Characters</string>
+    <string name="what_you_looking_for">What you looking for?</string>
+    <string name="search">Search</string>
+    <string name="octothorpe">#</string>
+    <string name="kills_title">K</string>
+    <string name="assistants_title">A</string>
+    <string name="hunter_title">H</string>
+    <string name="rank_image">rank image</string>
+    <string name="skill_image">skill image</string>
+    <string name="image_character">image character</string>
+    <string name="weapon_image">weapon image</string>
+    <string name="legend_assistance">As - Assistance</string>
+    <string name="legend_attack">A - Attack</string>
+    <string name="legend_control_difficulty">CD - Control difficulty</string>
+    <string name="legend_defense">D - Defense</string>
+    <string name="legend_disruptor">Dis - Disruptor</string>
+    <string name="legend_move">M - Move</string>
+    <string name="loading_rank_image">loading rank image</string>
+    <string name="drawer_general">General</string>
+    <string name="drawer_home">Home</string>
+    <string name="drawer_top">Top</string>
+    <string name="drawer_characters">Characters</string>
+    <string name="head_name">Name</string>
+    <string name="head_total_games">Total games</string>
+    <string name="head_max_killings">Max killings</string>
+    <string name="head_wins">Wins</string>
+    <string name="head_top3">Top 3</string>
+    <string name="head_avarage_rank">Average rank</string>
+    <string name="drawer_logo">drawer logo</string>
 
 </resources>

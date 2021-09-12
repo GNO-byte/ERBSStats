@@ -124,7 +124,7 @@ interface ERBSService {
                     Timber.e("Request is not successful - $tryCount")
                     tryCount++
                     response.close()
-                    response = chain.proceed(request);
+                    response = chain.proceed(request)
                 }
                 response
             }.dispatcher(Dispatcher().apply { maxRequestsPerHost = 1 })

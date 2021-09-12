@@ -11,6 +11,4 @@ data class CoreSkill(
 
     //additional param
     var videoLink: String?
-
-
 )

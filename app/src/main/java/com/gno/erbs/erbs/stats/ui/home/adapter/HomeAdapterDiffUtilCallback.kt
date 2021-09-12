@@ -5,7 +5,8 @@ import com.gno.erbs.erbs.stats.model.MenuObject
 
 class HomeAdapterDiffUtilCallback : DiffUtil.ItemCallback<MenuObject>() {
 
-    override fun areItemsTheSame(oldItem: MenuObject, newItem: MenuObject): Boolean = oldItem.name  == newItem.name
+    override fun areItemsTheSame(oldItem: MenuObject, newItem: MenuObject): Boolean =
+        oldItem.name == newItem.name
 
     override fun areContentsTheSame(oldItem: MenuObject, newItem: MenuObject): Boolean =
         oldItem.navigationLink == oldItem.navigationLink

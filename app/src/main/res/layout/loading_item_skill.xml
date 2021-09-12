@@ -3,10 +3,10 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:strokeWidth="0dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    app:strokeWidth="0dp">
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/loading"
@@ -29,28 +29,28 @@
                 android:layout_height="40dp"
                 android:layout_gravity="top|start"
                 android:adjustViewBounds="true"
-                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.All"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.All" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/name"
                 style="@style/Theme.ERBSStats.Loading.Text"
                 android:layout_width="152dp"
                 android:layout_marginStart="8dp"
-                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text"
                 app:layout_constraintBottom_toBottomOf="@+id/image"
                 app:layout_constraintStart_toEndOf="@+id/image"
-                app:layout_constraintTop_toTopOf="@+id/image" />
+                app:layout_constraintTop_toTopOf="@+id/image"
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/type"
                 style="@style/Theme.ERBSStats.Loading.Text"
                 android:layout_width="70dp"
-                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text"
                 app:layout_constraintBottom_toBottomOf="@+id/name"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/name" />
+                app:layout_constraintTop_toTopOf="@+id/name"
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/description"
@@ -58,9 +58,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_marginTop="8dp"
-                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.All"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image" />
+                app:layout_constraintTop_toBottomOf="@+id/image"
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.All" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

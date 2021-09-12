@@ -7,7 +7,7 @@
 
     <application
         android:name=".MainApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -15,8 +15,8 @@
         android:theme="@style/Theme.ERBSStats">
         <activity
             android:name=".SplashScreenActivity"
-            android:theme="@style/Theme.ERBSStats.SplashScreen"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:theme="@style/Theme.ERBSStats.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

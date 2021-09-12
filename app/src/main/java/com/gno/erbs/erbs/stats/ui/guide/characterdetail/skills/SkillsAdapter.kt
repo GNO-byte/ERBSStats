@@ -6,19 +6,18 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreSkill
 import com.gno.erbs.erbs.stats.ui.base.BaseListAdapter
 
-class SkillsAdapter : BaseListAdapter<CoreSkill, RecyclerView.ViewHolder>(SkillsDiffUtilCallback()) {
+class SkillsAdapter :
+    BaseListAdapter<CoreSkill, RecyclerView.ViewHolder>(SkillsDiffUtilCallback()) {
 
     companion object {
         private const val TYPE_LOADING = 1
         private const val TYPE_SKILL = 2
     }
-
 
     override fun getItemCount(): Int {
         return when (val count = super.getItemCount()) {
@@ -35,14 +34,13 @@ class SkillsAdapter : BaseListAdapter<CoreSkill, RecyclerView.ViewHolder>(Skills
         }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-           TYPE_LOADING -> LoadingHolder(
+            TYPE_LOADING -> LoadingHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.loading_item_skill, parent, false)
             )
-           TYPE_SKILL -> SkillHolder(
+            TYPE_SKILL -> SkillHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_skill, parent, false)
             )
@@ -76,25 +74,23 @@ class SkillsAdapter : BaseListAdapter<CoreSkill, RecyclerView.ViewHolder>(Skills
                 rankHolder.loading.visibility = View.VISIBLE
                 rankHolder.skillImage.visibility = View.GONE
 
-                loadImage(rankHolder.skillImage,item.image,rankHolder.loading)
+                loadImage(rankHolder.skillImage, item.image, rankHolder.loading)
 
             }
 
         }
     }
 
-        class SkillHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class SkillHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-            val skillName: TextView = itemView.findViewById(R.id.name)
-            var skillType: TextView = itemView.findViewById(R.id.type)
-            var skillDescription: TextView = itemView.findViewById(R.id.description)
-            val skillImage: ImageView = itemView.findViewById(R.id.image)
-            val loading: ShimmerFrameLayout =  itemView.findViewById(R.id.loading)
-
-        }
-
-
-        class LoadingHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
+        val skillName: TextView = itemView.findViewById(R.id.name)
+        var skillType: TextView = itemView.findViewById(R.id.type)
+        var skillDescription: TextView = itemView.findViewById(R.id.description)
+        val skillImage: ImageView = itemView.findViewById(R.id.image)
+        val loading: ShimmerFrameLayout = itemView.findViewById(R.id.loading)
 
     }
+
+    class LoadingHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+}

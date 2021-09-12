@@ -4,18 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
-import com.gno.erbs.erbs.stats.MainActivity
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentSearchDialogBinding
 import com.gno.erbs.erbs.stats.repository.NavigateHelper
-
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.color.MaterialColors
 
 
 class SearchDialogFragment : BottomSheetDialogFragment() {
@@ -39,7 +35,8 @@ class SearchDialogFragment : BottomSheetDialogFragment() {
         val changeColor = arguments?.getBoolean("CHANGE_COLOR", false) ?: false
         if (changeColor) {
             context?.let { context ->
-                binding.group.background = ContextCompat.getDrawable(context, R.drawable.rounded_search_border)
+                binding.group.background =
+                    ContextCompat.getDrawable(context, R.drawable.rounded_search_border)
             }
 
         }
@@ -49,14 +46,14 @@ class SearchDialogFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        binding.search?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
                 return false
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
                 val bundle = bundleOf("searchString" to query)
-                NavigateHelper.go(findNavController(),R.id.nav_search, bundle)
+                NavigateHelper.go(findNavController(), R.id.nav_search, bundle)
                 dismiss()
                 return false
             }

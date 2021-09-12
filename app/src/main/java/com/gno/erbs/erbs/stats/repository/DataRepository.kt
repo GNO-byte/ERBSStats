@@ -59,22 +59,6 @@ object DataRepository {
         }
     }
 
-//    fun getNavigationHistoryLiveData(lifecycleOwner: LifecycleOwner): MutableLiveData<List<NavigationHistory>?> {
-//
-//        GlobalScope.launch(Dispatchers.Main) {
-//
-//            roomService?.getLast5Histories()?.asLiveData()
-//
-//            roomService?.getLast5Histories()?.observe(lifecycleOwner) { roomHistories ->
-//                roomHistories?.let {
-//                    navigationHistoryLiveData.postValue(roomHistories.map { Converter.conv(it) })
-//                }
-//            }
-//        }
-//
-//        return navigationHistoryLiveData
-//    }
-
     private suspend fun updateCharacters() {
 
         erbsService?.let { erbsService ->
@@ -163,12 +147,11 @@ object DataRepository {
             addRankTierImage(userStats)
             addTopCharacterImage(userStats)
         }
-
     }
 
     private suspend fun addTopCharacterImage(userStats: List<UserStats>) {
 
-        imageService.let { imageService ->
+        imageService?.let { imageService ->
             userStats.forEach { userStat ->
                 val topCharacterName =
                     userStat.characterStats.maxByOrNull {
@@ -177,7 +160,7 @@ object DataRepository {
 
                 topCharacterName?.let { characterName ->
                     userStat.topCharacterHalfImageWebLink =
-                        DataRepository.imageService?.getCharacterImageFiles(
+                        imageService.getCharacterImageFiles(
                             CharacterImageType.HALF,
                             characterName
                         )?.getWebLink(roomService)
@@ -185,7 +168,6 @@ object DataRepository {
 
             }
         }
-
     }
 
     private suspend fun addRankTierImage(userStats: List<UserStats>) {
@@ -297,19 +279,19 @@ object DataRepository {
 
         val itemWeaponImage = imageService?.getWeaponTypeFiles()
 
-        val equipmentList = mutableListOf<Int>()
+        val equipmentList = mutableListOf<Int?>()
 
         userGames.forEach { userGame ->
 
-            equipmentList += userGame.equipment.item1Id
-            equipmentList += userGame.equipment.item2Id
-            equipmentList += userGame.equipment.item3Id
-            equipmentList += userGame.equipment.item4Id
-            equipmentList += userGame.equipment.item5Id
-            equipmentList += userGame.equipment.item6Id
+            equipmentList += userGame.equipment?.item1Id
+            equipmentList += userGame.equipment?.item2Id
+            equipmentList += userGame.equipment?.item3Id
+            equipmentList += userGame.equipment?.item4Id
+            equipmentList += userGame.equipment?.item5Id
+            equipmentList += userGame.equipment?.item6Id
 
             var findType: String? = null
-            equipmentList.takeWhile { findType == null }.forEach {
+            equipmentList.takeWhile { findType == null }.filterNotNull().forEach {
                 try {
                     findType = itemsWeapon?.find { itemWeapon ->
                         itemWeapon.code == it
@@ -334,13 +316,24 @@ object DataRepository {
         val equipmentLinks = mutableMapOf<Int, String?>()
 
         userGames.forEach { userGame ->
-
-            equipmentLinks += userGame.equipment.item1Id to emptyItemCheck(userGame.equipment.item1Id)
-            equipmentLinks += userGame.equipment.item2Id to emptyItemCheck(userGame.equipment.item2Id)
-            equipmentLinks += userGame.equipment.item3Id to emptyItemCheck(userGame.equipment.item3Id)
-            equipmentLinks += userGame.equipment.item4Id to emptyItemCheck(userGame.equipment.item4Id)
-            equipmentLinks += userGame.equipment.item5Id to emptyItemCheck(userGame.equipment.item5Id)
-            equipmentLinks += userGame.equipment.item6Id to emptyItemCheck(userGame.equipment.item6Id)
+            userGame.equipment?.item1Id?.let {
+                equipmentLinks += it to emptyItemCheck(it)
+            }
+            userGame.equipment?.item2Id?.let {
+                equipmentLinks += it to emptyItemCheck(it)
+            }
+            userGame.equipment?.item3Id?.let {
+                equipmentLinks += it to emptyItemCheck(it)
+            }
+            userGame.equipment?.item4Id?.let {
+                equipmentLinks += it to emptyItemCheck(it)
+            }
+            userGame.equipment?.item5Id?.let {
+                equipmentLinks += it to emptyItemCheck(it)
+            }
+            userGame.equipment?.item6Id?.let {
+                equipmentLinks += it to emptyItemCheck(it)
+            }
         }
 
         val itemImage = imageService?.getItemImage()
@@ -364,17 +357,17 @@ object DataRepository {
         }
 
         userGames.forEach { userGame ->
-            userGame.equipment.item1WebLink = equipmentLinks[userGame.equipment.item1Id] ?: ""
-            userGame.equipment.item2WebLink = equipmentLinks[userGame.equipment.item2Id] ?: ""
-            userGame.equipment.item3WebLink = equipmentLinks[userGame.equipment.item3Id] ?: ""
-            userGame.equipment.item4WebLink = equipmentLinks[userGame.equipment.item4Id] ?: ""
-            userGame.equipment.item5WebLink = equipmentLinks[userGame.equipment.item5Id] ?: ""
-            userGame.equipment.item6WebLink = equipmentLinks[userGame.equipment.item6Id] ?: ""
+            userGame.equipment?.item1WebLink = equipmentLinks[userGame.equipment?.item1Id] ?: ""
+            userGame.equipment?.item2WebLink = equipmentLinks[userGame.equipment?.item2Id] ?: ""
+            userGame.equipment?.item3WebLink = equipmentLinks[userGame.equipment?.item3Id] ?: ""
+            userGame.equipment?.item4WebLink = equipmentLinks[userGame.equipment?.item4Id] ?: ""
+            userGame.equipment?.item5WebLink = equipmentLinks[userGame.equipment?.item5Id] ?: ""
+            userGame.equipment?.item6WebLink = equipmentLinks[userGame.equipment?.item6Id] ?: ""
 
         }
     }
 
-    private fun emptyItemCheck(itemId: Int) = if (itemId == 0) "noItem" else null
+    private fun emptyItemCheck(itemId: Int?) = if (itemId == 0) "noItem" else null
 
     private suspend fun fillItemsImage(
         equipmentLinks: MutableMap<Int, String?>,
@@ -420,18 +413,20 @@ object DataRepository {
 //                0
 //            }
             userGame.teamMode =
-                TeamMode.findByValue(userGame.matchingTeamMode)
-            userGame.date = SimpleDateFormat(
-                "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
-                Locale.getDefault()
-            ).parse(userGame.startDtm) ?: Date()
+                userGame.matchingTeamMode?.let { TeamMode.findByValue(it) }
+            userGame.date = userGame.startDtm?.let {
+                SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+                    Locale.getDefault()
+                ).parse(it)
+            } ?: Date()
 
-            userGame.equipment.item1WebLink = ""
-            userGame.equipment.item2WebLink = ""
-            userGame.equipment.item3WebLink = ""
-            userGame.equipment.item4WebLink = ""
-            userGame.equipment.item5WebLink = ""
-            userGame.equipment.item6WebLink = ""
+            userGame.equipment?.item1WebLink = ""
+            userGame.equipment?.item2WebLink = ""
+            userGame.equipment?.item3WebLink = ""
+            userGame.equipment?.item4WebLink = ""
+            userGame.equipment?.item5WebLink = ""
+            userGame.equipment?.item6WebLink = ""
         }
 
     }
@@ -439,7 +434,7 @@ object DataRepository {
     fun getCharacter(code: Int) = getCharacters()?.find { it.code == code }
 
     fun getCharacter(name: String) = getCharacters()?.filter { character ->
-        imageService?.compareNames(character.name, name) ?: false
+        imageService?.compareNames(character.name ?: "", name) ?: false
     }
 
     suspend fun getCharacterWeaponTypes(code: Int): List<WeaponType>? {
@@ -537,7 +532,6 @@ object DataRepository {
     }
 
     suspend fun addCharacterHalfWebLink(characterStats: CharacterStats) {
-        characterStats.name
         imageService.let { imageService ->
             characterStats.characterImageHalfWebLink = imageService?.getCharacterImageFiles(
                 CharacterImageType.HALF,

@@ -5,12 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.characters.Character
 import com.gno.erbs.erbs.stats.ui.base.BaseListAdapter
-import com.google.android.material.imageview.ShapeableImageView
 
 
 class CharactersAdapter(
@@ -63,10 +61,12 @@ class CharactersAdapter(
 
                 val characterHolder = holder as CharacterHolder
 
-                loadImage(characterHolder.image,item.iconWebLink,characterHolder.loading)
+                loadImage(characterHolder.image, item.iconWebLink, characterHolder.loading)
 
                 characterHolder.image.setOnClickListener {
-                    cellClickListener.invoke(item.code,item.name)
+                    if (item.code != null && item.name != null) {
+                        cellClickListener.invoke(item.code, item.name)
+                    }
                 }
             }
         }

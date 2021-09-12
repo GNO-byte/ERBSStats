@@ -24,6 +24,6 @@ data class UserStats(
     val userNum: Int,
 
     //additional param
-    var rankTierImageWebLink :String?,
-    var topCharacterHalfImageWebLink : String?
+    var rankTierImageWebLink: String?,
+    var topCharacterHalfImageWebLink: String?
 )

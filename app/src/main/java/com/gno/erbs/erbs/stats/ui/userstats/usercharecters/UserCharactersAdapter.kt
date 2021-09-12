@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.userstats.CharacterStat
@@ -28,7 +27,6 @@ class UserCharactersAdapter :
             else -> count
         }
     }
-
 
     override fun getItemViewType(position: Int): Int {
         val item = getItem(position)
@@ -85,7 +83,7 @@ class UserCharactersAdapter :
                 characterHolder.image.visibility = View.GONE
                 characterHolder.loading.visibility = View.VISIBLE
 
-                loadImage(characterHolder.image,item.WebLinkImage,characterHolder.loading)
+                loadImage(characterHolder.image, item.WebLinkImage, characterHolder.loading)
 
                 characterHolder.name.text = item.characterName
                 characterHolder.totalGames.text = item.totalGames.toString()

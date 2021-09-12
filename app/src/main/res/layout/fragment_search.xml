@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/body"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/body"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -21,27 +21,25 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:titleEnabled="false">
 
-
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                app:elevation="0dp"
                 android:fitsSystemWindows="false"
                 android:gravity="top"
                 app:contentInsetLeft="0dp"
                 app:contentInsetStart="0dp"
+                app:elevation="0dp"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/Theme.ERBSStats.PopupOverlay">
 
                 <TextView
                     android:id="@+id/name"
+                    style="@style/Theme.ERBSStats.TextAppearance.Middle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:text="Search"
-                    style="@style/Theme.ERBSStats.TextAppearance.Middle"
-                    tools:text="Search" />
+                    android:text="@string/search" />
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -57,12 +55,10 @@
                     android:layout_width="50dp"
                     android:layout_height="7dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/grip"
-                    android:contentDescription="@string/grip" />
-
+                    android:contentDescription="@string/grip"
+                    android:src="@drawable/grip" />
 
             </FrameLayout>
-
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -70,17 +66,15 @@
 
     <ScrollView
         style="@style/Theme.ERBSStats.ThemeOverlayLineFomTwoSides"
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_menu"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:overScrollMode="never"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
@@ -90,7 +84,6 @@
             tools:itemCount="6"
             tools:listitem="@layout/item_found_object"
             tools:spanCount="2" />
-
-
     </ScrollView>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

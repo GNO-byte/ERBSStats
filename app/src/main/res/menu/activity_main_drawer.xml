@@ -3,33 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <item android:title="General">
+    <item android:title="@string/drawer_general">
         <menu>
             <group>
                 <item
                     android:id="@+id/nav_home"
-                    android:title="Home" />
+                    android:title="@string/drawer_home" />
                 <item
                     android:id="@+id/nav_top"
-                    android:title="Top" />
+                    android:title="@string/drawer_top" />
                 <item
                     android:id="@+id/nav_characters"
-                    android:title="Characters" />
+                    android:title="@string/drawer_characters" />
             </group>
         </menu>
     </item>
-
-<!--    <item android:title="History">-->
-<!--        <menu>-->
-<!--            <group-->
-<!--                android:id="@+id/group2"-->
-<!--                android:checkableBehavior="single">-->
-<!--            <item-->
-<!--                android:id="@+id/test"-->
-<!--                android:title="test"-->
-<!--                android:visible="false"/>-->
-<!--            </group>-->
-<!--        </menu>-->
-<!--    </item>-->
-
 </menu>

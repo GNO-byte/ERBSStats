@@ -1,92 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:name="com.gno.erbs.erbs.stats.ui.characterguide.CharacterGuidesFragment"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:fitsSystemWindows="true"
-tools:context=".ui.userstats.UserStatsFragment">
-
-<com.google.android.material.appbar.AppBarLayout
-    android:id="@+id/appBarLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:name="com.gno.erbs.erbs.stats.ui.characterguide.CharacterGuidesFragment"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:fitsSystemWindows="false"
-    app:elevation="0dp">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.userstats.UserStatsFragment">
 
-    <com.google.android.material.appbar.CollapsingToolbarLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
         android:fitsSystemWindows="false"
-        app:layout_anchor="@+id/appBarLayout"
-        app:layout_anchorGravity="center"
-        app:layout_scrollFlags="scroll|enterAlways|exitUntilCollapsed">
+        app:elevation="0dp">
 
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            app:elevation="0dp"
+            android:layout_height="match_parent"
             android:fitsSystemWindows="false"
-            android:gravity="top"
-            app:contentInsetLeft="0dp"
-            app:contentInsetStart="0dp"
-            app:layout_collapseMode="pin"
-            app:popupTheme="@style/Theme.ERBSStats.PopupOverlay">
+            app:layout_anchor="@+id/appBarLayout"
+            app:layout_anchorGravity="center"
+            app:layout_scrollFlags="scroll|enterAlways|exitUntilCollapsed">
 
-        <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Characters"
-                style="@style/Theme.ERBSStats.TextAppearance.Middle"
-                tools:text="Characters" />
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:fitsSystemWindows="false"
+                android:gravity="top"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                app:elevation="0dp"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/Theme.ERBSStats.PopupOverlay">
 
-        </androidx.appcompat.widget.Toolbar>
+                <TextView
+                    android:id="@+id/name"
+                    style="@style/Theme.ERBSStats.TextAppearance.Middle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/characters"
+                    tools:text="Characters" />
 
-        <FrameLayout
-            style="@style/Theme.ERBSStats.ThemeOverlayTopBorder"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="bottom"
-            android:orientation="vertical">
+            </androidx.appcompat.widget.Toolbar>
 
+            <FrameLayout
+                style="@style/Theme.ERBSStats.ThemeOverlayTopBorder"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="7dp"
-                android:layout_gravity="center"
-                android:src="@drawable/grip"
-                android:contentDescription="@string/grip" />
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="7dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/grip"
+                    android:src="@drawable/grip" />
 
+            </FrameLayout>
 
-        </FrameLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-    </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
-</com.google.android.material.appbar.AppBarLayout>
-
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_characters"
         style="@style/Theme.ERBSStats.ThemeOverlayLineFomTwoSides"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_characters"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="5"
-            android:layout_margin="8dp"
-            tools:context=".ui.guide.characters.CharactersFragment"
-            tools:listitem="@layout/item_character" />
-
-    </ScrollView>
+        android:padding="8dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:spanCount="5"
+        tools:context=".ui.guide.characters.CharactersFragment"
+        tools:listitem="@layout/item_character" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

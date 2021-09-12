@@ -65,8 +65,10 @@ class CharacterDetailViewModel : ViewModel() {
         val characterLevelUpStat = characterLevelUpStatAsync.await()
 
         if (character != null && characterLevelUpStat != null) {
-            val characterStats = CharacterStats(character, characterLevelUpStat)
-            DataRepository.addCharacterHalfWebLink(characterStats)
+
+            val characterStats = CharacterStats(character, characterLevelUpStat)?.also {
+                DataRepository.addCharacterHalfWebLink(it)
+            }
             characterStatsLiveData.postValue(characterStats)
         } else {
             characterStatsLiveData.postValue(null)

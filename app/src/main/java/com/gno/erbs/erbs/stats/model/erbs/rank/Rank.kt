@@ -10,5 +10,4 @@ data class Rank(
     val userNum: Int,
 
     var rankTierImageWebLink: String?
-) {
-}
+)

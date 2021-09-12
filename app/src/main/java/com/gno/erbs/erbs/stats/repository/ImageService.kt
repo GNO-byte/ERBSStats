@@ -3,7 +3,7 @@ package com.gno.erbs.erbs.stats.repository
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreCharacter
 import com.gno.erbs.erbs.stats.repository.drive.CharacterImageType
 
-interface ImageService{
+interface ImageService {
 
     var coreCharacters: List<CoreCharacter>?
 
@@ -23,9 +23,9 @@ interface ImageService{
 
     suspend fun getItemImage(): List<FoundItem>
 
-    suspend fun getDataVersion():Int?
+    suspend fun getDataVersion(): Int?
 
-    suspend fun getIllustrations() : List<FoundItem>
+    suspend fun getIllustrations(): List<FoundItem>
 
     fun compareNames(nameFile: String, searchName: String): Boolean
 

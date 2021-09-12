@@ -16,7 +16,7 @@ class TopViewModel : ViewModel() {
     private var topList: List<Rank>? = null
     var currentList = mutableListOf<Rank>()
 
-    fun loadTopRanks(seasonId: String?, teamMode: String?,context:Context) {
+    fun loadTopRanks(seasonId: String?, teamMode: String?, context: Context) {
 
         val seasonId = seasonId ?: DataRepository.getDefaultSeasonId(context)
         val teamMode = teamMode ?: DataRepository.getDefaultMatchingTeamMode(context)
@@ -48,10 +48,10 @@ class TopViewModel : ViewModel() {
 
     fun changeSeason(seasonName: String, context: Context) {
 
-        Season.findByTitle(seasonName)?.let{
-            DataRepository.setDefaultSeasonId(context,it.id)
+        Season.findByTitle(seasonName)?.let {
+            DataRepository.setDefaultSeasonId(context, it.id)
             topList = null
-            loadTopRanks(it.id,null,context)
+            loadTopRanks(it.id, null, context)
         }
     }
 }

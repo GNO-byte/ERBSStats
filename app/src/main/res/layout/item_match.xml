@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="#" />
+                android:text="@string/octothorpe" />
 
             <TextView
                 android:id="@+id/game_rank"
@@ -75,21 +75,21 @@
             app:layout_constraintTop_toBottomOf="@+id/common">
 
             <com.google.android.material.imageview.ShapeableImageView
-                style="@style/Theme.ERBSStats.SmallImage"
-                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.SmallImage"
                 android:id="@+id/character"
+                style="@style/Theme.ERBSStats.SmallImage"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="start|top"
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.SmallImage"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/loading_character"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start|top"
                 android:visibility="gone"
                 app:shimmer_auto_start="true"
-                android:layout_gravity="start|top"
                 app:shimmer_colored="false">
 
                 <com.google.android.material.imageview.ShapeableImageView
@@ -102,21 +102,21 @@
             </com.facebook.shimmer.ShimmerFrameLayout>
 
             <com.google.android.material.imageview.ShapeableImageView
-                style="@style/Theme.ERBSStats.SmallImage"
-                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.SmallImage"
                 android:id="@+id/character_weapon"
+                style="@style/Theme.ERBSStats.SmallImage"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="end|bottom"
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.SmallImage"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/loading_character_weapon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
                 android:visibility="gone"
                 app:shimmer_auto_start="true"
-                android:layout_gravity="end|bottom"
                 app:shimmer_colored="false">
 
                 <com.google.android.material.imageview.ShapeableImageView
@@ -152,7 +152,7 @@
                     android:id="@+id/kills_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="K" />
+                    android:text="@string/kills_title" />
 
                 <TextView
                     android:id="@+id/kills"
@@ -173,7 +173,7 @@
                     android:id="@+id/assistants_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="A" />
+                    android:text="@string/assistants_title" />
 
                 <TextView
                     android:id="@+id/assistants"
@@ -194,7 +194,7 @@
                     android:id="@+id/hunter_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="H" />
+                    android:text="@string/hunter_title" />
 
                 <TextView
                     android:id="@+id/hunter"
@@ -204,26 +204,26 @@
 
             </LinearLayout>
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="8dp"-->
-<!--                android:gravity="center"-->
-<!--                android:orientation="vertical">-->
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="8dp"-->
+            <!--                android:gravity="center"-->
+            <!--                android:orientation="vertical">-->
 
-<!--                <TextView-->
-<!--                    android:id="@+id/mmr_title"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="MMR" />-->
+            <!--                <TextView-->
+            <!--                    android:id="@+id/mmr_title"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:text="MMR" />-->
 
-<!--                <TextView-->
-<!--                    android:id="@+id/mmr"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    tools:text="@sample/usergames.json/userGames/mmrBefore" />-->
+            <!--                <TextView-->
+            <!--                    android:id="@+id/mmr"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    tools:text="@sample/usergames.json/userGames/mmrBefore" />-->
 
-<!--            </LinearLayout>-->
+            <!--            </LinearLayout>-->
 
         </LinearLayout>
 
@@ -246,8 +246,8 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars"
-                android:contentDescription="@string/first_item" />
+                android:contentDescription="@string/first_item"
+                tools:srcCompat="@tools:sample/avatars" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/loading_item1"
@@ -275,8 +275,8 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars"
-                android:contentDescription="@string/second_item" />
+                android:contentDescription="@string/second_item"
+                tools:srcCompat="@tools:sample/avatars" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/loading_item2"
@@ -304,8 +304,8 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars"
-                android:contentDescription="@string/third_item" />
+                android:contentDescription="@string/third_item"
+                tools:srcCompat="@tools:sample/avatars" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/loading_item3"
@@ -333,8 +333,8 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars"
-                android:contentDescription="@string/fourth_subject" />
+                android:contentDescription="@string/fourth_subject"
+                tools:srcCompat="@tools:sample/avatars" />
 
 
             <com.facebook.shimmer.ShimmerFrameLayout
@@ -363,8 +363,8 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars"
-                android:contentDescription="@string/fifth_subject" />
+                android:contentDescription="@string/fifth_subject"
+                tools:srcCompat="@tools:sample/avatars" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/loading_item5"
@@ -392,8 +392,8 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars"
-                android:contentDescription="@string/sixth_subject" />
+                android:contentDescription="@string/sixth_subject"
+                tools:srcCompat="@tools:sample/avatars" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/loading_item6"

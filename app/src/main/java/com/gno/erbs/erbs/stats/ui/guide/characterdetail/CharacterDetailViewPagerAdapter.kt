@@ -12,7 +12,7 @@ import com.gno.erbs.erbs.stats.ui.guide.characterdetail.weapontypes.WeaponTypesF
 class CharacterDetailViewPagerAdapter(
     val supportFragmentManager: FragmentManager,
     val viewLifecycleOwner: Lifecycle,
-    ) : FragmentStateAdapter(supportFragmentManager,viewLifecycleOwner){
+) : FragmentStateAdapter(supportFragmentManager, viewLifecycleOwner) {
 
     data class Page(val title: String, val ctor: () -> Fragment)
 
@@ -23,11 +23,11 @@ class CharacterDetailViewPagerAdapter(
             { BackgroundFragment.newInstance() }
         ),
         Page(
-            "Character stats",
+            "Stats",
             { CharacterStatsFragment.newInstance() }
         ),
         Page(
-            "Weapon types",
+            "Weapons",
             { WeaponTypesFragment.newInstance() }
         ),
         Page(
@@ -48,6 +48,6 @@ class CharacterDetailViewPagerAdapter(
 
 
     fun getPageTitle(position: Int): String {
-         return pages[position].title
+        return pages[position].title
     }
 }

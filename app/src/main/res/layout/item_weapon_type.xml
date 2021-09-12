@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
@@ -37,24 +36,24 @@
                 android:layout_height="40dp"
                 android:layout_margin="8dp"
                 android:adjustViewBounds="true"
-                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.SmallImage"
-                android:contentDescription="weapon image" />
+                android:contentDescription="@string/weapon_image"
+                app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.SmallImage" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/loading"
-                app:shimmer_auto_start="true"
-                app:shimmer_colored="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone">
+                android:visibility="gone"
+                app:shimmer_auto_start="true"
+                app:shimmer_colored="false">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     style="@style/Theme.ERBSStats.Loading"
-                    app:strokeColor="@color/goldenrod"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:layout_margin="8dp"
                     app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.SmallImage"
-                    android:layout_margin="8dp"/>
+                    app:strokeColor="@color/goldenrod" />
 
             </com.facebook.shimmer.ShimmerFrameLayout>
 

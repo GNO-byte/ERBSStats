@@ -9,7 +9,6 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
@@ -70,7 +69,7 @@ class OverviewFragment : BaseFragment() {
                     val itemGameMode =
                         layoutInflater.inflate(
                             R.layout.item_game_mode,
-                            null,
+                            binding.root,
                             false
                         ) as ConstraintLayout
 
@@ -167,7 +166,7 @@ class OverviewFragment : BaseFragment() {
     ) {
 
         val itemParameter =
-            layoutInflater.inflate(R.layout.item_parameter, null, false) as LinearLayout
+            layoutInflater.inflate(R.layout.item_parameter, this, false) as LinearLayout
         val nameView: TextView = itemParameter.findViewById(R.id.name)
         val valueView: TextView = itemParameter.findViewById(R.id.value)
         val progressView: ProgressBar = itemParameter.findViewById(R.id.progress)
@@ -180,8 +179,6 @@ class OverviewFragment : BaseFragment() {
         this.addView(itemParameter)
 
     }
-
-
 }
 
 

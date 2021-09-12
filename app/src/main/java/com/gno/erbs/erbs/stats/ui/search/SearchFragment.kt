@@ -12,7 +12,6 @@ import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentSearchBinding
 import com.gno.erbs.erbs.stats.model.FoundObjectsTypes
 import com.gno.erbs.erbs.stats.repository.NavigateHelper
-import com.gno.erbs.erbs.stats.ui.ErrorHelper
 import com.gno.erbs.erbs.stats.ui.base.BaseFragment
 
 class SearchFragment : BaseFragment() {
@@ -68,7 +67,7 @@ class SearchFragment : BaseFragment() {
 
         viewModel.foundObjectLiveData.observe(viewLifecycleOwner) { foundObjects ->
             foundObjects.forEach {
-                if (it == null) (activity as MainActivity).showConnectionError{searchAdapter.addLoading()}
+                if (it == null) (activity as MainActivity).showConnectionError { searchAdapter.addLoading() }
             }
             searchAdapter.submitList(foundObjects.filterNotNull())
         }

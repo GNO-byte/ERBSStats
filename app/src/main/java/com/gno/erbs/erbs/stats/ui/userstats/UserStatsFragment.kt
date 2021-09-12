@@ -44,8 +44,8 @@ class UserStatsFragment : BaseFragment() {
             binding.topCharacterImage.visibility = View.GONE
             binding.loadingImage.visibility = View.VISIBLE
 
-            val foundId = arguments?.getInt("code", 0).let{
-                if(it == 0) null else it.toString()
+            val foundId = arguments?.getInt("code", 0).let {
+                if (it == 0) null else it.toString()
             }
 
             binding.name.text = arguments?.getString("name", "")
@@ -126,7 +126,6 @@ class UserStatsFragment : BaseFragment() {
                 ///
             }
         }
-
     }
 
     private fun changeSeason(seasonName: String, context: Context) {

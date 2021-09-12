@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.userstats.usercharecters.UserCharactersFragment">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
         <include
             android:id="@+id/legend"
             layout="@layout/item_weapon_type_legend"
@@ -19,13 +20,13 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_weapon_types"
-            android:layout_marginBottom="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation = "vertical"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_weapon_type" />
 
-        </LinearLayout>
+    </LinearLayout>
 
-</FrameLayout>
+</androidx.core.widget.NestedScrollView>

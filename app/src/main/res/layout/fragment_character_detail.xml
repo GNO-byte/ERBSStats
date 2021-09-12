@@ -30,27 +30,27 @@
                 android:id="@+id/character_image"
                 android:layout_width="110dp"
                 android:layout_height="170dp"
-                android:layout_gravity="right"
-                android:contentDescription="character image"
-                tools:src="@tools:sample/avatars"/>
+                android:layout_gravity="end"
+                android:contentDescription="@string/character_image"
+                tools:src="@tools:sample/avatars" />
 
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/loading_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
+                android:visibility="gone"
                 app:shimmer_auto_start="true"
-                app:shimmer_colored="false"
-                android:visibility="gone">
+                app:shimmer_colored="false">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.All"
                     style="@style/Theme.ERBSStats.Loading"
-                    android:layout_margin="8dp"
                     android:layout_width="88dp"
                     android:layout_height="135dp"
-                    android:foregroundGravity="top" />
+                    android:layout_margin="8dp"
+                    android:foregroundGravity="top"
+                    app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.All" />
 
             </com.facebook.shimmer.ShimmerFrameLayout>
 
@@ -58,11 +58,11 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                app:elevation="0dp"
                 android:fitsSystemWindows="false"
                 android:gravity="top"
                 app:contentInsetLeft="0dp"
                 app:contentInsetStart="0dp"
+                app:elevation="0dp"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/Theme.ERBSStats.PopupOverlay">
 
@@ -75,23 +75,17 @@
 
             </androidx.appcompat.widget.Toolbar>
 
-            <LinearLayout
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                style="@style/Theme.ERBSStats.ThemeOverlayTopBorder"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="bottom"
-                 android:orientation="vertical">
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabs"
-                    android:layout_width="match_parent"
-                    style="@style/Theme.ERBSStats.ThemeOverlayTopBorder"
-                    android:layout_height="?attr/actionBarSize"
-                    app:tabGravity="fill"
-                    app:tabMode="fixed">
-
-                </com.google.android.material.tabs.TabLayout>
-
-            </LinearLayout>
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                app:tabGravity="fill"
+                app:tabIndicatorHeight="3dp"
+                app:tabMode="auto" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 

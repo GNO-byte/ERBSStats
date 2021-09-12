@@ -70,7 +70,7 @@ object Converter {
         )
     }
 
-    fun conv(coreSkill: CoreSkill, characterCode: Int) = coreSkill.id?.let { id ->
+    private fun conv(coreSkill: CoreSkill, characterCode: Int) = coreSkill.id?.let { id ->
         RoomCoreSkill(
             id,
             characterCode,
@@ -84,7 +84,7 @@ object Converter {
         )
     }
 
-    fun conv(coreWeapon: CoreWeapon) = coreWeapon.id?.let { id ->
+    private fun conv(coreWeapon: CoreWeapon) = coreWeapon.id?.let { id ->
         RoomCoreWeapon(id, coreWeapon.name)
     }
 
@@ -96,7 +96,7 @@ object Converter {
             coreCharacter.weapons?.map { conv(it) }
         )
 
-    fun conv(coreSkill: RoomCoreSkill) = CoreSkill(
+    private fun conv(coreSkill: RoomCoreSkill) = CoreSkill(
         coreSkill.id,
         coreSkill.description,
         coreSkill.group,
@@ -107,8 +107,9 @@ object Converter {
         coreSkill.videoLink
     )
 
-    fun conv(coreWeapon: RoomCoreWeapon) = CoreWeapon(coreWeapon.id, coreWeapon.name)
+    private fun conv(coreWeapon: RoomCoreWeapon) = CoreWeapon(coreWeapon.id, coreWeapon.name)
 
-    fun conv(roomHistory: RoomHistory) = NavigationHistory(roomHistory.date,roomHistory.bundle,roomHistory.navigateId)
+    fun conv(roomHistory: RoomHistory) =
+        NavigationHistory(roomHistory.date, roomHistory.bundle, roomHistory.navigateId)
 
 }

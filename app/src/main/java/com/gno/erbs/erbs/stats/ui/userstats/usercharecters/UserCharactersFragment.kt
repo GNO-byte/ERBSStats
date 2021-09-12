@@ -1,11 +1,12 @@
 package com.gno.erbs.erbs.stats.ui.userstats.usercharecters
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentUserCharactersBinding
 import com.gno.erbs.erbs.stats.ui.userstats.UserStatsViewModel
 
@@ -29,37 +30,36 @@ class UserCharactersFragment : Fragment() {
             inflater, container, false
         )
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-       activity?.let{ activity ->
-           charactersAdapter.addLoading()
-           viewModel =
-               ViewModelProvider(activity.supportFragmentManager.fragments.first().childFragmentManager.fragments[0]).get(
-                   UserStatsViewModel::class.java
-               )
+        activity?.let { activity ->
+            charactersAdapter.addLoading()
+            viewModel =
+                ViewModelProvider(activity.supportFragmentManager.fragments.first().childFragmentManager.fragments[0]).get(
+                    UserStatsViewModel::class.java
+                )
 
-           viewModel.updateLiveData.observe(viewLifecycleOwner) {
-               if (it) {
-                   charactersAdapter.submitList(null)
-                   charactersAdapter.addLoading()
-               }
-           }
+            viewModel.updateLiveData.observe(viewLifecycleOwner) {
+                if (it) {
+                    charactersAdapter.submitList(null)
+                    charactersAdapter.addLoading()
+                }
+            }
 
-           viewModel.userCharactersStatsLiveData.observe(viewLifecycleOwner){
-               charactersAdapter.submitList(it)
-           }
-       }
-            binding.recyclerViewUserCharacters.adapter = charactersAdapter
+            viewModel.userCharactersStatsLiveData.observe(viewLifecycleOwner) {
+                charactersAdapter.submitList(it)
+            }
+        }
+        binding.recyclerViewUserCharacters.adapter = charactersAdapter
 
         binding.head.imageCharacter.visibility = View.INVISIBLE
-        binding.head.name.text = "Name"
-        binding.head.totalGames.text = "Total games"
-        binding.head.maxKillings.text = "Max killings"
-        binding.head.wins.text = "Wins"
-        binding.head.top3.text = "Top 3"
-        binding.head.averageRank.text = "Average rank"
+        binding.head.name.text = getString(R.string.head_name)
+        binding.head.totalGames.text = getString(R.string.head_total_games)
+        binding.head.maxKillings.text = getString(R.string.head_max_killings)
+        binding.head.wins.text = getString(R.string.head_wins)
+        binding.head.top3.text = getString(R.string.head_top3)
+        binding.head.averageRank.text = getString(R.string.head_avarage_rank)
 
     }
 }

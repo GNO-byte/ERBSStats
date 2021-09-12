@@ -63,4 +63,4 @@ data class ItemArmor(
     val stackable: Float?,
     val trapDamageReduce: Float?,
     val trapDamageReduceRatio: Float?
-): SearchItem
+) : SearchItem

@@ -35,6 +35,4 @@ class HomeAdapter(
         val cardView: CardView = view.findViewById(R.id.container)
         val name: TextView = view.findViewById(R.id.name)
     }
-
-
 }

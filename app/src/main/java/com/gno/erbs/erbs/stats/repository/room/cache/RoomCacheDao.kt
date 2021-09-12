@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.gno.erbs.erbs.stats.repository.room.character.RoomCharacter
 
 @Dao
 interface RoomCacheDao {
@@ -14,6 +13,5 @@ interface RoomCacheDao {
 
     @Query("SELECT * FROM RoomCache WHERE name = :name")
     fun getCache(name: String): RoomCache
-
 
 }

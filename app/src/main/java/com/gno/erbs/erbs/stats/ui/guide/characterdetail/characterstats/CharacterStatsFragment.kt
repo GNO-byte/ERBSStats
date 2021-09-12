@@ -32,7 +32,6 @@ class CharacterStatsFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         binding.overview.visibility = View.GONE
@@ -50,8 +49,8 @@ class CharacterStatsFragment : Fragment() {
 
         viewModel.characterStatsLiveData.observe(viewLifecycleOwner) { characterStats ->
 
-            characterStats?.let {
-                characterStats
+            characterStats?.let { characterStats ->
+
                 binding.overview.createParameter(
                     layoutInflater,
                     "Parameter",
@@ -148,7 +147,7 @@ class CharacterStatsFragment : Fragment() {
                 binding.overview.createParameter(
                     layoutInflater,
                     "Sight Range",
-                    characterStats.radius,
+                    characterStats.sightRange,
                     null
                 )
 
@@ -169,7 +168,7 @@ class CharacterStatsFragment : Fragment() {
         val itemParameter =
             layoutInflater.inflate(
                 R.layout.item_character_stats_parameter,
-                null,
+                this,
                 false
             ) as LinearLayout
         val nameView: TextView = itemParameter.findViewById(R.id.name)

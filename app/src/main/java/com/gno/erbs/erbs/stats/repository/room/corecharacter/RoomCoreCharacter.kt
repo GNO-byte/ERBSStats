@@ -1,9 +1,11 @@
 package com.gno.erbs.erbs.stats.repository.room.corecharacter
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 
 @Entity
-//(indices = [Index(value = ["code"], unique = true)])
 data class RoomCoreCharacter(
     @PrimaryKey
     @ColumnInfo(index = true)
@@ -13,8 +15,10 @@ data class RoomCoreCharacter(
 ) {
     @Ignore
     var skills: List<RoomCoreSkill>? = null
+
     @Ignore
     var weapons: List<RoomCoreWeapon>? = null
+
     @Ignore
     constructor(
         code: Int,

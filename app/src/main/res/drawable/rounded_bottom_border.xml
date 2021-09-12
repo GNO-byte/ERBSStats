@@ -6,7 +6,6 @@
         </shape>
     </item>
 
-
     <item>
         <inset android:insetTop="-2dp">
             <shape>
@@ -24,7 +23,4 @@
         </inset>
     </item>
 
-    <shape>
-        <corners android:radius="10.0dip" />
-    </shape>
 </layer-list>

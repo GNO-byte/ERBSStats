@@ -1,17 +1,13 @@
 package com.gno.erbs.erbs.stats.ui.guide.characterdetail.skills
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentSkillsBinding
-import com.gno.erbs.erbs.stats.databinding.FragmentWeaponTypesBinding
 import com.gno.erbs.erbs.stats.ui.guide.characterdetail.CharacterDetailViewModel
-import com.gno.erbs.erbs.stats.ui.guide.characterdetail.characterstats.CharacterStatsFragment
-import com.gno.erbs.erbs.stats.ui.guide.characterdetail.weapontypes.WeaponTypesAdapter
 
 class SkillsFragment : Fragment() {
 
@@ -49,7 +45,7 @@ class SkillsFragment : Fragment() {
         }
         binding.recyclerviewWeaponSkills.adapter = skillsAdapter
         viewModel.skillsLiveData.observe(viewLifecycleOwner) { coreSkills ->
-            coreSkills?.let{
+            coreSkills?.let {
                 skillsAdapter.submitList(coreSkills)
             }
         }

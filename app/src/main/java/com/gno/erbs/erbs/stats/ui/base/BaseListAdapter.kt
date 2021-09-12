@@ -19,14 +19,12 @@ abstract class BaseListAdapter<T, VH : RecyclerView.ViewHolder>(diffCallback: Di
         loading: View
     ): RequestListener<Drawable> = LoadingImageHelper.createGlideListener(image, loading)
 
-
     fun loadImage(
         view: ImageView, webLink: String?,
         loading: View
     ) {
         LoadingImageHelper.loadImage(view, webLink, loading)
     }
-
 
     protected fun createShimmer(context: Context): ShimmerDrawable {
         return LoadingImageHelper.createShimmer(context)

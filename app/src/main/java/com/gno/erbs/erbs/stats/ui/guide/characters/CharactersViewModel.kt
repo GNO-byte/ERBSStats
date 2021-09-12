@@ -18,11 +18,9 @@ class CharactersViewModel : ViewModel() {
 
     fun loadCharacters() {
         viewModelScope.launch(Dispatchers.IO) {
-            charactersLiveData.postValue(DataRepository.getCharacters())
+            charactersLiveData.postValue(
+                DataRepository.getCharacters()?.filter { it.iconWebLink != null })
         }
 
     }
-
-
-
 }

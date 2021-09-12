@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.components.AxisBase
@@ -60,7 +59,7 @@ class WeaponTypesAdapter :
         }
     }
 
-    fun addLoading(){
+    fun addLoading() {
         val currentList = currentList.toMutableList()
         currentList.add(null)
         currentList.add(null)
@@ -84,13 +83,16 @@ class WeaponTypesAdapter :
                 weaponTypeHolder.weaponImage.visibility = View.GONE
                 weaponTypeHolder.loading.visibility = View.VISIBLE
 
-                loadImage(weaponTypeHolder.weaponImage,item.weaponTypeImageWebLink,weaponTypeHolder.loading)
+                loadImage(
+                    weaponTypeHolder.weaponImage,
+                    item.weaponTypeImageWebLink,
+                    weaponTypeHolder.loading
+                )
                 weaponTypeHolder.chart.fill(item)
 
             }
         }
     }
-
 
 
     class WeaponTypeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -110,11 +112,11 @@ class WeaponTypesAdapter :
 
             this.description.isEnabled = false
 
-            this.webLineWidth = 1f;
-            this.webColor = Color.LTGRAY;
-            this.webLineWidthInner = 1f;
-            this.webColorInner = Color.LTGRAY;
-            this.webAlpha = 100;
+            this.webLineWidth = 1f
+            this.webColor = Color.LTGRAY
+            this.webLineWidthInner = 1f
+            this.webColorInner = Color.LTGRAY
+            this.webAlpha = 100
 
             this.invalidate()
 

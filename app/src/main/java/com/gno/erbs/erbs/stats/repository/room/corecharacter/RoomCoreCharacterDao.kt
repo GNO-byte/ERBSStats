@@ -2,6 +2,7 @@ package com.gno.erbs.erbs.stats.repository.room.corecharacter
 
 import androidx.room.*
 
+
 @Dao
 interface RoomCoreCharacterDao {
 
@@ -21,7 +22,6 @@ interface RoomCoreCharacterDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRoomCoreCharacterSkillCrossRef(coreWeapon: List<RoomCoreCharacterSkillCrossRef>)
 
-
     @Transaction
     fun insertCoreCharacterFull(roomCoreCharacter: RoomCoreCharacter) {
         insertCoreCharacter(roomCoreCharacter)
@@ -35,8 +35,6 @@ interface RoomCoreCharacterDao {
                 RoomCoreCharacterSkillCrossRef(roomCoreCharacter.code, it.id)
             })
         }
-
-
     }
 
 }

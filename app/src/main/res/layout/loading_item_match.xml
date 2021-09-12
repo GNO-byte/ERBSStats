@@ -8,7 +8,6 @@
     android:layout_marginTop="16dp"
     android:layout_marginEnd="8dp">
 
-
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/loading"
         android:layout_width="match_parent"
@@ -36,7 +35,6 @@
                     style="@style/Theme.ERBSStats.Loading.Text"
                     android:layout_width="20dp"
                     android:layout_marginStart="8dp"
-                    android:text="#"
                     app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.Text" />
 
                 <com.google.android.material.imageview.ShapeableImageView

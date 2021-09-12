@@ -1,7 +1,9 @@
 package com.gno.erbs.erbs.stats.repository.room.corecharacter
 
-import androidx.room.*
-import com.gno.erbs.erbs.stats.repository.room.corecharacter.RoomCoreCharacter
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 
 @Entity(
     foreignKeys = [
@@ -26,6 +28,4 @@ data class RoomCoreSkill(
 
     //additional param
     var videoLink: String?
-
-
 )

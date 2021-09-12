@@ -83,8 +83,8 @@ class MatchesFragment : Fragment() {
                         }
                     }
                 }
-            })
-
+            }
+            )
         }
     }
 }

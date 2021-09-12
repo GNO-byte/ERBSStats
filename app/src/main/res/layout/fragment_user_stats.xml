@@ -26,7 +26,6 @@
             app:titleEnabled="false"
             app:toolbarId="@+id/toolbar">
 
-
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/loading_image"
                 android:layout_width="wrap_content"
@@ -51,7 +50,7 @@
                 android:layout_width="110dp"
                 android:layout_height="170dp"
                 android:layout_gravity="center_horizontal"
-                android:contentDescription="character image"
+                android:contentDescription="@string/character_image"
                 tools:src="@tools:sample/avatars" />
 
             <androidx.appcompat.widget.Toolbar
@@ -67,8 +66,8 @@
                 app:popupTheme="@style/Theme.ERBSStats.PopupOverlay">
 
                 <TextView
-                    style="@style/Theme.ERBSStats.TextAppearance.Middle"
                     android:id="@+id/name"
+                    style="@style/Theme.ERBSStats.TextAppearance.Middle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -77,31 +76,25 @@
 
                 <Spinner
                     android:id="@+id/season"
-                    android:layout_gravity="end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="end"
                     android:layout_margin="8dp"
-                    tools:listitem="@layout/item_season"/>
+                    tools:listitem="@layout/item_season" />
 
             </androidx.appcompat.widget.Toolbar>
 
-            <LinearLayout
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                style="@style/Theme.ERBSStats.ThemeOverlayTopBorder"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="bottom"
-                android:orientation="vertical">
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabs"
-                    style="@style/Theme.ERBSStats.ThemeOverlayTopBorder"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:tabGravity="fill"
-                    app:tabMode="fixed">
-
-                </com.google.android.material.tabs.TabLayout>
-
-            </LinearLayout>
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                app:tabGravity="fill"
+                app:tabIndicatorHeight="3dp"
+                app:tabMode="auto" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -116,8 +109,7 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:layout_height="wrap_content" />
 
     </FrameLayout>
 

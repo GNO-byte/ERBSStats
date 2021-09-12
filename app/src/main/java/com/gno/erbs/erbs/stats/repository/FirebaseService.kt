@@ -4,7 +4,7 @@ import android.content.Context
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreCharacter
 import com.gno.erbs.erbs.stats.model.firebase.FolderContent
 import com.gno.erbs.erbs.stats.repository.drive.CharacterImageType
-import com.gno.erbs.erbs.stats.repository.room.RoomService
+import com.google.common.reflect.TypeToken
 import com.google.firebase.FirebaseApp
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
@@ -15,7 +15,6 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.component1
 import com.google.firebase.storage.ktx.component2
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -29,13 +28,12 @@ import kotlin.coroutines.resumeWithException
 
 object FirebaseService : ImageService {
 
-    var storageRef = FirebaseStorage.getInstance().reference
-    var fireRealtimeDatabase = FirebaseDatabase.getInstance()
+    private var storageRef = FirebaseStorage.getInstance().reference
+    private var fireRealtimeDatabase = FirebaseDatabase.getInstance()
 
     override var coreCharacters: List<CoreCharacter>? = null
 
     ///////https://stackoverflow.com/questions/67918324/firebase-cloud-firestore-security-rules-only-allow-read-not-write
-
 
     operator fun invoke(context: Context): FirebaseService {
 
@@ -53,7 +51,6 @@ object FirebaseService : ImageService {
 
         return this
     }
-
 
     private suspend fun getFolderContent(folderPath: String): FolderContent {
         val listRef = storageRef.child(folderPath)
@@ -81,7 +78,6 @@ object FirebaseService : ImageService {
 
     }
 
-
     suspend fun initCoreCharacters() {
 
         val file = storageRef.child("/ERBS/characters with weapons and skills.json")
@@ -105,20 +101,8 @@ object FirebaseService : ImageService {
         return s.toString()
     }
 
-    override suspend fun getDataVersion(): Int? {
-
-        val storageVersionReference = fireRealtimeDatabase.getReference("storageVersion")
-        var version: Int? = null
-
-        storageVersionReference.awaitQueryValue<Long>()
-            .let {
-                version = it.toInt()
-            }
-
-        return version
-
-
-    }
+    override suspend fun getDataVersion() =
+        fireRealtimeDatabase.getReference("storageVersion").awaitQueryValue<Long>().toInt()
 
     private suspend inline fun <reified T> Query.awaitQueryValue(): T =
         suspendCancellableCoroutine { continuation ->
@@ -135,7 +119,6 @@ object FirebaseService : ImageService {
             })
         }
 
-
     override suspend fun getCharacterImageMiniLink(): List<FoundItem> {
 
         val imageMiniFolder = getFolderContent("/ERBS/Characters image mini")
@@ -149,7 +132,6 @@ object FirebaseService : ImageService {
     ): FoundItem? {
 
         val characterImages = getFilesContentCharacterSubFolder(characterName, "Default").files
-
         val foundCharacterImage = characterImages.find {
             compareNames(
                 it.name,
@@ -157,7 +139,6 @@ object FirebaseService : ImageService {
             )
         }
 
-        val a = foundCharacterImage
         return if (foundCharacterImage != null) createFoundItem(
             foundCharacterImage,
             "$characterName/Default"

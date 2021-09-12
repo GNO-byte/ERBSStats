@@ -15,6 +15,5 @@
         android:layout_margin="8dp"
         app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.All" />
 
-
 </com.facebook.shimmer.ShimmerFrameLayout>
 

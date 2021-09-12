@@ -13,7 +13,6 @@ import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
 import com.gno.erbs.erbs.stats.R
 import com.google.android.material.color.MaterialColors
-import com.google.android.material.imageview.ShapeableImageView
 
 object LoadingImageHelper {
 

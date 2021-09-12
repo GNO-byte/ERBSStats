@@ -25,7 +25,6 @@ class DateTypeConverter {
 
     }
 
-
     @TypeConverter
     fun fromBundle(value: ByteArray?): Bundle? {
         return value?.let {
@@ -43,7 +42,7 @@ class DateTypeConverter {
         val parcel = Parcel.obtain()
         parcel.writeBundle(bundle)
         val bytes = parcel.marshall()
-        parcel.recycle();
+        parcel.recycle()
         return bytes
 
     }

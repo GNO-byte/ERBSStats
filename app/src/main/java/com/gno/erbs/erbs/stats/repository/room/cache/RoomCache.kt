@@ -9,4 +9,5 @@ data class RoomCache(
     @PrimaryKey
     val name: String,
     val wevLink: String,
-    val date: Date)
+    val date: Date
+)

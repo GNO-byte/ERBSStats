@@ -29,7 +29,13 @@ class SearchViewModel : ViewModel() {
     private fun MutableList<FoundObject?>.findCharacter(searchString: String) {
         DataRepository.getCharacter(searchString)?.let { characters ->
             characters.forEach {
-                this.add(FoundObject(it.name, FoundObjectsTypes.CHARACTER, it.code))
+                if (it.name != null && it.code != null) this.add(
+                    FoundObject(
+                        it.name,
+                        FoundObjectsTypes.CHARACTER,
+                        it.code
+                    )
+                )
             }
         }
     }

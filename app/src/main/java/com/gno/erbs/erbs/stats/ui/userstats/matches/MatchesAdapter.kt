@@ -13,8 +13,8 @@ import com.gno.erbs.erbs.stats.ui.base.BaseListAdapter
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MatchesAdapter(
-) : BaseListAdapter<UserGame, RecyclerView.ViewHolder>(MatchesDiffUtilCallback()) {
+class MatchesAdapter :
+    BaseListAdapter<UserGame, RecyclerView.ViewHolder>(MatchesDiffUtilCallback()) {
 
     companion object {
         private const val TYPE_LOADING = 1
@@ -87,14 +87,15 @@ class MatchesAdapter(
                 rankHolder.gameRank.text = item.gameRank.toString()
                 rankHolder.teamMode.text = item.teamMode.toString()
 
-                rankHolder.date.text =
-                    SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(item.date)
+                rankHolder.date.text = item.date?.let {
+                    SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(it)
+                }
 
                 rankHolder.server.text = item.serverName
                 rankHolder.kills.text = item.playerKill.toString()
                 rankHolder.assistants.text = item.playerAssistant.toString()
                 rankHolder.hunter.text = item.monsterKill.toString()
-               // rankHolder.mmr.text = item.mmr.toString()
+                // rankHolder.mmr.text = item.mmr.toString()
 
                 item.characterImageWebLink?.let {
                     loadImage(
@@ -113,17 +114,17 @@ class MatchesAdapter(
                 }
 
                 //companyImage
-                loadingItem(rankHolder.item1, item.equipment.item1WebLink, rankHolder.loadingItem1)
-                loadingItem(rankHolder.item2, item.equipment.item2WebLink, rankHolder.loadingItem2)
-                loadingItem(rankHolder.item3, item.equipment.item3WebLink, rankHolder.loadingItem3)
-                loadingItem(rankHolder.item4, item.equipment.item4WebLink, rankHolder.loadingItem4)
-                loadingItem(rankHolder.item5, item.equipment.item5WebLink, rankHolder.loadingItem5)
-                loadingItem(rankHolder.item6, item.equipment.item6WebLink, rankHolder.loadingItem6)
+                loadingItem(rankHolder.item1, item.equipment?.item1WebLink, rankHolder.loadingItem1)
+                loadingItem(rankHolder.item2, item.equipment?.item2WebLink, rankHolder.loadingItem2)
+                loadingItem(rankHolder.item3, item.equipment?.item3WebLink, rankHolder.loadingItem3)
+                loadingItem(rankHolder.item4, item.equipment?.item4WebLink, rankHolder.loadingItem4)
+                loadingItem(rankHolder.item5, item.equipment?.item5WebLink, rankHolder.loadingItem5)
+                loadingItem(rankHolder.item6, item.equipment?.item6WebLink, rankHolder.loadingItem6)
             }
         }
     }
 
-    fun loadingItem(
+    private fun loadingItem(
         view: ImageView, webLink: String?,
         loading: View
     ) {
@@ -150,6 +151,7 @@ class MatchesAdapter(
         val kills: TextView = itemView.findViewById(R.id.kills)
         val assistants: TextView = itemView.findViewById(R.id.assistants)
         val hunter: TextView = itemView.findViewById(R.id.hunter)
+
         //val mmr: TextView = itemView.findViewById(R.id.mmr)
         val item1: ImageView = itemView.findViewById(R.id.item1)
         val item2: ImageView = itemView.findViewById(R.id.item2)

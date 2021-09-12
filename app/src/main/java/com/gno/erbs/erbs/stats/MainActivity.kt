@@ -3,7 +3,6 @@ package com.gno.erbs.erbs.stats
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
-import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.customview.widget.Openable
 import androidx.navigation.findNavController
@@ -13,19 +12,13 @@ import com.gno.erbs.erbs.stats.repository.NavigateHelper
 import com.gno.erbs.erbs.stats.repository.NavigationHistory
 import com.gno.erbs.erbs.stats.ui.ErrorHelper
 import com.gno.erbs.erbs.stats.ui.search.SearchDialogFragment
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.navigation.NavigationView
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity() {
-
-    //Coroutines
-    private val parentJob = Job()
-    private val coroutineContext: CoroutineContext
-        get() = parentJob + Dispatchers.Default
-    val scope = CoroutineScope(coroutineContext)
-
+    
     private lateinit var binding: ActivityMainBinding
 
     var navigationHistories: List<NavigationHistory>? = null
@@ -78,11 +71,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
-
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_view)
         return navController.navigateUp() || super.onSupportNavigateUp()
@@ -102,8 +90,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun showConnectionError(function: () -> Unit){
-        ErrorHelper.showConnectionError(binding.drawerLayout,function)
+    fun showConnectionError(function: () -> Unit) {
+        ErrorHelper.showConnectionError(binding.drawerLayout, function)
     }
 
 }

@@ -3,7 +3,6 @@ package com.gno.erbs.erbs.stats.repository.room
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import androidx.lifecycle.LiveData
 import com.gno.erbs.erbs.stats.repository.room.cache.RoomCache
 import com.gno.erbs.erbs.stats.repository.room.cache.RoomCacheDao
 import com.gno.erbs.erbs.stats.repository.room.character.RoomCharacter
@@ -18,7 +17,6 @@ import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
-
 
 object RoomService {
 
@@ -96,7 +94,7 @@ object RoomService {
         roomCacheDao?.insertCache(cache)
     }
 
-    suspend fun getcache(name: String) = roomCacheDao?.getCache(name)
+    fun getcache(name: String) = roomCacheDao?.getCache(name)
 
     fun addHistory(id: Int, bundle: Bundle?) {
         roomHistoryDao?.insertHistory(RoomHistory(null, getCurrentDate(), bundle, id))
@@ -106,58 +104,4 @@ object RoomService {
         return roomHistoryDao?.getLast5Histories()
     }
 
-//    fun Bundle.bundleToBytes(): ByteArray {
-//        val parcel = Parcel.obtain()
-//        parcel.writeBundle(this)
-//        val bytes = parcel.marshall()
-//        parcel.recycle();
-//        return bytes
-//    }
-//
-//    fun ByteArray.bytesToBundle(): Bundle?
-//    {
-//        val parcel = Parcel.obtain();
-//        parcel.unmarshall(this, 0,this.size)
-//        parcel.setDataPosition(0)
-//        val bundle = parcel.readBundle(Thread.currentThread().contextClassLoader)
-//        parcel.recycle()
-//        return bundle
-//    }
-
-    //    fun bundleToJsonObject(bundle: Bundle): JSONObject? {
-    //        return try {
-    //            val output = JSONObject()
-    //            for (key in bundle.keySet()) {
-    //                val `object` = bundle[key]
-    //                if (`object` is Int || `object` is String) output.put(
-    //                    key,
-    //                    `object`
-    //                ) else throw RuntimeException("only Integer and String can be extracted")
-    //            }
-    //            output
-    //        } catch (e: JSONException) {
-    //            throw RuntimeException(e)
-    //        }
-    //    }
-    //
-    //    fun JsonObjectToBundle(jsonObject: JSONObject): Bundle? {
-    //        return try {
-    //            val bundle = Bundle()
-    //            val keys: Iterator<*> = jsonObject.keys()
-    //            while (keys.hasNext()) {
-    //                val key = keys.next() as String
-    //                val `object` = jsonObject[key]
-    //                if (`object` is String) bundle.putString(
-    //                    key,
-    //                    `object`
-    //                ) else if (`object` is Int) bundle.putInt(
-    //                    key,
-    //                    `object`
-    //                ) else throw RuntimeException("only Integer and String can be re-extracted")
-    //            }
-    //            bundle
-    //        } catch (e: JSONException) {
-    //            throw RuntimeException(e)
-    //        }
-    //    }
 }

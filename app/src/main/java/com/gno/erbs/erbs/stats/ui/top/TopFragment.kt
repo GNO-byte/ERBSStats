@@ -136,7 +136,7 @@ class TopFragment : BaseFragment() {
     private fun setHeaderField(textVIew: TextView, text: String) {
         textVIew.text = text
         textVIew.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-        textVIew.setTypeface(null, Typeface.BOLD);
+        textVIew.setTypeface(null, Typeface.BOLD)
     }
 
     private fun initRecyclerVIew() {

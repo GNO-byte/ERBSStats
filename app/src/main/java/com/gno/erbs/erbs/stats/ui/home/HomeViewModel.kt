@@ -14,15 +14,15 @@ class HomeViewModel : ViewModel() {
     val illustrationLiveData = MutableLiveData<List<String>?>()
 
     init {
-            viewModelScope.launch(Dispatchers.IO) {
-                menuObjectLiveData.postValue(
-                    listOf(
-                        MenuObject("Top", R.id.nav_top),
-                        MenuObject("Characters", R.id.nav_characters)
-                    )
-
+        viewModelScope.launch(Dispatchers.IO) {
+            menuObjectLiveData.postValue(
+                listOf(
+                    MenuObject("Top", R.id.nav_top),
+                    MenuObject("Characters", R.id.nav_characters)
                 )
-                illustrationLiveData.postValue(DataRepository.getIllustrations())
-            }
+
+            )
+            illustrationLiveData.postValue(DataRepository.getIllustrations())
+        }
     }
 }

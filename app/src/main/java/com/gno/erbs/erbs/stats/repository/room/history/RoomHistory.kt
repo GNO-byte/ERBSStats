@@ -6,7 +6,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
 
-
 @Entity
 data class RoomHistory(
     @PrimaryKey(autoGenerate = true)
@@ -15,5 +14,5 @@ data class RoomHistory(
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     val bundle: Bundle? = null,
     val navigateId: Int
-    )
+)
 

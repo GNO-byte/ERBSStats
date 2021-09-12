@@ -4,10 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:adjustViewBounds="true"
-    android:orientation="horizontal"
-    android:scaleType="centerCrop">
+    android:layout_margin="4dp">
 
     <FrameLayout
         android:layout_width="0dp"
@@ -18,8 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/loading"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,7 +27,7 @@
                 style="@style/Theme.ERBSStats.Loading"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:contentDescription="loading"
+                android:contentDescription="@string/image_loading"
                 app:shapeAppearanceOverlay="@style/Theme.ERBSStats.ShapeAppearanceOverlay.Shimmer.SmallImage" />
 
         </com.facebook.shimmer.ShimmerFrameLayout>
