@@ -24,7 +24,7 @@ MVVM, SingleActivity
 - Google Navigation Сomponent - navigation between fragments  
 - Glide - loading images  
 - ViewBinding - replacement for findViewById  
-- Retrofit  - API requests  
+- Retrofit2  - API requests  
 - GSON - working with json files  
 - LiveData - the interaction of the fragment and the viewModel  
 - ROOM - storage of frequently used data, cache of links to images  
