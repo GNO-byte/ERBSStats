@@ -1,5 +1,5 @@
 # ERBSStats
-This is an Android application that shows the statistics of the Eternal Return Black Survival game.
+This is an Android application that shows the statistics of the  game [Eternal Return Black Survival](https://playeternalreturn.com/ "game"). 
 
 ### Functions
 
