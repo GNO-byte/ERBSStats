@@ -9,7 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.lifecycle.ViewModelProvider
-import com.gno.erbs.erbs.stats.MainActivity
+import com.gno.erbs.erbs.stats.ui.MainActivity
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentUserStatsBinding
 import com.gno.erbs.erbs.stats.model.Season

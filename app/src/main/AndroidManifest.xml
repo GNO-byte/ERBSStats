@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ERBSStats">
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".ui.SplashScreenActivity"
             android:noHistory="true"
             android:theme="@style/Theme.ERBSStats.SplashScreen">
             <intent-filter>
@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.ERBSStats.NoActionBar"
             android:windowSoftInputMode="adjustResize">

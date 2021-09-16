@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.gno.erbs.erbs.stats.MainActivity
+import com.gno.erbs.erbs.stats.ui.MainActivity
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentSearchBinding
 import com.gno.erbs.erbs.stats.model.FoundObjectsTypes

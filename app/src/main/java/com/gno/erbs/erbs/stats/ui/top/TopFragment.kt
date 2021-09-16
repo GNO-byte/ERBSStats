@@ -12,29 +12,42 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.os.bundleOf
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gno.erbs.erbs.stats.MainActivity
 import com.gno.erbs.erbs.stats.R
+import com.gno.erbs.erbs.stats.appComponent
 import com.gno.erbs.erbs.stats.databinding.FragmentTopBinding
 import com.gno.erbs.erbs.stats.model.Season
 import com.gno.erbs.erbs.stats.repository.NavigateHelper
+import com.gno.erbs.erbs.stats.ui.MainActivity
+import com.gno.erbs.erbs.stats.ui.activityComponent
 import com.gno.erbs.erbs.stats.ui.base.BaseFragment
+import javax.inject.Inject
 
 
 class TopFragment : BaseFragment() {
 
-    private val viewModel: TopViewModel by lazy {
-        ViewModelProvider(this).get(TopViewModel::class.java)
+    lateinit var binding: FragmentTopBinding
+
+    @Inject
+    lateinit var factory: TopViewModel.TopViewModelFactory.Factory
+    private val viewModel: TopViewModel by viewModels {
+        factory.create(null, null)
     }
-    private lateinit var binding: FragmentTopBinding
-    var loading = false
 
     private val rankAdapter = RankAdapter { code, name ->
         val bundle = bundleOf("code" to code, "name" to name)
         NavigateHelper.go(findNavController(), R.id.nav_user_stats, bundle)
+    }
+
+    override fun onAttach(context: Context) {
+        context.activityComponent.fragmentComponent().build().also {
+            it.inject(this)
+        }
+        super.onAttach(context)
+
     }
 
     override fun onCreateView(
@@ -42,6 +55,7 @@ class TopFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        requireActivity()
 
         binding = FragmentTopBinding.inflate(
             inflater, container, false
@@ -50,24 +64,20 @@ class TopFragment : BaseFragment() {
 
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         context?.let { context ->
 
-            loading = true
+            viewModel.loading = true
             rankAdapter.addLoading()
-
-            viewModel.loadTopRanks(
-                null,
-                null,
-                context
-            )
 
             viewModel.ranksLiveData.observe(viewLifecycleOwner) { ranks ->
                 ranks?.let {
                     rankAdapter.submitList(ranks)
-                    loading = false
+                    viewModel.loading = false
+
                 } ?: (context as MainActivity).showConnectionError {
                     viewModel.loadTopRanks(
                         null,
@@ -76,9 +86,11 @@ class TopFragment : BaseFragment() {
                     )
                 }
             }
+
             initSeasonSpinner(context, binding.season) { seasonName, context ->
                 changeSeason(seasonName, context)
             }
+
         }
 
         initRecyclerVIew()
@@ -89,7 +101,7 @@ class TopFragment : BaseFragment() {
     }
 
     private fun changeSeason(seasonName: String, context: Context) {
-        loading = true
+        viewModel.loading = true
         rankAdapter.submitList(null)
         rankAdapter.addLoading()
         viewModel.changeSeason(seasonName, context)
@@ -118,7 +130,7 @@ class TopFragment : BaseFragment() {
                 position: Int,
                 id: Long
             ) {
-                if (!loading) {
+                if (!viewModel.loading) {
                     parent?.getItemAtPosition(position)?.let {
                         run.invoke(it as String, context)
                     }
@@ -131,7 +143,6 @@ class TopFragment : BaseFragment() {
         }
 
     }
-
 
     private fun setHeaderField(textVIew: TextView, text: String) {
         textVIew.text = text
@@ -146,7 +157,7 @@ class TopFragment : BaseFragment() {
         binding.recyclerViewRanks.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 0 && !loading) //check for scroll down
+                if (dy > 0 && !viewModel.loading) //check for scroll down
                 {
                     val visibleItemCount =
                         recyclerView.layoutManager?.childCount ?: 0
@@ -157,7 +168,7 @@ class TopFragment : BaseFragment() {
                     if ((visibleItemCount + firstVisibleItems) >= totalItemCount
                         && firstVisibleItems >= 0
                     ) {
-                        loading = true
+                        viewModel.loading = true
                         rankAdapter.addLoading()
                         viewModel.loadList(totalItemCount, totalItemCount + 20)
                     }

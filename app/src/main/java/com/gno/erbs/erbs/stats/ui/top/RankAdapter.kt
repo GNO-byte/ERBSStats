@@ -11,8 +11,9 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.rank.Rank
 import com.gno.erbs.erbs.stats.ui.base.BaseListAdapter
+import javax.inject.Inject
 
-class RankAdapter(
+class RankAdapter @Inject constructor(
     private val cellClickListener: (Int, String) -> Unit
 ) : BaseListAdapter<Rank, RecyclerView.ViewHolder>(RankDiffUtilCallback()) {
 

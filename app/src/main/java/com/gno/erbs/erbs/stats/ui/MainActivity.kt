@@ -1,32 +1,39 @@
-package com.gno.erbs.erbs.stats
+package com.gno.erbs.erbs.stats.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.customview.widget.Openable
 import androidx.navigation.findNavController
+import com.gno.erbs.erbs.stats.MainApplication
+import com.gno.erbs.erbs.stats.R
+import com.gno.erbs.erbs.stats.appComponent
 import com.gno.erbs.erbs.stats.databinding.ActivityMainBinding
+import com.gno.erbs.erbs.stats.di.component.ActivityComponent
+import com.gno.erbs.erbs.stats.di.component.AppComponent
 import com.gno.erbs.erbs.stats.repository.DataRepository
 import com.gno.erbs.erbs.stats.repository.NavigateHelper
 import com.gno.erbs.erbs.stats.repository.NavigationHistory
-import com.gno.erbs.erbs.stats.ui.ErrorHelper
 import com.gno.erbs.erbs.stats.ui.search.SearchDialogFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlin.coroutines.CoroutineContext
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
-    
-    private lateinit var binding: ActivityMainBinding
 
+
+    lateinit var _activityComponent: ActivityComponent
+
+    @Inject
+    lateinit var binding: ActivityMainBinding
     var navigationHistories: List<NavigationHistory>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        _activityComponent = appComponent.activityComponent().context(this).build().also {
+            it.inject(this)
+        }
         setContentView(binding.root)
 
         //////////////////////////
@@ -48,6 +55,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initDynamicMenu() {
+
         val navController = findNavController(R.id.host)
 
         binding.navView.setNavigationItemSelectedListener { menuItem ->
@@ -68,7 +76,6 @@ class MainActivity : AppCompatActivity() {
                 submenu.add(1, Menu.NONE, Menu.NONE, it.name)
             }
         }
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -87,7 +94,6 @@ class MainActivity : AppCompatActivity() {
 
     fun searchDisable() {
         binding.appBarMain.fabContainer.visibility = View.INVISIBLE
-
     }
 
     fun showConnectionError(function: () -> Unit) {
@@ -95,3 +101,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+
+val Context.activityComponent: ActivityComponent
+    get() = when (this) {
+        is MainActivity -> _activityComponent
+        else -> appComponent.activityComponent().context(this).build()
+    }

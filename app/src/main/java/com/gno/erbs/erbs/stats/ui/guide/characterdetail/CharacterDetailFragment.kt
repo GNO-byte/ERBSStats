@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.gno.erbs.erbs.stats.MainActivity
+import com.gno.erbs.erbs.stats.ui.MainActivity
 import com.gno.erbs.erbs.stats.databinding.FragmentCharacterDetailBinding
 import com.gno.erbs.erbs.stats.ui.base.BaseFragment
 import com.google.android.material.tabs.TabLayoutMediator

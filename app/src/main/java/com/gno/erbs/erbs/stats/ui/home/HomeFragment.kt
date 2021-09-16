@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
-import com.gno.erbs.erbs.stats.MainActivity
+import com.gno.erbs.erbs.stats.ui.MainActivity
 import com.gno.erbs.erbs.stats.databinding.FragmentHomeBinding
 import com.gno.erbs.erbs.stats.ui.base.BaseFragment
 import com.gno.erbs.erbs.stats.ui.home.adapter.HomeAdapter

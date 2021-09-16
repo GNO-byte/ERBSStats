@@ -16,7 +16,7 @@ interface AesopService {
 
     companion object {
 
-        private const val BASE_URL = "http://api.playeternalreturn.com/"
+        const val BASE_URL = "http://api.playeternalreturn.com/"
         private var INSTANCE: AesopService? = null
 
         operator fun invoke(): AesopService {

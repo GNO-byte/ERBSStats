@@ -8,10 +8,13 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.request.RequestListener
 import com.facebook.shimmer.ShimmerDrawable
-import com.gno.erbs.erbs.stats.MainActivity
+import com.gno.erbs.erbs.stats.di.component.FragmentComponent
+import com.gno.erbs.erbs.stats.ui.MainActivity
 import com.gno.erbs.erbs.stats.ui.LoadingImageHelper
 
 abstract class BaseFragment : Fragment() {
+
+    lateinit var fragmentComponent: FragmentComponent
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
