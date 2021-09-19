@@ -8,12 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.characters.Character
+import com.gno.erbs.erbs.stats.ui.LoadingImageHelper
 import com.gno.erbs.erbs.stats.ui.base.BaseListAdapter
 
 
 class CharactersAdapter(
+    loadingImageHelper: LoadingImageHelper,
     private val cellClickListener: (Int, String) -> Unit
-) : BaseListAdapter<Character, RecyclerView.ViewHolder>(CharactersDiffUtilCallback()) {
+) : BaseListAdapter<Character, RecyclerView.ViewHolder>(
+    CharactersDiffUtilCallback(),
+    loadingImageHelper
+) {
 
     companion object {
         private const val TYPE_LOADING = 1

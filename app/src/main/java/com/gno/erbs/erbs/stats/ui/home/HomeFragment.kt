@@ -1,21 +1,24 @@
 package com.gno.erbs.erbs.stats.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
-import com.gno.erbs.erbs.stats.ui.MainActivity
 import com.gno.erbs.erbs.stats.databinding.FragmentHomeBinding
+import com.gno.erbs.erbs.stats.ui.MainActivity
+import com.gno.erbs.erbs.stats.ui.activityComponent
 import com.gno.erbs.erbs.stats.ui.base.BaseFragment
 import com.gno.erbs.erbs.stats.ui.home.adapter.HomeAdapter
 import com.gno.erbs.erbs.stats.ui.home.slider.HomeSliderAdapter
+import javax.inject.Inject
 import kotlin.math.abs
 
 
@@ -27,10 +30,19 @@ class HomeFragment : BaseFragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
-    private val viewModel: HomeViewModel by lazy {
-        ViewModelProvider(this).get(HomeViewModel::class.java)
-    }
+    @Inject
+    lateinit var factory: HomeViewModel.HomeViewModelFactory
+    private val viewModel: HomeViewModel by viewModels { factory }
 
+    @Inject
+    lateinit var homeSliderAdapter : HomeSliderAdapter
+
+    override fun onAttach(context: Context) {
+        context.activityComponent.fragmentComponent().fragment(this).build().also {
+            it.inject(this)
+        }
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,11 +59,13 @@ class HomeFragment : BaseFragment() {
         binding.recyclerViewMenu.adapter = HomeAdapter { navLink ->
             findNavController().navigate(navLink)
         }
+
         viewModel.menuObjectLiveData.observe(viewLifecycleOwner) { menu ->
             (binding.recyclerViewMenu.adapter as HomeAdapter).submitList(menu)
         }
 
-        binding.slider.adapter = HomeSliderAdapter()
+        binding.slider.adapter = homeSliderAdapter
+
         viewModel.illustrationLiveData.observe(viewLifecycleOwner) { url ->
             (binding.slider.adapter as HomeSliderAdapter).submitList(url)
             initSliderAutoScroll()

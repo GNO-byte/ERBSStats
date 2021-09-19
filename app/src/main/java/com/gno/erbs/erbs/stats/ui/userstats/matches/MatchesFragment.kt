@@ -1,5 +1,6 @@
 package com.gno.erbs.erbs.stats.ui.userstats.matches
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gno.erbs.erbs.stats.databinding.FragmentMatchesBinding
+import com.gno.erbs.erbs.stats.ui.activityComponent
 import com.gno.erbs.erbs.stats.ui.userstats.UserStatsViewModel
+import javax.inject.Inject
 
 
 class MatchesFragment : Fragment() {
@@ -20,7 +23,9 @@ class MatchesFragment : Fragment() {
 
     private lateinit var binding: FragmentMatchesBinding
     private lateinit var viewModel: UserStatsViewModel
-    private val matchesAdapter = MatchesAdapter()
+
+    @Inject
+    lateinit var  matchesAdapter: MatchesAdapter
     private var loading = false
 
     override fun onCreateView(
@@ -31,6 +36,13 @@ class MatchesFragment : Fragment() {
             inflater, container, false
         )
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        context.activityComponent.fragmentComponent().fragment(this).build().also {
+            it.inject(this)
+        }
+        super.onAttach(context)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -25,6 +25,7 @@ import com.gno.erbs.erbs.stats.repository.room.update.RoomUpdateDao
         RoomHistory::class,
         RoomCoreCharacterSkillCrossRef::class], version = 1
 )
+
 @TypeConverters(DateTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -35,20 +36,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun roomHistoryDao(): RoomHistoryDao
 
     companion object {
-        var INSTANCE: AppDatabase? = null
 
-        fun getAppDataBase(context: Context): AppDatabase? {
-            if (INSTANCE == null) {
-                synchronized(AppDatabase::class) {
-                    INSTANCE =
-                        Room.databaseBuilder(context, AppDatabase::class.java, "ErbsDB").build()
-                }
-            }
-            return INSTANCE
-        }
+        const val DB_NAME = "ErbsDB"
 
-        fun destroyDataBase() {
-            INSTANCE = null
-        }
     }
 }

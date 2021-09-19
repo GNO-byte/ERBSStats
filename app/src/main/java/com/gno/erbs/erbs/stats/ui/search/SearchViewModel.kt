@@ -1,33 +1,33 @@
 package com.gno.erbs.erbs.stats.ui.search
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.gno.erbs.erbs.stats.model.FoundObject
 import com.gno.erbs.erbs.stats.model.FoundObjectsTypes
 import com.gno.erbs.erbs.stats.repository.DataRepository
+import com.gno.erbs.erbs.stats.ui.top.TopViewModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class SearchViewModel : ViewModel() {
+class SearchViewModel(
+    private val searchString: String,
+    private val dataRepository: DataRepository
+) : ViewModel() {
 
-    val foundObjectLiveData = MutableLiveData<List<FoundObject?>>()
-    private var downloadCompleted = false
-
-    fun find(searchString: String) {
-        if (!downloadCompleted) {
-            viewModelScope.launch(Dispatchers.IO) {
-                val foundObjects = mutableListOf<FoundObject?>()
-                foundObjects.findCharacter(searchString)
-                foundObjects.findPlayer(searchString)
-                foundObjectLiveData.postValue(foundObjects)
-                downloadCompleted = true
-            }
+    val foundObjectLiveData: LiveData<List<FoundObject?>> = liveData {
+        withContext(Dispatchers.IO) {
+            val foundObjects = mutableListOf<FoundObject?>()
+            foundObjects.findCharacter(searchString)
+            foundObjects.findPlayer(searchString)
+            emit(foundObjects)
         }
     }
 
     private fun MutableList<FoundObject?>.findCharacter(searchString: String) {
-        DataRepository.getCharacter(searchString)?.let { characters ->
+        dataRepository.getCharacter(searchString)?.let { characters ->
             characters.forEach {
                 if (it.name != null && it.code != null) this.add(
                     FoundObject(
@@ -41,7 +41,7 @@ class SearchViewModel : ViewModel() {
     }
 
     private suspend fun MutableList<FoundObject?>.findPlayer(searchString: String) {
-        DataRepository.getUser(searchString)?.let { user ->
+        dataRepository.getUser(searchString)?.let { user ->
             if (user.nickname != "Not Found") this.add(
                 FoundObject(
                     user.nickname,
@@ -52,5 +52,24 @@ class SearchViewModel : ViewModel() {
         } ?: this.add(null)
     }
 
+
+    class SearchViewModelFactory @AssistedInject constructor(
+        @Assisted("searchString") private val searchString: String,
+        private val dataRepository: DataRepository
+    ) : ViewModelProvider.Factory {
+
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            require(modelClass == SearchViewModel::class.java)
+            return SearchViewModel(searchString,dataRepository) as T
+        }
+
+        @AssistedFactory
+        interface Factory {
+            fun create(
+                @Assisted("searchString") searchString: String,
+            ): SearchViewModelFactory
+        }
+    }
 
 }

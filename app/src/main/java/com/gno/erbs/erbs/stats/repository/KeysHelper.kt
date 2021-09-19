@@ -1,8 +1,11 @@
 package com.gno.erbs.erbs.stats.repository
 
 import android.content.Context
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object KeysHelper {
+@Singleton
+class KeysHelper @Inject constructor() {
 
     fun getApiKey(context: Context): String {
         return getLocalValue("API_KEY", context)

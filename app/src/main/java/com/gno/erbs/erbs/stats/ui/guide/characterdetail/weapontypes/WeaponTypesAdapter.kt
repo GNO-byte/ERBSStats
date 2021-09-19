@@ -18,12 +18,17 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.characters.WeaponType
+import com.gno.erbs.erbs.stats.ui.LoadingImageHelper
 import com.gno.erbs.erbs.stats.ui.base.BaseListAdapter
 import com.google.android.material.color.MaterialColors
+import javax.inject.Inject
 
 
-class WeaponTypesAdapter :
-    BaseListAdapter<WeaponType, RecyclerView.ViewHolder>(WeaponTypesDiffUtilCallback()) {
+class WeaponTypesAdapter @Inject constructor(loadingImageHelper: LoadingImageHelper) :
+    BaseListAdapter<WeaponType, RecyclerView.ViewHolder>(
+        WeaponTypesDiffUtilCallback(),
+        loadingImageHelper
+    ) {
 
     companion object {
         private const val TYPE_LOADING = 1

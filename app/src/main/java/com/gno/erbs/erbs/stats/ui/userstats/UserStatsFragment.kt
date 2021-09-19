@@ -8,22 +8,43 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import androidx.lifecycle.ViewModelProvider
-import com.gno.erbs.erbs.stats.ui.MainActivity
+import androidx.fragment.app.viewModels
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentUserStatsBinding
 import com.gno.erbs.erbs.stats.model.Season
+import com.gno.erbs.erbs.stats.ui.MainActivity
+import com.gno.erbs.erbs.stats.ui.activityComponent
 import com.gno.erbs.erbs.stats.ui.base.BaseFragment
 import com.google.android.material.tabs.TabLayoutMediator
+import javax.inject.Inject
 
 class UserStatsFragment : BaseFragment() {
 
-    private val viewModel: UserStatsViewModel by lazy {
-        ViewModelProvider(this).get(UserStatsViewModel::class.java)
+    private val foundId by lazy {
+        arguments?.getInt("code", 0).let {
+            if (it == 0) null else it.toString()
+        }
+    }
+
+    private val seasonId by lazy { arguments?.getString("seasonId", null) }
+
+    private val name by lazy { arguments?.getString("name", "") }
+
+    @Inject
+    lateinit var factory: UserStatsViewModel.UserStatsViewModelFactory.Factory
+    private val viewModel: UserStatsViewModel by viewModels {
+        factory.create(foundId, seasonId)
     }
 
     private lateinit var binding: FragmentUserStatsBinding
     var loading = false
+
+    override fun onAttach(context: Context) {
+        context.activityComponent.fragmentComponent().fragment(this).build().also {
+            it.inject(this)
+        }
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,17 +65,9 @@ class UserStatsFragment : BaseFragment() {
             binding.topCharacterImage.visibility = View.GONE
             binding.loadingImage.visibility = View.VISIBLE
 
-            val foundId = arguments?.getInt("code", 0).let {
-                if (it == 0) null else it.toString()
-            }
-
-            binding.name.text = arguments?.getString("name", "")
-
-            val seasonId =
-                arguments?.getString("seasonId", null)
+            binding.name.text = name
 
             loading = true
-            viewModel.loadUserStats(foundId, seasonId, activity)
 
             initSeasonSpinner(activity, binding.season) { seasonName, context ->
                 changeSeason(seasonName, context)
@@ -73,11 +86,7 @@ class UserStatsFragment : BaseFragment() {
                     )
 
                 } ?: (activity as MainActivity).showConnectionError {
-                    viewModel.loadUserStats(
-                        foundId,
-                        seasonId,
-                        activity
-                    )
+                    viewModel.loadUserStats()
                 }
             }
 
@@ -92,6 +101,7 @@ class UserStatsFragment : BaseFragment() {
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun initSeasonSpinner(
         context: Context,
         spinner: Spinner,
@@ -104,8 +114,12 @@ class UserStatsFragment : BaseFragment() {
             it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         }
 
-        viewModel.getCurrentSeason(context)?.let {
-            spinner.setSelection((spinner.adapter as ArrayAdapter<String>).getPosition(it.title))
+        viewModel.getCurrentSeason()?.let {
+            spinner.setSelection(
+                (spinner.adapter as ArrayAdapter<String>).getPosition(
+                    it.title
+                )
+            )
         }
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -131,7 +145,7 @@ class UserStatsFragment : BaseFragment() {
     private fun changeSeason(seasonName: String, context: Context) {
         binding.topCharacterImage.visibility = View.GONE
         binding.loadingImage.visibility = View.VISIBLE
-        viewModel.changeSeason(seasonName, context)
+        viewModel.changeSeason(seasonName)
     }
 
 }

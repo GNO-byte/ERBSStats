@@ -5,14 +5,19 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object NavigateHelper {
+@Singleton
+class NavigateHelper @Inject constructor(
+    private val dataRepository: DataRepository
+) {
 
     fun go(navController: NavController, navId: Int, bundle: Bundle? = null) {
         navController.navigate(navId, bundle)
         GlobalScope.launch(Dispatchers.IO) {
 
-            DataRepository.addHistory(navId, bundle)
+            dataRepository.addHistory(navId, bundle)
         }
     }
 }

@@ -30,7 +30,9 @@ MVVM, SingleActivity
 - ROOM - storage of frequently used data, cache of links to images  
 - Google-drive - is the first option for storing app data  
 - Firebase-storage - second option for storing application data  
-- RecyclerView - display dynamic lists  
+- RecyclerView - display dynamic lists
+- Dagger2 - implementation of dependencies injection
+
      
    
 

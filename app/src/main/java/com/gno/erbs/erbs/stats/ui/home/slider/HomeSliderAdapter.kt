@@ -7,10 +7,15 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
+import com.gno.erbs.erbs.stats.ui.LoadingImageHelper
 import com.gno.erbs.erbs.stats.ui.base.BaseListAdapter
+import javax.inject.Inject
 
-class HomeSliderAdapter :
-    BaseListAdapter<String, RecyclerView.ViewHolder>(HomeSlideAdapterDiffUtilCallback()) {
+class HomeSliderAdapter @Inject constructor(loadingImageHelper: LoadingImageHelper) :
+    BaseListAdapter<String, RecyclerView.ViewHolder>(
+        HomeSlideAdapterDiffUtilCallback(),
+        loadingImageHelper
+    ) {
 
     companion object {
         private const val TYPE_LOADING = 1

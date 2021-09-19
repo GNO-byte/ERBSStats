@@ -17,9 +17,9 @@ import kotlinx.coroutines.launch
 
 
 class TopViewModel constructor(
-    seasonId: String?,
-    teamMode: String?,
-    context: Context
+    private var seasonId: String?,
+    private var teamMode: String?,
+    private val dataRepository: DataRepository
 ) : ViewModel() {
 
     val ranksLiveData = MutableLiveData<List<Rank>?>()
@@ -30,18 +30,19 @@ class TopViewModel constructor(
     var loading = false
 
     init {
-        loadTopRanks(seasonId, teamMode, context)
+        loadTopRanks()
     }
 
-    fun loadTopRanks(seasonId: String?, teamMode: String?, context: Context) {
+    fun loadTopRanks() {
 
-        val seasonId = seasonId ?: DataRepository.getDefaultSeasonId(context)
-        val teamMode = teamMode ?: DataRepository.getDefaultMatchingTeamMode(context)
+        val seasonId = seasonId ?: dataRepository.getDefaultSeasonId()
+
+        val teamMode = teamMode ?: dataRepository.getDefaultMatchingTeamMode()
 
         if (topList == null) {
             viewModelScope.launch(Dispatchers.IO) {
                 currentList = mutableListOf()
-                topList = DataRepository.getTopRanks(seasonId, teamMode)
+                topList = dataRepository.getTopRanks(seasonId, teamMode)
                 loadList(0, 19)
             }
         }
@@ -54,34 +55,32 @@ class TopViewModel constructor(
             ranksLiveData.postValue(currentList.toList())
         } ?: ranksLiveData.postValue(listOf())
 
-
     }
 
     fun getCurrentSeason(context: Context): Season? {
-
-        return Season.findById(DataRepository.getDefaultSeasonId(context))
-
+        return Season.findById(dataRepository.getDefaultSeasonId())
     }
 
     fun changeSeason(seasonName: String, context: Context) {
 
         Season.findByTitle(seasonName)?.let {
-            DataRepository.setDefaultSeasonId(context, it.id)
+            dataRepository.setDefaultSeasonId(it.id)
             topList = null
-            loadTopRanks(it.id, null, context)
+            seasonId = it.id
+            loadTopRanks()
         }
     }
 
     class TopViewModelFactory @AssistedInject constructor(
         @Assisted("seasonId") private val seasonId: String?,
         @Assisted("teamMode") private val teamMode: String?,
-        @ActivityContext private val context: Context
+        private val dataRepository: DataRepository
     ) : ViewModelProvider.Factory {
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             require(modelClass == TopViewModel::class.java)
-            return TopViewModel(seasonId, teamMode, context) as T
+            return TopViewModel(seasonId, teamMode, dataRepository) as T
         }
 
         @AssistedFactory
@@ -91,7 +90,6 @@ class TopViewModel constructor(
                 @Assisted("teamMode") teamMode: String?,
             ): TopViewModelFactory
         }
-
     }
 
 }

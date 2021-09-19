@@ -10,12 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.rank.Rank
+import com.gno.erbs.erbs.stats.ui.LoadingImageHelper
 import com.gno.erbs.erbs.stats.ui.base.BaseListAdapter
-import javax.inject.Inject
 
-class RankAdapter @Inject constructor(
+class RankAdapter constructor(
+    loadingImageHelper: LoadingImageHelper,
     private val cellClickListener: (Int, String) -> Unit
-) : BaseListAdapter<Rank, RecyclerView.ViewHolder>(RankDiffUtilCallback()) {
+) : BaseListAdapter<Rank, RecyclerView.ViewHolder>(RankDiffUtilCallback(), loadingImageHelper) {
 
     companion object {
         private const val TYPE_LOADING = 1

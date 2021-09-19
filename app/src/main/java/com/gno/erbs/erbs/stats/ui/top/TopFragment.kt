@@ -36,18 +36,17 @@ class TopFragment : BaseFragment() {
     private val viewModel: TopViewModel by viewModels {
         factory.create(null, null)
     }
+    @Inject
+    lateinit var navigateHelper: NavigateHelper
+    @Inject
+    lateinit var rankAdapter: RankAdapter
 
-    private val rankAdapter = RankAdapter { code, name ->
-        val bundle = bundleOf("code" to code, "name" to name)
-        NavigateHelper.go(findNavController(), R.id.nav_user_stats, bundle)
-    }
 
     override fun onAttach(context: Context) {
-        context.activityComponent.fragmentComponent().build().also {
+        context.activityComponent.fragmentComponent().fragment(this).build().also {
             it.inject(this)
         }
         super.onAttach(context)
-
     }
 
     override fun onCreateView(
@@ -61,7 +60,6 @@ class TopFragment : BaseFragment() {
             inflater, container, false
         )
         return binding.root
-
     }
 
 
@@ -70,20 +68,14 @@ class TopFragment : BaseFragment() {
 
         context?.let { context ->
 
-            viewModel.loading = true
             rankAdapter.addLoading()
 
             viewModel.ranksLiveData.observe(viewLifecycleOwner) { ranks ->
                 ranks?.let {
                     rankAdapter.submitList(ranks)
-                    viewModel.loading = false
 
                 } ?: (context as MainActivity).showConnectionError {
-                    viewModel.loadTopRanks(
-                        null,
-                        null,
-                        context
-                    )
+                    viewModel.loadTopRanks()
                 }
             }
 
@@ -101,12 +93,12 @@ class TopFragment : BaseFragment() {
     }
 
     private fun changeSeason(seasonName: String, context: Context) {
-        viewModel.loading = true
         rankAdapter.submitList(null)
         rankAdapter.addLoading()
         viewModel.changeSeason(seasonName, context)
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun initSeasonSpinner(
         context: Context,
         spinner: Spinner,
@@ -130,11 +122,9 @@ class TopFragment : BaseFragment() {
                 position: Int,
                 id: Long
             ) {
-                if (!viewModel.loading) {
                     parent?.getItemAtPosition(position)?.let {
                         run.invoke(it as String, context)
                     }
-                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {

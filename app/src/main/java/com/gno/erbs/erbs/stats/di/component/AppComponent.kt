@@ -2,13 +2,18 @@ package com.gno.erbs.erbs.stats.di.component
 
 import android.content.Context
 import com.gno.erbs.erbs.stats.MainApplication
-import com.gno.erbs.erbs.stats.di.module.AppModule
-import com.gno.erbs.erbs.stats.di.module.NetworkModule
-import com.gno.erbs.erbs.stats.ui.top.TopFragment
+import com.gno.erbs.erbs.stats.di.module.*
 import dagger.BindsInstance
 import dagger.Component
+import javax.inject.Singleton
 
-@Component(modules = [AppModule::class,NetworkModule::class])
+@Singleton
+@Component(
+    modules = [AppModule::class,
+        NetworkModule::class,
+        BindModule::class,
+        DataBaseModule::class]
+)
 interface AppComponent {
 
     fun inject(MainApplication: MainApplication)

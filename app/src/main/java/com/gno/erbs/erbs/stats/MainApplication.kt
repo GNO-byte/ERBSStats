@@ -2,6 +2,7 @@ package com.gno.erbs.erbs.stats
 
 import android.app.Application
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.gno.erbs.erbs.stats.di.component.AppComponent
 import com.gno.erbs.erbs.stats.di.component.DaggerAppComponent
@@ -17,7 +18,7 @@ class MainApplication : Application() {
     lateinit var appComponent: AppComponent
 
     @Inject
-    lateinit var isInitialized: MutableLiveData<Boolean>
+    lateinit var isInitialized: LiveData<DataRepository>
 
     override fun onCreate() {
         super.onCreate()
@@ -35,11 +36,11 @@ class MainApplication : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
-        GlobalScope.launch(Dispatchers.Default) {
-            DataRepository(applicationContext)
-            DataRepository.initData(applicationContext)
-            isInitialized.postValue(true)
-        }
+//        GlobalScope.launch(Dispatchers.Default) {
+//            DataRepository(applicationContext)
+//            DataRepository.initData(applicationContext)
+//            isInitialized.postValue(true)
+//        }
 
     }
 }

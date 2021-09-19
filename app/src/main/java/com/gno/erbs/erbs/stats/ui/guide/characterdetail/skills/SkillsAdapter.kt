@@ -9,10 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreSkill
+import com.gno.erbs.erbs.stats.ui.LoadingImageHelper
 import com.gno.erbs.erbs.stats.ui.base.BaseListAdapter
+import javax.inject.Inject
 
-class SkillsAdapter :
-    BaseListAdapter<CoreSkill, RecyclerView.ViewHolder>(SkillsDiffUtilCallback()) {
+class SkillsAdapter @Inject constructor(loadingImageHelper: LoadingImageHelper) :
+    BaseListAdapter<CoreSkill, RecyclerView.ViewHolder>(
+        SkillsDiffUtilCallback(),
+        loadingImageHelper
+    ) {
 
     companion object {
         private const val TYPE_LOADING = 1

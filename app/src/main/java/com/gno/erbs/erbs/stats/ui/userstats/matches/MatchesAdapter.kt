@@ -9,12 +9,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.model.erbs.matches.UserGame
+import com.gno.erbs.erbs.stats.ui.LoadingImageHelper
 import com.gno.erbs.erbs.stats.ui.base.BaseListAdapter
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class MatchesAdapter :
-    BaseListAdapter<UserGame, RecyclerView.ViewHolder>(MatchesDiffUtilCallback()) {
+class MatchesAdapter @Inject constructor(loadingImageHelper: LoadingImageHelper) :
+    BaseListAdapter<UserGame, RecyclerView.ViewHolder>(
+        MatchesDiffUtilCallback(),
+        loadingImageHelper
+    ) {
 
     companion object {
         private const val TYPE_LOADING = 1

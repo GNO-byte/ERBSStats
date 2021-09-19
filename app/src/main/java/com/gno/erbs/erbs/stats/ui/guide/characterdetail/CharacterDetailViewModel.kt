@@ -6,11 +6,18 @@ import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreCharacter
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreSkill
 import com.gno.erbs.erbs.stats.model.erbs.characters.WeaponType
 import com.gno.erbs.erbs.stats.repository.DataRepository
+import com.gno.erbs.erbs.stats.ui.userstats.UserStatsViewModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class CharacterDetailViewModel : ViewModel() {
+class CharacterDetailViewModel(
+    private val code: Int,
+    private val dataRepository: DataRepository
+) : ViewModel() {
 
     val coreCharacterLiveData = MutableLiveData<CoreCharacter?>()
     val characterStatsLiveData = MutableLiveData<CharacterStats?>()
@@ -38,8 +45,11 @@ class CharacterDetailViewModel : ViewModel() {
         }
         return result
     }
+     init {
+         loadCharacterDetail()
+     }
 
-    fun loadCharacterDetail(code: Int) {
+    fun loadCharacterDetail() {
 
         if (!downloadCompleted) {
             viewModelScope.launch(Dispatchers.IO) {
@@ -53,21 +63,21 @@ class CharacterDetailViewModel : ViewModel() {
     }
 
     private fun loadCoreCharacter(code: Int) {
-        coreCharacterLiveData.postValue(DataRepository.getCoreCharacter(code))
+        coreCharacterLiveData.postValue(dataRepository.getCoreCharacter(code))
     }
 
     private suspend fun loadCharacterStats(code: Int) {
         val characterAsync =
-            viewModelScope.async(Dispatchers.IO) { DataRepository.getCharacter(code) }
+            viewModelScope.async(Dispatchers.IO) { dataRepository.getCharacter(code) }
         val characterLevelUpStatAsync =
-            viewModelScope.async(Dispatchers.IO) { DataRepository.getCharacterLevelUpStat(code) }
+            viewModelScope.async(Dispatchers.IO) { dataRepository.getCharacterLevelUpStat(code) }
         val character = characterAsync.await()
         val characterLevelUpStat = characterLevelUpStatAsync.await()
 
         if (character != null && characterLevelUpStat != null) {
 
             val characterStats = CharacterStats(character, characterLevelUpStat)?.also {
-                DataRepository.addCharacterHalfWebLink(it)
+                dataRepository.addCharacterHalfWebLink(it)
             }
             characterStatsLiveData.postValue(characterStats)
         } else {
@@ -77,11 +87,30 @@ class CharacterDetailViewModel : ViewModel() {
     }
 
     private suspend fun loadWeaponTypes(code: Int) {
-        weaponTypesLiveData.postValue(DataRepository.getCharacterWeaponTypes(code))
+        weaponTypesLiveData.postValue(dataRepository.getCharacterWeaponTypes(code))
     }
 
     private suspend fun loadSkills(code: Int) {
-        skillsLiveData.postValue(DataRepository.getSkills(code))
+        skillsLiveData.postValue(dataRepository.getSkills(code))
+    }
+
+    class CharacterDetailViewModelFactory @AssistedInject constructor(
+        @Assisted("code") private val code: Int,
+        private val dataRepository: DataRepository
+    ) : ViewModelProvider.Factory {
+
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            require(modelClass == CharacterDetailViewModel::class.java)
+            return CharacterDetailViewModel(code, dataRepository) as T
+        }
+
+        @AssistedFactory
+        interface Factory {
+            fun create(
+                @Assisted("code") code: Int
+            ): CharacterDetailViewModelFactory
+        }
     }
 
 }

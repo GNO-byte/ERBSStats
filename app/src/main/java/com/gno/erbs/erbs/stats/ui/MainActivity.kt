@@ -28,12 +28,21 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     var navigationHistories: List<NavigationHistory>? = null
 
+    @Inject
+    lateinit var dataRepository: DataRepository
+
+    @Inject
+    lateinit var navigateHelper: NavigateHelper
+
+    @Inject
+    lateinit var errorHelper: ErrorHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        _activityComponent = appComponent.activityComponent().context(this).build().also {
-            it.inject(this)
-        }
+        _activityComponent = appComponent.activityComponent().context(this).build()
+        _activityComponent.inject(this)
+
         setContentView(binding.root)
 
         //////////////////////////
@@ -41,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         val appSharedPreferences = getSharedPreferences("APP", MODE_PRIVATE)
 
         if (appSharedPreferences.getBoolean("FIRST_LAUNCH", true)) {
-            DataRepository.setDefaultValues(applicationContext)
+            dataRepository.setDefaultValues()
             appSharedPreferences.edit().putBoolean("FIRST_LAUNCH", false)
                 .apply()
         }
@@ -51,7 +60,9 @@ class MainActivity : AppCompatActivity() {
         binding.appBarMain.fab.setOnClickListener {
             showSearch()
         }
+
         initDynamicMenu()
+
     }
 
     private fun initDynamicMenu() {
@@ -60,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.navView.setNavigationItemSelectedListener { menuItem ->
             this.navigationHistories?.find { it.name == menuItem.title }?.let {
-                NavigateHelper.go(navController, it.navigateId, it.bundle)
+                navigateHelper.go(navController, it.navigateId, it.bundle)
             } ?: navController.navigate(menuItem.itemId)
             (binding.navView.parent as Openable).close()
             true
@@ -69,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         val menu: Menu = binding.navView.menu
         val submenu = menu.addSubMenu("History")
 
-        DataRepository.navigationHistoryLiveData?.observe(this) { navigationHistories ->
+        dataRepository.navigationHistoryLiveData?.observe(this) { navigationHistories ->
             submenu.removeGroup(1)
             this.navigationHistories = navigationHistories
             this.navigationHistories?.forEach {
@@ -97,7 +108,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showConnectionError(function: () -> Unit) {
-        ErrorHelper.showConnectionError(binding.drawerLayout, function)
+        errorHelper.showConnectionError(binding.drawerLayout, function)
     }
 
 }

@@ -11,23 +11,25 @@ import com.bumptech.glide.request.RequestListener
 import com.facebook.shimmer.ShimmerDrawable
 import com.gno.erbs.erbs.stats.ui.LoadingImageHelper
 
-abstract class BaseListAdapter<T, VH : RecyclerView.ViewHolder>(diffCallback: DiffUtil.ItemCallback<T>) :
+abstract class BaseListAdapter<T, VH : RecyclerView.ViewHolder>
+    (diffCallback: DiffUtil.ItemCallback<T>,
+     private val loadingImageHelper: LoadingImageHelper) :
     ListAdapter<T, VH>(diffCallback) {
 
     protected fun createGlideListener(
         image: ImageView,
         loading: View
-    ): RequestListener<Drawable> = LoadingImageHelper.createGlideListener(image, loading)
+    ): RequestListener<Drawable> = loadingImageHelper.createGlideListener(image, loading)
 
     fun loadImage(
         view: ImageView, webLink: String?,
         loading: View
     ) {
-        LoadingImageHelper.loadImage(view, webLink, loading)
+        loadingImageHelper.loadImage(view, webLink, loading)
     }
 
     protected fun createShimmer(context: Context): ShimmerDrawable {
-        return LoadingImageHelper.createShimmer(context)
+        return loadingImageHelper.createShimmer(context)
     }
 
 }

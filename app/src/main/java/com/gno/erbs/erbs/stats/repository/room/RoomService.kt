@@ -1,82 +1,58 @@
 package com.gno.erbs.erbs.stats.repository.room
 
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
+import com.gno.erbs.erbs.stats.repository.AsyncInitialized
+import com.gno.erbs.erbs.stats.repository.FirebaseService
 import com.gno.erbs.erbs.stats.repository.room.cache.RoomCache
-import com.gno.erbs.erbs.stats.repository.room.cache.RoomCacheDao
 import com.gno.erbs.erbs.stats.repository.room.character.RoomCharacter
-import com.gno.erbs.erbs.stats.repository.room.character.RoomCharacterDao
 import com.gno.erbs.erbs.stats.repository.room.corecharacter.RoomCoreCharacter
-import com.gno.erbs.erbs.stats.repository.room.corecharacter.RoomCoreCharacterDao
 import com.gno.erbs.erbs.stats.repository.room.history.RoomHistory
-import com.gno.erbs.erbs.stats.repository.room.history.RoomHistoryDao
 import com.gno.erbs.erbs.stats.repository.room.update.RoomUpdate
-import com.gno.erbs.erbs.stats.repository.room.update.RoomUpdateDao
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object RoomService {
+class RoomService private constructor(
+    private val db: AppDatabase
+) : AsyncInitialized {
 
-    private var locale: Locale? = null
-    private var db: AppDatabase? = null
-    private var roomCharacterDao: RoomCharacterDao? = null
-    private var roomCoreCharacterDao: RoomCoreCharacterDao? = null
-    private var roomUpdateDao: RoomUpdateDao? = null
-    private var roomCacheDao: RoomCacheDao? = null
-    private var roomHistoryDao: RoomHistoryDao? = null
-
-    operator fun invoke(context: Context): RoomService {
-        db = AppDatabase.getAppDataBase(context)
-
-        roomCharacterDao = db?.roomCharacterDao()
-        roomCoreCharacterDao = db?.roomCoreCharacterDao()
-        roomUpdateDao = db?.roomUpdateDao()
-        roomCacheDao = db?.roomCacheDao()
-        roomHistoryDao = db?.roomHistoryDao()
-
-        roomHistoryDao?.let {
+    override suspend fun initData(context: Context) {
+        db.roomHistoryDao().let {
             if (it.getRowCount() >= 100) it.delete95lastHistories()
         }
-
-        locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            context.resources.configuration.locales.get(0)
-        else context.resources.configuration.locale
-
-        return this
     }
 
     fun getCurrentDate(): Date = Calendar.getInstance().time
 
-    fun getIso8601Format(): SimpleDateFormat = SimpleDateFormat(
-        "yyyy-MM-dd'T'HH:mm:ssZ", locale
-    )
-
     fun addCharacters(roomCharacters: List<RoomCharacter>) {
-        roomCharacterDao?.insertCharacters(roomCharacters)
+        db.roomCharacterDao().insertCharacters(roomCharacters)
     }
 
     fun getCharacters() = try {
-        roomCharacterDao?.getCharacters()
+        db.roomCharacterDao().getCharacters()
     } catch (e: Exception) {
         Timber.e(e)
         null
     }
 
     fun addCoreCharacters(roomCoreCharacters: List<RoomCoreCharacter>) {
-        roomCoreCharacterDao?.let { roomCoreCharacterDao ->
+        db.roomCoreCharacterDao().let { roomCoreCharacterDao ->
             roomCoreCharacters.forEach {
                 roomCoreCharacterDao.insertCoreCharacterFull(it)
             }
         }
     }
 
-    fun getCoreCharacters(): List<RoomCoreCharacter>? {
-        val coreCharacters = roomCoreCharacterDao?.getCoreCharactersSkillWeapon()
+    fun getCoreCharacters(): List<RoomCoreCharacter> {
+        val coreCharacters = db.roomCoreCharacterDao().getCoreCharactersSkillWeapon()
 
-        return coreCharacters?.map {
+        return coreCharacters.map {
             it.character.apply {
                 skills = it.skills
                 weapons = it.weapons
@@ -85,23 +61,32 @@ object RoomService {
     }
 
     fun addUpdate(roomUpdate: RoomUpdate) {
-        roomUpdateDao?.insertTableUpdate(roomUpdate)
+        db.roomUpdateDao().insertTableUpdate(roomUpdate)
     }
 
-    fun getUpdate() = roomUpdateDao?.getTableUpdate()
+    fun getUpdate() = db.roomUpdateDao().getTableUpdate()
 
     fun addCache(cache: RoomCache) {
-        roomCacheDao?.insertCache(cache)
+        db.roomCacheDao().insertCache(cache)
     }
 
-    fun getcache(name: String) = roomCacheDao?.getCache(name)
+    fun getcache(name: String) = db.roomCacheDao().getCache(name)
 
     fun addHistory(id: Int, bundle: Bundle?) {
-        roomHistoryDao?.insertHistory(RoomHistory(null, getCurrentDate(), bundle, id))
+        db.roomHistoryDao().insertHistory(RoomHistory(null, getCurrentDate(), bundle, id))
     }
 
     fun getLast5Histories(): Flow<List<RoomHistory>?>? {
-        return roomHistoryDao?.getLast5Histories()
+        return db.roomHistoryDao().getLast5Histories()
+    }
+
+    class Builder @Inject constructor(
+        private val db: AppDatabase
+    ) {
+
+        suspend fun build(context: Context) = RoomService(db).apply {
+            initData(context)
+        }
     }
 
 }

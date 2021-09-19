@@ -13,8 +13,11 @@ import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
 import com.gno.erbs.erbs.stats.R
 import com.google.android.material.color.MaterialColors
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object LoadingImageHelper {
+@Singleton
+class LoadingImageHelper @Inject constructor() {
 
     fun loadImage(
         view: ImageView, webLink: String?,

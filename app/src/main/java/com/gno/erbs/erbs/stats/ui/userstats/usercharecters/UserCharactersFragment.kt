@@ -1,5 +1,6 @@
 package com.gno.erbs.erbs.stats.ui.userstats.usercharecters
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.gno.erbs.erbs.stats.R
 import com.gno.erbs.erbs.stats.databinding.FragmentUserCharactersBinding
+import com.gno.erbs.erbs.stats.ui.activityComponent
 import com.gno.erbs.erbs.stats.ui.userstats.UserStatsViewModel
+import javax.inject.Inject
 
 
 class UserCharactersFragment : Fragment() {
@@ -19,7 +22,9 @@ class UserCharactersFragment : Fragment() {
 
     private lateinit var binding: FragmentUserCharactersBinding
     private lateinit var viewModel: UserStatsViewModel
-    private val charactersAdapter = UserCharactersAdapter()
+
+    @Inject
+    lateinit var charactersAdapter: UserCharactersAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +35,13 @@ class UserCharactersFragment : Fragment() {
             inflater, container, false
         )
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        context.activityComponent.fragmentComponent().fragment(this).build().also {
+            it.inject(this)
+        }
+        super.onAttach(context)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

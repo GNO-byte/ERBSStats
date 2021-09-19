@@ -4,6 +4,8 @@ import android.content.Context
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreCharacter
 import com.gno.erbs.erbs.stats.model.firebase.FolderContent
 import com.gno.erbs.erbs.stats.repository.drive.CharacterImageType
+import com.gno.erbs.erbs.stats.repository.room.Converter
+import com.gno.erbs.erbs.stats.repository.room.RoomService
 import com.google.common.reflect.TypeToken
 import com.google.firebase.FirebaseApp
 import com.google.firebase.appcheck.FirebaseAppCheck
@@ -15,41 +17,31 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.component1
 import com.google.firebase.storage.ktx.component2
 import com.google.gson.Gson
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.Reader
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.coroutines.resumeWithException
 
 
-object FirebaseService : ImageService {
+class FirebaseService private constructor(
+    private val firebaseStorage: FirebaseStorage,
+    private val realtimeDatabase: FirebaseDatabase,
+) : ImageService, AsyncInitialized {
 
-    private var storageRef = FirebaseStorage.getInstance().reference
-    private var fireRealtimeDatabase = FirebaseDatabase.getInstance()
+    private var storageRef = firebaseStorage.reference
 
-    override var coreCharacters: List<CoreCharacter>? = null
-
-    ///////https://stackoverflow.com/questions/67918324/firebase-cloud-firestore-security-rules-only-allow-read-not-write
-
-    operator fun invoke(context: Context): FirebaseService {
-
-        GlobalScope.launch {
-            FirebaseAuth.getInstance().signInAnonymously()
-
-            FirebaseApp.initializeApp(context)
-            val firebaseAppCheck = FirebaseAppCheck.getInstance()
-            firebaseAppCheck.installAppCheckProviderFactory(
-                DebugAppCheckProviderFactory.getInstance()
-            )
-
-            initCoreCharacters()
-        }
-
-        return this
+    override suspend fun initData(context: Context) {
+        FirebaseAuth.getInstance().signInAnonymously()
+        FirebaseApp.initializeApp(context)
+        val firebaseAppCheck = FirebaseAppCheck.getInstance()
+        firebaseAppCheck.installAppCheckProviderFactory(
+            DebugAppCheckProviderFactory.getInstance()
+        )
     }
 
     private suspend fun getFolderContent(folderPath: String): FolderContent {
@@ -57,7 +49,6 @@ object FirebaseService : ImageService {
         return getFolderContent(listRef)
 
     }
-
 
     private suspend fun getFolderContent(storageReference: StorageReference): FolderContent {
         val folders = mutableListOf<StorageReference>()
@@ -78,14 +69,14 @@ object FirebaseService : ImageService {
 
     }
 
-    suspend fun initCoreCharacters() {
+    override suspend fun getCoreCharacters(): List<CoreCharacter>? {
 
         val file = storageRef.child("/ERBS/characters with weapons and skills.json")
 
         val stringJson = readString(file.stream.await().stream)
 
         val turnsType = object : TypeToken<List<CoreCharacter>>() {}.type
-        coreCharacters = Gson().fromJson(stringJson, turnsType)
+        return Gson().fromJson(stringJson, turnsType)
 
     }
 
@@ -102,7 +93,7 @@ object FirebaseService : ImageService {
     }
 
     override suspend fun getDataVersion() =
-        fireRealtimeDatabase.getReference("storageVersion").awaitQueryValue<Long>().toInt()
+        realtimeDatabase.getReference("storageVersion").awaitQueryValue<Long>().toInt()
 
     private suspend inline fun <reified T> Query.awaitQueryValue(): T =
         suspendCancellableCoroutine { continuation ->
@@ -238,4 +229,16 @@ object FirebaseService : ImageService {
     private fun createFoundItem(storageReference: StorageReference, path: String): FoundItem =
         FoundItem(storageReference.name, null, storageReference, path)
 
+    class Builder @Inject constructor(
+        private val firebaseStorage: FirebaseStorage,
+        private val realtimeDatabase: FirebaseDatabase,
+        ) {
+
+        suspend fun build(context: Context) = FirebaseService(
+            firebaseStorage,
+            realtimeDatabase,
+        ).apply {
+            initData(context)
+        }
+    }
 }

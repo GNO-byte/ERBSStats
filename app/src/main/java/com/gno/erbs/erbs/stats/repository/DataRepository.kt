@@ -3,6 +3,7 @@ package com.gno.erbs.erbs.stats.repository
 import android.content.Context
 import android.os.Bundle
 import androidx.lifecycle.asLiveData
+import com.gno.erbs.erbs.stats.di.Firebase
 import com.gno.erbs.erbs.stats.model.CharacterStats
 import com.gno.erbs.erbs.stats.model.TeamMode
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreSkill
@@ -18,103 +19,97 @@ import com.gno.erbs.erbs.stats.model.erbs.userstats.UserStats
 import com.gno.erbs.erbs.stats.repository.drive.CharacterImageType
 import com.gno.erbs.erbs.stats.repository.room.Converter
 import com.gno.erbs.erbs.stats.repository.room.RoomService
+import com.gno.erbs.erbs.stats.ui.top.TopViewModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KProperty
 
-object DataRepository {
 
-    private val aesopService = AesopService()
-    private var erbsService: ERBSService? = null
-    private var imageService: ImageService? = null
-    private val defaultValue = DefaultValue
-    private var roomService: RoomService? = null
+class DataRepository private constructor(
+    private val aesopService: AesopService,
+    private val erbsService: ERBSService,
+    private val imageService: ImageService,
+    private val defaultValue: DefaultValue,
+    private val roomService: RoomService,
+    private val converter: Converter
+) : AsyncInitialized {
 
     val navigationHistoryLiveData by lazy {
-        roomService?.getLast5Histories()?.map { roomHistories ->
-            roomHistories?.map { Converter.conv(it) }
+        roomService.getLast5Histories()?.map { roomHistories ->
+            roomHistories?.map { converter.conv(it) }
         }?.asLiveData()
     }
 
-    operator fun invoke(context: Context): DataRepository {
-        erbsService = ERBSService(context)
-        roomService = RoomService(context)
-        imageService = FirebaseService(context)
-        return this
-    }
-
-    suspend fun initData(context: Context) {
-
-        val dataVersion = DefaultValue.getDataVersion(context)
-        val exchangeDataVersion = imageService?.getDataVersion()
+    override suspend fun initData(context: Context) {
+        val dataVersion = defaultValue.getDataVersion()
+        val exchangeDataVersion = imageService.getDataVersion()
         if (dataVersion != exchangeDataVersion) {
             updateCharacters()
             updateCoreCharacters()
-            DefaultValue.setDataVersion(context, exchangeDataVersion ?: 0)
+            defaultValue.setDataVersion(exchangeDataVersion ?: 0)
         }
     }
 
     private suspend fun updateCharacters() {
 
-        erbsService?.let { erbsService ->
+        erbsService.let { erbsService ->
             executeRequest { erbsService.getCharacters() }?.result?.also { characters ->
                 addIconWebLink(characters, "iconWebLink", "name")
-                roomService?.addCharacters(characters.map { Converter.conv(it) })
+                roomService.addCharacters(characters.map { converter.conv(it) })
             }
         }
     }
 
-    private fun updateCoreCharacters() {
+    private suspend fun updateCoreCharacters() {
 
-        roomService?.let { roomService ->
-            imageService?.coreCharacters?.mapNotNull { Converter.conv(it) }?.let {
+        roomService.let { roomService ->
+            imageService.getCoreCharacters()?.mapNotNull { converter.conv(it) }?.let {
                 roomService.addCoreCharacters(it)
             }
         }
     }
 
-    fun setDefaultValues(context: Context) {
+    fun setDefaultValues() {
         defaultValue
-            .setDefaultValues(context)
+            .setDefaultValues()
     }
 
-    fun getDefaultMatchingTeamMode(context: Context): String {
-        return defaultValue
-            .getMatchingTeamMode(context)
+    fun getDefaultMatchingTeamMode() = defaultValue
+        .getMatchingTeamMode()
+
+    fun setDefaultMatchingTeamMode(value: String) {
+        defaultValue.setMatchingTeamMode(value)
     }
 
-    fun setDefaultMatchingTeamMode(context: Context, value: String) {
-        defaultValue.setMatchingTeamMode(context, value)
+    fun getDefaultSeasonId() = defaultValue.getSeasonId()
+
+    fun setDefaultSeasonId(value: String) {
+        defaultValue.setSeasonId(value)
     }
 
-    fun getDefaultSeasonId(context: Context): String {
-        return defaultValue.getSeasonId(context)
+    fun getDefaultUserNumber() = defaultValue.getUserNumber()
+
+
+    fun setDefaultUserNumber(value: String) {
+        defaultValue.setUserNumber(value)
     }
 
-    fun setDefaultSeasonId(context: Context, value: String) {
-        defaultValue.setSeasonId(context, value)
-    }
-
-    fun getDefaultUserNumber(context: Context): String {
-        return defaultValue.getUserNumber(context)
-    }
-
-    fun setDefaultUserNumber(context: Context, value: String) {
-        defaultValue.setUserNumber(context, value)
-    }
-
-    fun getCharacters() = roomService?.getCharacters()?.map { Converter.conv(it) }
+    fun getCharacters() = roomService.getCharacters()?.map { converter.conv(it) }
 
     suspend fun getUserStats(
         userNumber: String,
         seasonId: String,
         characters: List<Character>?
-    ) = erbsService?.let { erbsService ->
+    ) = erbsService.let { erbsService ->
         executeRequest {
             erbsService.getUserStatsResponse(
                 userNumber,
@@ -151,7 +146,7 @@ object DataRepository {
 
     private suspend fun addTopCharacterImage(userStats: List<UserStats>) {
 
-        imageService?.let { imageService ->
+        imageService.let { imageService ->
             userStats.forEach { userStat ->
                 val topCharacterName =
                     userStat.characterStats.maxByOrNull {
@@ -196,11 +191,11 @@ object DataRepository {
             searchTierRankImageMap += searchName to null
         }
 
-        val files = imageService?.getRankTierFile(*mmrSet.toIntArray())
+        val files = imageService.getRankTierFile(*mmrSet.toIntArray())
 
         searchTierRankImageMap.forEach { mapEntry ->
-            searchTierRankImageMap[mapEntry.key] = files?.find { driveFile ->
-                imageService?.compareNames(driveFile.name, mapEntry.key) ?: false
+            searchTierRankImageMap[mapEntry.key] = files.find { driveFile ->
+                imageService.compareNames(driveFile.name, mapEntry.key) ?: false
             }?.getWebLink(roomService)
 
         }
@@ -245,7 +240,7 @@ object DataRepository {
     suspend fun getUserGames(
         userNumber: String,
         nextPage: String
-    ) = erbsService?.let { erbsService ->
+    ) = erbsService.let { erbsService ->
         executeRequest {
             erbsService.getUserGamesResponse(
                 userNumber,
@@ -273,11 +268,11 @@ object DataRepository {
 
     private suspend fun addItemWeaponTypeWebLink(userGames: List<UserGame>) {
         val itemsWeapon =
-            erbsService?.let { erbsService ->
+            erbsService.let { erbsService ->
                 executeRequest { erbsService.getItemsWeapon() }
             }?.result
 
-        val itemWeaponImage = imageService?.getWeaponTypeFiles()
+        val itemWeaponImage = imageService.getWeaponTypeFiles()
 
         val equipmentList = mutableListOf<Int?>()
 
@@ -302,8 +297,8 @@ object DataRepository {
             }
 
             userGame.weaponTypeImageWebLink = findType?.let { findType ->
-                itemWeaponImage?.find { driveFile ->
-                    imageService?.compareNames(driveFile.name, findType) ?: false
+                itemWeaponImage.find { driveFile ->
+                    imageService.compareNames(driveFile.name, findType) ?: false
                 }?.getWebLink(roomService)
             }
 
@@ -336,21 +331,21 @@ object DataRepository {
             }
         }
 
-        val itemImage = imageService?.getItemImage()
+        val itemImage = imageService.getItemImage()
 
-        itemImage?.let {
+        itemImage.let {
             fillItemsImage(
-                equipmentLinks, it, erbsService?.let { erbsService ->
+                equipmentLinks, it, erbsService.let { erbsService ->
                     executeRequest { erbsService.getItemsWeapon() }
                 }?.result
             )
             fillItemsImage(
-                equipmentLinks, it, erbsService?.let { erbsService ->
+                equipmentLinks, it, erbsService.let { erbsService ->
                     executeRequest { erbsService.getItemsArmor() }
                 }?.result
             )
             fillItemsImage(
-                equipmentLinks, it, erbsService?.let { erbsService ->
+                equipmentLinks, it, erbsService.let { erbsService ->
                     executeRequest { erbsService.getItemsSpecial() }
                 }?.result
             )
@@ -393,7 +388,7 @@ object DataRepository {
             if (foundItemName != "" && foundItemCode != 0) {
                 imageService.let { imageService ->
                     val findDriveFile = itemsImages.find { foundImage ->
-                        imageService?.compareNames(foundImage.name, foundItemName) ?: false
+                        imageService.compareNames(foundImage.name, foundItemName) ?: false
                     }
                     equipmentLinks += foundItemCode to findDriveFile?.getWebLink(roomService)
                 }
@@ -434,26 +429,26 @@ object DataRepository {
     fun getCharacter(code: Int) = getCharacters()?.find { it.code == code }
 
     fun getCharacter(name: String) = getCharacters()?.filter { character ->
-        imageService?.compareNames(character.name ?: "", name) ?: false
+        imageService.compareNames(character.name ?: "", name) ?: false
     }
 
     suspend fun getCharacterWeaponTypes(code: Int): List<WeaponType>? {
 
         val weaponTypes =
-            erbsService?.let { erbsService ->
+            erbsService.let { erbsService ->
                 executeRequest {
                     erbsService.getCharacterWeaponTypes()
                 }?.result?.filter { it.characterCode == code }
             }
 
-        val weaponTypeFiles = imageService?.getWeaponTypeFiles()
+        val weaponTypeFiles = imageService.getWeaponTypeFiles()
 
         weaponTypes?.forEach { weaponType ->
             weaponType.mastery?.let { mastery ->
                 try {
-                    weaponType.weaponTypeImageWebLink = weaponTypeFiles?.first { driveFile ->
-                        imageService?.compareNames(driveFile.name, mastery) ?: false
-                    }?.getWebLink(roomService)
+                    weaponType.weaponTypeImageWebLink = weaponTypeFiles.first { driveFile ->
+                        imageService.compareNames(driveFile.name, mastery) ?: false
+                    }.getWebLink(roomService)
                 } catch (e: java.lang.Exception) {
                     Timber.e(e)
                 }
@@ -464,12 +459,12 @@ object DataRepository {
     }
 
     suspend fun getCharacterLevelUpStat(code: Int) =
-        erbsService?.let { erbsService ->
+        erbsService.let { erbsService ->
             executeRequest { erbsService.getCharacterLevelUpStat() }?.result?.first { it.code == code }
         }
 
     suspend fun getTopRanks(seasonId: String, teamMode: String) =
-        erbsService?.let { erbsService ->
+        erbsService.let { erbsService ->
             executeRequest {
                 erbsService.getTopRanksResponse(seasonId, teamMode)
             }?.result?.toList()?.also { addRankTierImage(it) }
@@ -503,11 +498,11 @@ object DataRepository {
             searchTierRankImageMap += searchName to null
         }
 
-        val files = imageService?.getRankTierFile(*mmrSet.toIntArray())
+        val files = imageService.getRankTierFile(*mmrSet.toIntArray())
 
         searchTierRankImageMap.forEach { mapEntry ->
-            searchTierRankImageMap[mapEntry.key] = files?.find { driveFile ->
-                imageService?.compareNames(driveFile.name, mapEntry.key) ?: false
+            searchTierRankImageMap[mapEntry.key] = files.find { driveFile ->
+                imageService.compareNames(driveFile.name, mapEntry.key) ?: false
             }?.getWebLink(roomService)
 
         }
@@ -533,7 +528,7 @@ object DataRepository {
 
     suspend fun addCharacterHalfWebLink(characterStats: CharacterStats) {
         imageService.let { imageService ->
-            characterStats.characterImageHalfWebLink = imageService?.getCharacterImageFiles(
+            characterStats.characterImageHalfWebLink = imageService.getCharacterImageFiles(
                 CharacterImageType.HALF,
                 characterStats.name
             )?.getWebLink(roomService)
@@ -541,8 +536,8 @@ object DataRepository {
 
     }
 
-    fun getCoreCharacter(code: Int) = roomService?.let { roomService ->
-        roomService.getCoreCharacters()?.map { Converter.conv(it) }?.find { it.code == code }
+    fun getCoreCharacter(code: Int) = roomService.let { roomService ->
+        roomService.getCoreCharacters().map { converter.conv(it) }.find { it.code == code }
     }
 
     suspend fun getSkills(code: Int): List<CoreSkill>? {
@@ -559,11 +554,11 @@ object DataRepository {
     private suspend fun addSkillsImageLink(coreSkills: List<CoreSkill>, nameCharacter: String) {
 
         imageService.let { imageService ->
-            val imageWebLinks = imageService?.getSkillImage(nameCharacter)
+            val imageWebLinks = imageService.getSkillImage(nameCharacter)
 
             coreSkills.forEach { coreSkill ->
                 coreSkill.key?.let { key ->
-                    coreSkill.image = imageWebLinks?.find { driveFile ->
+                    coreSkill.image = imageWebLinks.find { driveFile ->
                         imageService.compareNames(
                             driveFile.name,
                             "_$key"
@@ -576,7 +571,7 @@ object DataRepository {
 
     private suspend fun addSkillsVideoLink(coreSkills: List<CoreSkill>) {
 
-        erbsService?.let { erbsService ->
+        erbsService.let { erbsService ->
             val skillVideo = erbsService.getCharacterSkillVideos().result
             coreSkills.forEach { coreSkill ->
                 coreSkill.videoLink = skillVideo?.find { it.code == coreSkill.group }?.youTubeUrl
@@ -585,19 +580,18 @@ object DataRepository {
 
     }
 
-    suspend fun getUser(searchString: String) = erbsService?.let { erbsService ->
+    suspend fun getUser(searchString: String) = erbsService.let { erbsService ->
 
         executeRequest { erbsService.getUserResponse(searchString) }?.let {
             if (it.message == "Not Found") {
                 User("Not Found", 0)
             } else it.result
-
         }
 
     }
 
     suspend fun getIllustrations() =
-        imageService?.getIllustrations()?.mapNotNull { it.getWebLink() }
+        imageService.getIllustrations().mapNotNull { it.getWebLink() }
 
     private suspend fun <T : Any> addIconWebLink(
         items: List<T>,
@@ -605,13 +599,13 @@ object DataRepository {
         namePropertyName: String
     ) {
         imageService.let { imageService ->
-            val miniImageItems = imageService?.getCharacterImageMiniLink()
+            val miniImageItems = imageService.getCharacterImageMiniLink()
             items.forEach { item ->
 
                 val foundName = getInstanceProperty<String?>(item, namePropertyName)
 
                 foundName?.let { foundName ->
-                    val link = miniImageItems?.find {
+                    val link = miniImageItems.find {
                         imageService.compareNames(
                             it.name,
                             foundName
@@ -620,16 +614,16 @@ object DataRepository {
                     setInstanceProperty(item, namePropertyImageLink, link)
 
                 }
-
             }
         }
     }
 
 
     fun addHistory(id: Int, bundle: Bundle?) {
-        roomService?.addHistory(id, bundle)
+        roomService.addHistory(id, bundle)
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun <R> getInstanceProperty(instance: Any, propertyName: String): R {
         val property = instance::class.members.first { it.name == propertyName } as KProperty<*>
         return property.getter.call(instance) as R
@@ -646,25 +640,25 @@ object DataRepository {
 
         GlobalScope.launch {
 
-            imageService?.getItemImage()?.let { itemImages ->
+            imageService.getItemImage().let { itemImages ->
 
                 foundCategoryItemWithoutPicture(
                     itemImages,
-                    erbsService?.let { erbsService ->
+                    erbsService.let { erbsService ->
                         executeRequest { erbsService.getItemsWeapon() }
                     }?.result,
                     "WEAPON"
                 )
                 foundCategoryItemWithoutPicture(
                     itemImages,
-                    erbsService?.let { erbsService ->
+                    erbsService.let { erbsService ->
                         executeRequest { erbsService.getItemsArmor() }
                     }?.result,
                     "ARMOR"
                 )
                 foundCategoryItemWithoutPicture(
                     itemImages,
-                    erbsService?.let { erbsService ->
+                    erbsService.let { erbsService ->
                         executeRequest { erbsService.getItemsSpecial() }
                     }?.result,
                     "SPECIAL"
@@ -682,7 +676,7 @@ object DataRepository {
         items?.forEach { it ->
             it.name?.let { itemName ->
                 itemsImages.find { foundImage ->
-                    imageService?.compareNames(foundImage.name, itemName) ?: false
+                    imageService.compareNames(foundImage.name, itemName) ?: false
                 } ?: noFoundName.add(itemName)
             }
         }
@@ -691,7 +685,6 @@ object DataRepository {
             Timber.tag("$itemCategory NO FOUND").e(it)
         }
 
-
     }
 
     private inline fun <T> executeRequest(func: () -> Response<T>) = try {
@@ -699,6 +692,37 @@ object DataRepository {
     } catch (e: Exception) {
         Timber.e(e)
         null
+    }
+
+    class Builder @AssistedInject constructor(
+        private val aesopService: AesopService,
+        private val erbsService: ERBSService,
+        @Assisted private val imageService: ImageService,
+        private val defaultValue: DefaultValue,
+        @Assisted private val roomService: RoomService,
+        private val converter: Converter,
+
+        ) {
+
+        suspend fun build(context: Context) = DataRepository(
+            aesopService,
+            erbsService,
+            imageService,
+            defaultValue,
+            roomService,
+            converter,
+        ).apply {
+            initData(context)
+        }
+
+        @AssistedFactory
+        interface Factory {
+            fun create(
+                @Assisted imageService: ImageService,
+                @Assisted roomService: RoomService,
+            ): Builder
+        }
+
     }
 
 }

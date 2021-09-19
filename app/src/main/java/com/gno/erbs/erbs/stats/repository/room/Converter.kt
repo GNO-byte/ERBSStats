@@ -10,8 +10,11 @@ import com.gno.erbs.erbs.stats.repository.room.corecharacter.RoomCoreCharacter
 import com.gno.erbs.erbs.stats.repository.room.corecharacter.RoomCoreSkill
 import com.gno.erbs.erbs.stats.repository.room.corecharacter.RoomCoreWeapon
 import com.gno.erbs.erbs.stats.repository.room.history.RoomHistory
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object Converter {
+@Singleton
+class Converter @Inject constructor() {
 
     fun conv(character: Character) = RoomCharacter(
         null,

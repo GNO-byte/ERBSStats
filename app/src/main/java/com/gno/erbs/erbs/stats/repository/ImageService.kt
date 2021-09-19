@@ -5,7 +5,7 @@ import com.gno.erbs.erbs.stats.repository.drive.CharacterImageType
 
 interface ImageService {
 
-    var coreCharacters: List<CoreCharacter>?
+    suspend fun getCoreCharacters(): List<CoreCharacter>?
 
     suspend fun getCharacterImageMiniLink(): List<FoundItem>
 
@@ -28,5 +28,6 @@ interface ImageService {
     suspend fun getIllustrations(): List<FoundItem>
 
     fun compareNames(nameFile: String, searchName: String): Boolean
+
 
 }

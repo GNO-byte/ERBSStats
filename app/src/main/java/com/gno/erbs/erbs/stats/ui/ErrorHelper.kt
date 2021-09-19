@@ -2,9 +2,11 @@ package com.gno.erbs.erbs.stats.ui
 
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-object ErrorHelper {
+@Singleton
+class ErrorHelper @Inject constructor() {
 
     fun showConnectionError(view: View, function: () -> Unit) {
 

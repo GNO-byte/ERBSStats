@@ -1,5 +1,6 @@
 package com.gno.erbs.erbs.stats.ui.guide.characterdetail.background
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.gno.erbs.erbs.stats.databinding.FragmentBackgroundBinding
+import com.gno.erbs.erbs.stats.ui.activityComponent
 import com.gno.erbs.erbs.stats.ui.guide.characterdetail.CharacterDetailViewModel
 
 class BackgroundFragment : Fragment() {

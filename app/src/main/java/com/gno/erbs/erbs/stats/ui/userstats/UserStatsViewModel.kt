@@ -3,16 +3,25 @@ package com.gno.erbs.erbs.stats.ui.userstats
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.gno.erbs.erbs.stats.model.Season
 import com.gno.erbs.erbs.stats.model.erbs.matches.UserGame
 import com.gno.erbs.erbs.stats.model.erbs.userstats.CharacterStat
 import com.gno.erbs.erbs.stats.model.erbs.userstats.UserStats
 import com.gno.erbs.erbs.stats.repository.DataRepository
+import com.gno.erbs.erbs.stats.ui.top.TopViewModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class UserStatsViewModel : ViewModel() {
+class UserStatsViewModel(
+    private val userNumber: String?,
+    private var seasonId: String?,
+    private val dataRepository: DataRepository
+) : ViewModel() {
 
     val userStatsLiveData = MutableLiveData<List<UserStats>?>()
     val userCharactersStatsLiveData = MutableLiveData<List<CharacterStat>>()
@@ -25,27 +34,31 @@ class UserStatsViewModel : ViewModel() {
     private var nextPage: String? = ""
     private var downloadCompleted = false
 
-    fun loadUserStats(userNumber: String?, seasonId: String?, context: Context) {
+    init {
+        loadUserStats()
+    }
+
+    fun loadUserStats() {
 
         val userNumber = userNumber?.also {
-            setDefaultUserID(context, it)
-        } ?: getDefaultUserID(context)
+            dataRepository.setDefaultUserNumber(it)
+        } ?: dataRepository.getDefaultUserNumber()
 
         val seasonId = seasonId?.also {
-            DataRepository.setDefaultSeasonId(context, it)
-        } ?: DataRepository.getDefaultSeasonId(context)
+            dataRepository.setDefaultSeasonId(it)
+        } ?: dataRepository.getDefaultSeasonId()
 
         if (!downloadCompleted) {
             viewModelScope.launch(Dispatchers.IO) {
-                val characters = DataRepository.getCharacters()
-                val userStats = DataRepository.getUserStats(userNumber, seasonId, characters)
+                val characters = dataRepository.getCharacters()
+                val userStats = dataRepository.getUserStats(userNumber, seasonId, characters)
                 userStatsLiveData.postValue(userStats?.sortedBy {
                     it.matchingTeamMode
                 })
 
                 userStats?.let {
                     userCharactersStatsLiveData.postValue(
-                        DataRepository.getUserCharactersStats(
+                        dataRepository.getUserCharactersStats(
                             userStats
                         )
                     )
@@ -68,37 +81,51 @@ class UserStatsViewModel : ViewModel() {
         val thisUserId = userId
         if (thisUserId != null) {
             val matches = userGamesLiveData.value?.toMutableList() ?: mutableListOf()
-            val responseUserGame = DataRepository.getUserGames(thisUserId, nextPage ?: "")
+            val responseUserGame = dataRepository.getUserGames(thisUserId, nextPage ?: "")
             nextPage = responseUserGame?.next
             matches.addAll(responseUserGame?.result?.toList() ?: listOf())
             userGamesLiveData.postValue(matches.toList())
         }
     }
 
-    fun getDefaultUserID(context: Context) = DataRepository.getDefaultUserNumber(context)
+    fun getCurrentSeason() =
+        Season.findById(dataRepository.getDefaultSeasonId())
 
-    fun setDefaultUserID(context: Context, userId: String) =
-        DataRepository.setDefaultUserNumber(context, userId)
-
-    fun getCurrentSeason(context: Context) =
-        Season.findById(DataRepository.getDefaultSeasonId(context))
-
-    fun changeSeason(seasonName: String, context: Context) {
+    fun changeSeason(seasonName: String) {
         Season.findByTitle(seasonName)?.let {
             updateLiveData.postValue(true)
-            DataRepository.setDefaultSeasonId(context, it.id)
+            dataRepository.setDefaultSeasonId(it.id)
 
             userId = null
-            //mmrMap.clear()
+
             nextPage = ""
             downloadCompleted = false
+            seasonId = seasonId
 
-            loadUserStats(
-                null,
-                it.id,
-                context
-            )
+
         }
     }
+
+    class UserStatsViewModelFactory @AssistedInject constructor(
+        @Assisted("userNumber") private val userNumber: String?,
+        @Assisted("seasonId") private val seasonId: String?,
+        private val dataRepository: DataRepository
+    ) : ViewModelProvider.Factory {
+
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            require(modelClass == UserStatsViewModel::class.java)
+            return UserStatsViewModel(userNumber, seasonId, dataRepository) as T
+        }
+
+        @AssistedFactory
+        interface Factory {
+            fun create(
+                @Assisted("userNumber") userNumber: String?,
+                @Assisted("seasonId") seasonId: String?
+            ): UserStatsViewModelFactory
+        }
+    }
+
 }
 

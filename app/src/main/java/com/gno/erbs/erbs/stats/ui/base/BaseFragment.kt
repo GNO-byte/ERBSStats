@@ -11,30 +11,43 @@ import com.facebook.shimmer.ShimmerDrawable
 import com.gno.erbs.erbs.stats.di.component.FragmentComponent
 import com.gno.erbs.erbs.stats.ui.MainActivity
 import com.gno.erbs.erbs.stats.ui.LoadingImageHelper
+import com.gno.erbs.erbs.stats.ui.activityComponent
+import javax.inject.Inject
 
 abstract class BaseFragment : Fragment() {
 
     lateinit var fragmentComponent: FragmentComponent
+
+    @Inject
+    lateinit var loadingImageHelper: LoadingImageHelper
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         (activity as MainActivity).searchEnable()
     }
 
+    override fun onAttach(context: Context) {
+        context.activityComponent.fragmentComponent().fragment(this).build().also {
+            it.inject(this)
+        }
+        super.onAttach(context)
+    }
+
     protected fun createGlideListener(
         image: ImageView,
         loading: View
-    ): RequestListener<Drawable> = LoadingImageHelper.createGlideListener(image, loading)
+    ): RequestListener<Drawable> = loadingImageHelper.createGlideListener(image, loading)
 
     fun loadImage(
         view: ImageView, webLink: String?,
         loading: View
     ) {
-        LoadingImageHelper.loadImage(view, webLink, loading)
+        loadingImageHelper.loadImage(view, webLink, loading)
     }
 
     protected fun createShimmer(context: Context): ShimmerDrawable {
-        return LoadingImageHelper.createShimmer(context)
+        return loadingImageHelper.createShimmer(context)
     }
 
 }

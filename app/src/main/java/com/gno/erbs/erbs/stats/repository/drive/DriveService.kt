@@ -3,12 +3,9 @@ package com.gno.erbs.erbs.stats.repository.drive
 import android.content.Context
 import com.gno.erbs.erbs.stats.model.drive.corecharacter.CoreCharacter
 import com.gno.erbs.erbs.stats.model.drive.imagelinkstructure.ImagesLinkStructure
-import com.gno.erbs.erbs.stats.repository.FoundItem
-import com.gno.erbs.erbs.stats.repository.ImageService
-import com.gno.erbs.erbs.stats.repository.KeysHelper
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
-import com.google.api.client.http.apache.ApacheHttpTransport
-import com.google.api.client.json.jackson2.JacksonFactory
+import com.gno.erbs.erbs.stats.repository.*
+import com.gno.erbs.erbs.stats.repository.room.Converter
+import com.gno.erbs.erbs.stats.repository.room.RoomService
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.model.File
 import com.google.gson.Gson
@@ -18,37 +15,20 @@ import kotlinx.coroutines.launch
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.Reader
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object DriveService : ImageService {
+class DriveService private constructor(
+    private val coreImageLinkStructureId: String?,
+    private val coreCharactersId: String?,
+    private val service: Drive
+) : ImageService, AsyncInitialized {
 
-    private var coreImageLinkStructureId: String? = null
-    private var coreCharactersId: String? = null
+    private var imagesLinkStructure: ImagesLinkStructure? = null
 
-    private lateinit var service: Drive
-    var imagesLinkStructure: ImagesLinkStructure? = null
-    override var coreCharacters: List<CoreCharacter>? = null
 
-    operator fun invoke(context: Context): DriveService {
-
-        coreImageLinkStructureId = KeysHelper.getDriveCoreImageLinkStructureId(context)
-        coreCharactersId = KeysHelper.getDriveCoreCharactersId(context)
-
-        val credential =
-            GoogleCredential.fromStream(KeysHelper.getDriveKey(context).byteInputStream())
-                .createScoped(listOf("https://www.googleapis.com/auth/drive"))
-
-        service =
-            Drive.Builder(ApacheHttpTransport(), JacksonFactory.getDefaultInstance(), credential)
-                .setApplicationName("ERBS")
-                .build()
-
-        GlobalScope.launch {
-            initImagesLinkStructure()
-            initCoreCharacters()
-        }
-
-        return this
-
+    override suspend fun initData(context: Context) {
+        initImagesLinkStructure()
     }
 
     private fun readString(inputStream: InputStream): String {
@@ -63,7 +43,7 @@ object DriveService : ImageService {
         return s.toString()
     }
 
-    fun initImagesLinkStructure() {
+    private fun initImagesLinkStructure() {
 
         val inputStream = service.files().get(coreImageLinkStructureId)
             .executeMediaAsInputStream()
@@ -74,7 +54,7 @@ object DriveService : ImageService {
 
     }
 
-    fun initCoreCharacters() {
+    override suspend fun getCoreCharacters(): List<CoreCharacter>? {
 
         val inputStream = service.files().get(coreCharactersId)
             .executeMediaAsInputStream()
@@ -82,7 +62,7 @@ object DriveService : ImageService {
         val stringJson = readString(inputStream)
 
         val turnsType = object : TypeToken<List<CoreCharacter>>() {}.type
-        coreCharacters = Gson().fromJson(stringJson, turnsType)
+        return Gson().fromJson(stringJson, turnsType)
 
 
     }
@@ -236,5 +216,19 @@ object DriveService : ImageService {
         return emptyList()
     }
 
+    class Builder @Inject constructor(
+        private val coreImageLinkStructureId: String?,
+        private val coreCharactersId: String?,
+        private val service: Drive
+    ) {
 
+        suspend fun build(context: Context) = DriveService(
+            coreImageLinkStructureId,
+            coreCharactersId,
+            service
+        ).apply {
+            initData(context)
+        }
+
+    }
 }
