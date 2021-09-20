@@ -13,7 +13,7 @@ This is an Android application that shows the statistics of the  game [Eternal R
 
 ### Architecture
 
-MVVM, SingleActivity
+MVVM, Single-Activity
 
 ![architecture diagram](diagram.png "architecture diagram")
          
