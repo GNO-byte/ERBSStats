@@ -21,7 +21,7 @@ MVVM, Single-Activity
 - Kotlin - preferred language for Android development  
 - Kotlin сoroutines - asynchronous code  
 - ViewModel - storing and managing fragment data  
-- Google Navigation Сomponent - navigation between fragments  
+- Google Navigation Component - navigation between fragments  
 - Glide - loading images  
 - ViewBinding - replacement for findViewById  
 - Retrofit2  - API requests  
